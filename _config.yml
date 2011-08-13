@@ -2,10 +2,10 @@
 #      Main Configs       #
 # ----------------------- #
 
-url: http://yoursite.com
-title: My Octopress Blog
-subtitle: A blogging framework for hackers.
-author: Your Name
+url: http://lusis.github.com
+title: Lusis@gh-pages
+subtitle: Effing blogs, how does that sht work?
+author: John E. Vincent
 simple_search: http://google.com/search
 
 # RSS / Email (optional) subscription links (change if using something like Feedburner)
@@ -47,7 +47,7 @@ default_asides: [asides/recent_posts.html, asides/twitter.html, asides/delicious
 # ----------------------- #
 
 # Twitter
-twitter_user:
+twitter_user: @lusis
 twitter_tweet_count: 4
 twitter_show_replies: false
 twitter_follow_button: true
@@ -67,7 +67,7 @@ delicious_user:
 delicious_count: 3
 
 # Disqus Comments
-disqus_short_name:
+disqus_short_name: lusis
 
 # Google Analytics
-google_analytics_tracking_id:
+google_analytics_tracking_id: UA-21725481
