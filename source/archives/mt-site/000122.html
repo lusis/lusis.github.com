@@ -1,0 +1,215 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<title>lusis.org: Well it's official</title>
+
+<link rel="stylesheet" href="http://www.lusis.org/mt/lusis//a3col.css" type="text/css" />
+
+<script type="text/javascript" language="javascript">
+<!--
+
+function OpenTrackback (c) {
+    window.open(c,
+                    'trackback',
+                    'width=480,height=480,scrollbars=yes,status=yes');
+}
+
+var HOST = 'www.lusis.org';
+
+// Copyright (c) 1996-1997 Athenia Associates.
+// http://www.webreference.com/js/
+// License is granted if and only if this entire
+// copyright notice is included. By Tomer Shiran.
+
+function setCookie (name, value, expires, path, domain, secure) {
+    var curCookie = name + "=" + escape(value) + ((expires) ? "; expires=" + expires.toGMTString() : "") + ((path) ? "; path=" + path : "") + ((domain) ? "; domain=" + domain : "") + ((secure) ? "; secure" : "");
+    document.cookie = curCookie;
+}
+
+function getCookie (name) {
+    var prefix = name + '=';
+    var c = document.cookie;
+    var nullstring = '';
+    var cookieStartIndex = c.indexOf(prefix);
+    if (cookieStartIndex == -1)
+        return nullstring;
+    var cookieEndIndex = c.indexOf(";", cookieStartIndex + prefix.length);
+    if (cookieEndIndex == -1)
+        cookieEndIndex = c.length;
+    return unescape(c.substring(cookieStartIndex + prefix.length, cookieEndIndex));
+}
+
+function deleteCookie (name, path, domain) {
+    if (getCookie(name))
+        document.cookie = name + "=" + ((path) ? "; path=" + path : "") + ((domain) ? "; domain=" + domain : "") + "; expires=Thu, 01-Jan-70 00:00:01 GMT";
+}
+
+function fixDate (date) {
+    var base = new Date(0);
+    var skew = base.getTime();
+    if (skew > 0)
+        date.setTime(date.getTime() - skew);
+}
+
+function rememberMe (f) {
+    var now = new Date();
+    fixDate(now);
+    now.setTime(now.getTime() + 365 * 24 * 60 * 60 * 1000);
+    setCookie('mtcmtauth', f.author.value, now, '', HOST, '');
+    setCookie('mtcmtmail', f.email.value, now, '', HOST, '');
+    setCookie('mtcmthome', f.url.value, now, '', HOST, '');
+}
+
+function forgetMe (f) {
+    deleteCookie('mtcmtmail', '', HOST);
+    deleteCookie('mtcmthome', '', HOST);
+    deleteCookie('mtcmtauth', '', HOST);
+    f.email.value = '';
+    f.author.value = '';
+    f.url.value = '';
+}
+
+//-->
+</script>
+
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/">
+<rdf:Description
+    rdf:about="http://www.lusis.org/mt/lusis/archives/000122.html"
+    trackback:ping="http://www.lusis.org/mt/mt-tb.cgi/54"
+    dc:title="Well it&apos;s official"
+    dc:identifier="http://www.lusis.org/mt/lusis/archives/000122.html"
+    dc:subject="technology"
+    dc:description="AOL Kills Netscape | Metafilter..."
+    dc:creator="pugsly"
+    dc:date="2003-07-16T17:14:28-05:00" />
+</rdf:RDF>
+-->
+
+
+</head>
+
+<body>
+
+<div id="banner">
+lusis.org<br />
+<span class="description">We play the blaming game. Rants of a libertarian geek.</span>
+</div>
+
+<div id="content">
+
+
+<div id="menu">
+
+<a href="http://www.lusis.org/mt/lusis/archives/2003_07.html">« New look and feel</a> |
+
+<a href="http://www.lusis.org/mt/lusis/">Main</a>
+
+| <a href="http://www.lusis.org/mt/lusis/archives/2003_07.html">Updated again »</a>
+
+</div>
+
+<div class="blog">
+
+<div class="date">July 16, 2003</div>	
+
+<div class="blogbody">
+
+<span class="title">Well it's official</span>
+
+<p><a title="AOL Kills Netscape | Metafilter" href="http://www.metafilter.com/mefi/27002">AOL Kills Netscape | Metafilter</a></p>
+
+<a name="more"></a>
+<p>It seems that AOL has finally done what everyone THOUGHT they would do years ago..they&apos;ve killed netscape. All the nifty slashdot jokes about it being official are actually true now - Netscape is dead.</p>
+
+<p>I've linked to the MeFi article on this because one can usually find good discussion there. Either way, there are articles and blog entries ALL over the web. <a href="http://www.meyerweb.com" title="CSS god">Eric Meyer</a> has his own inside take on the matter as well.</p>
+
+<p>The gist of the matter is this. A product named Netscape no longer exists. The <strong>core</strong> of Netscape, known as Mozilla is still going strong. This is one of the joys of opensource. Some of the mozteam have formed the <a href="http://www.mozilla.org" title="Now with new marketing layouts!">Mozilla Foundation</a>, a non-profit group that will fund further Mozilla development partly with a 2 million dollar donation from AOL and other contributions from Sun and IBM (who have already hired a few core moz developers to work on the project.</p>
+
+<p>What is interesting to note about the whole thing is that AOL <strong>JUST</strong> signed a deal with Microsoft to use Internet Explorer in the AOL product for the next seven years.</p>
+
+<p>I&apos;m curious how this will play out considering that Microsoft also just announced that IE will no longer be provided as a standalone browser product. It will be forever more incorporated into Windows and new versions only available with a new operating system upgrade.</p>
+
+<p>I have a few thoughts related to the future of web standards here. As someone who occassionally does a web page here and there, I'm bummed that I have to tolerate and support the broken IE6 png and css issues forever. You may ask why forever? Well I don't know of anyone who will upgrade an OS just to get a new browser. Of course a large percentage of the new browsers will be distributed with new computer purchases but how many independant developers are going to be able to afford the latest OS upgrade from Microsoft just to test out a website? Not many will spend. This is good news for web developers (allthough it could bite them in the ass). Develop for the standards compliant browsers on the market. Opera, Mozilla and Safari. I know there are more out there but they are mostly based on the core of either KHTML (in the case of Safari and Konq for KDE) or Gecko (in the case of Mozilla, Firebird, Galeon, Chimera, Epiphany et al). After that go back and see how it looks in IE6. You should also check IE55 (as broken as it is) for a little while longer.</p>
+
+<p>You should be pretty safe if you do that. I'm curious to see what nasty little proprietary extensions MS will add to IE7+ though.</p>
+
+<p>As for me, I have to do some family computer work this weekend and I plan on putting Mozilla on both machines and show them the pop-up blocking features. This is the kind of thing that will sway users to Mozilla and others over IE. </p>
+
+<p>Why pay for a popup blocker when you can get one for free? Why pay for an OS upgrade to get a popup blocker when you can get one for free?</p>
+
+<p>Comments are welcome and, yes, I'm still working on my new layout. Be sure and comment there as well.</p>
+
+<span class="posted">Posted by pugsly at July 16, 2003 05:14 PM
+
+| <a href="http://www.lusis.org/mt/mt-tb.cgi?__mode=view&entry_id=122" onclick="OpenTrackback(this.href); return false">Trackback</a>
+
+<br /></span>
+
+</div>
+
+
+
+
+<div class="comments-head"><a name="comments"></a>Comments</div>
+
+
+
+<div class="comments-head">Post a comment</div>
+
+<div class="comments-body">
+<form method="post" action="http://www.lusis.org/mt/mt-comments.cgi" name="comments_form" onsubmit="if (this.bakecookie.checked) rememberMe(this)">
+<input type="hidden" name="static" value="1" />
+<input type="hidden" name="entry_id" value="122" />
+
+Name:<br />
+<input name="author" /><br /><br />
+
+Email Address:<br />
+<input name="email" /><br /><br />
+
+URL:<br />
+<input name="url" /><br /><br />
+
+Comments:<br />
+<textarea name="text" rows="10" cols="50"></textarea><br /><br />
+
+<input type="checkbox" name="bakecookie" />Remember info?<br /><br />
+
+<input type="submit" name="preview" value=" PREVIEW " />
+<input type="submit" name="post" value=" POST " /><br /><br />
+
+<input type="button" onclick="forgetMe(this.form)" value="FORGET PERSONAL INFORMATION" />
+</form>
+
+<script type="text/javascript" language="javascript">
+<!--
+document.comments_form.email.value = getCookie("mtcmtmail");
+document.comments_form.author.value = getCookie("mtcmtauth");
+document.comments_form.url.value = getCookie("mtcmthome");
+//-->
+</script>
+
+
+</div>
+</div>
+</div>
+
+<div id="links">
+<div class="powered">
+  Powered by<br /><a href="http://www.movabletype.org">Movable 
+  Type 2.64</a><br />
+  <br /> 
+  Template by<br />
+  <!--this template was modified from the original movable type templates by 
+  Kristine of Love-productions and blogstyles.
+  I'd appreciate it if you would keep a link back to blogstyles with this template!-->
+  <a href="http://blogstyles.com" target="_blank">BLOG<styles></a></div>
+</div>
+</body>
+</html>

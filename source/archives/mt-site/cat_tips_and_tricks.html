@@ -1,0 +1,434 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<title>lusis.org: tips and tricks Archives</title>
+
+<link rel="stylesheet" href="http://dev.lusis.org/oldsite/a3col.css" type="text/css" />
+
+</head>
+
+<body>	
+
+<div id="banner">
+lusis.org<br />
+<span class="description">We play the blaming game. Rants of a libertarian geek.</span>
+</div>
+
+<div class="container">
+
+<div id="content">
+<div id="menu">
+<a href="http://www.lusis.org/mt/lusis/">Main</a>
+</div>
+<br>
+<div class="blog">
+
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/">
+<rdf:Description
+    rdf:about="http://www.lusis.org/mt/lusis/archives/cat_tips_and_tricks.html#000138"
+    trackback:ping="http://www.lusis.org/mt/mt-tb.cgi/70"
+    dc:title="Stupid Redhat Tricks"
+    dc:identifier="http://www.lusis.org/mt/lusis/archives/cat_tips_and_tricks.html#000138"
+    dc:subject="tips and tricks"
+    dc:description="Okay so it&apos;s not stupid but really freakin cool...."
+    dc:creator="pugsly"
+    dc:date="2005-04-13T20:42:49-05:00" />
+</rdf:RDF>
+-->
+
+
+<div class="date">April 13, 2005</div>
+
+
+<div class="blogbody">
+<a name="000138"></a>
+<span class="title">Stupid Redhat Tricks</span>
+
+<p>Okay so it's not stupid but really freakin cool.</p>
+
+
+<p>We were getting ready to repurpose a server at the office. The server was located at the datacenter and we really didn't want to go onsite for a freakin install if we could help it.</p>
+
+<p>Specs:<br />
+IBM x345 server<br />
+BIOS Console Over Serial<br />
+Cyclades Alterpath 32<br />
+RHEL2.1AS<br />
+IBM DB2 UDB 8.1fp4</p>
+
+<p>So we've now consolidated some of our database servers into multiple instances on a beefier box. We getting ready to replace our reporting server package (Espress Reports) with Actuate iServer.</p>
+
+<p>Actuate iServer supports RHEL3 minimum. This migration has been pushed back for a few weeks because of licensing issues and we finally have the pieces in place.</p>
+
+<p>Now we realize that we need to upgrade the server. Trying to avoid a trip to the datacenter and any more delay, we call RedHat support and ask if we can just subscribe the old server to a new channel and run up2date. It was a long shot and just as I feared a non-start of an idea. We put our heads together and realize that worst case, someone has to drive down and insert a bootcd even to do an FTP install. Then the redhat guy comes up with the idea of:</p>
+
+<p>You *COULD* copy the vmlinux and initrd from the boot cd over to /boot on the server. Then make a grub entry for booting those kernels and do an FTP install. But that would require a GUI. I know there's a VNC install option but I'll dig up the info and email it to you.</p>
+
+<p>Not wanting to wait we think again the worst that happens is that we have to drive down and do the install onsite. Not a big problem but why not give this a shot.</p>
+
+<p>So we set the GRUB entry as follows:</p>
+
+<p>title=Boot CD Install Kernel<br />
+root=(hd0,0)<br />
+kernel=/vmlinuz.cdboot<br />
+initrd=initrd.cdboot text</p>
+
+<p>We added the text option just so it wouldn't try and go into a gui. I think it didn't matter because as I look back, the "text" option actually doesn't go there?</p>
+
+<p>We put the cd source on an internal FTP server, logged into the console port on the cyclades and rebooted the server.</p>
+
+<p>We were presented with the GRUB menu over the serial port and selected the CD Install kernel to boot.</p>
+
+<p>The system booted up into a text-only install of RHEL3. We selected FTP install and went through our normal steps selecting the proper packages and 20 minutes later (no shit, we timed it) we we're rebooted into our new system already on the network.</p>
+
+<p>This is amazing to say the least. I've been doing this for 10 years now and never even THOUGHT to try it. It just isn't a tip that you normally think about. That's why I'm posting it here.</p>
+
+<p>As an aside, we're preparing to do this for all of our servers. We'll be copying the appropriate vmlinuz and initrd files from the distributions we use to each server and making boot menu options for them. Since all of the servers are running Linux and are connected to a Cyclades for OOB access, we get full visibility from bootup to shutdown.  </p>
+
+<p>I'm sure many people would have suggested something along the lines of a PXE server (which I've done in the past) or leaving a boot floppy in all the servers and disabling floppy boot in the BIOS.</p>
+
+<p>As to the PXE thing, we don't have a DHCP server running at any of our datacenters. We also disable all unused network ports on the switches but it's one less security hole I have to worry about notwithstanding another service I have to maintain. We already have an internal FTP server that can house the basic packages to get a server up and running and our Gentoo servers are network install ANYWAY.</p>
+
+<p>As for the floppy option, it's about saving time. It's much quicker to boot from disk than ready everything from the floppy and the size of the vmlinuz and initrd are floppy prohibitive. Maybe a custom boot cd in all the servers would work as well. but that's just another thing we have to remember.</p>
+
+<p>I'm going to throw some keywords in here just to help people find this tip. I really think it's a cool tip for any SA to have that manages linux servers:</p>
+
+<p>grub, ftp install, redhat, RHEL, initrd, vmlinuz, boot cd</p>
+
+
+<div class="posted">Posted by pugsly at <a href="http://www.lusis.org/mt/lusis/archives/2005_04.html#000138">08:42 PM</a></div>
+</div>
+
+
+
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/">
+<rdf:Description
+    rdf:about="http://www.lusis.org/mt/lusis/archives/cat_tips_and_tricks.html#000126"
+    trackback:ping="http://www.lusis.org/mt/mt-tb.cgi/58"
+    dc:title="John&apos;s Ad Block"
+    dc:identifier="http://www.lusis.org/mt/lusis/archives/cat_tips_and_tricks.html#000126"
+    dc:subject="tips and tricks"
+    dc:description="Mozilla/Netscape7/Firebird adblocker (right-click and save to desktop. Then open with Mozilla)..."
+    dc:creator="pugsly"
+    dc:date="2003-08-05T08:40:59-05:00" />
+</rdf:RDF>
+-->
+
+
+<div class="date">August 05, 2003</div>
+
+
+<div class="blogbody">
+<a name="000126"></a>
+<span class="title">John's Ad Block</span>
+
+<p><a title="John's Ad Blocker" href="http://www.lusis.org/static/johnsadblock.xpi">Mozilla/Netscape7/Firebird adblocker</a> (right-click and save to desktop. Then open with Mozilla)</p>
+
+
+<p>So I was playing around with <a href="http://ted.mielczarek.org/code/mozilla/" title="Flash click-to-view">this package</a> because pulling the xml file over the internet was really dragging down flash pages. After installing I realized that it 1) overwrote my userContent.css and 2) wouldn't install to my user profile directory.</p>
+
+<p>After googling a bit, I found out that 1) xpi files are just zip files and 2) making an app install in the user profile directory is as easy as changing 2 lines in the install.js.</p>
+
+<p>That led me to package my userContent.css with Ted's click to view changes. The result is my nifty adblocker along with the flash click to view installed locally in the user profile directory.</p>
+
+<p>The upshot is that I can easy install the app without having to navigate to the profile directory and all that.</p>
+
+<p>Let me know if you use it. I might decide to play around with some mozilla plugins a bit more.</p>
+
+<p>Edit: If anyone has any ideas as to why apache wants to serve this file as text, I'd appreciate it. I've added "AddType application/x-xpinstall .xpi" to my .htaccess but its not making any difference. Seems to only be happening on windows.</p>
+
+
+<div class="posted">Posted by pugsly at <a href="http://www.lusis.org/mt/lusis/archives/2003_08.html#000126">08:40 AM</a></div>
+</div>
+
+
+
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/">
+<rdf:Description
+    rdf:about="http://www.lusis.org/mt/lusis/archives/cat_tips_and_tricks.html#000087"
+    trackback:ping="http://www.lusis.org/mt/mt-tb.cgi/19"
+    dc:title="Updated"
+    dc:identifier="http://www.lusis.org/mt/lusis/archives/cat_tips_and_tricks.html#000087"
+    dc:subject="tips and tricks"
+    dc:description="When are people going to realize that text ads work much better. People are assuming stratics forums are slow when the real problem is off-site third party banner ads!"
+    dc:creator="pugsly"
+    dc:date="2003-03-26T16:07:32-05:00" />
+</rdf:RDF>
+-->
+
+
+<div class="date">March 26, 2003</div>
+
+
+<div class="blogbody">
+<a name="000087"></a>
+<span class="title">Updated</span>
+
+<p><a title="" href="http://www.lusis.org/static/userContent.css">Updated usercontent stylesheet</a></p>
+
+
+<p>I've updated my file. I added:</p>
+
+<pre>
+IFRAME[SRC*="/html.ng"]  { display: none ! important }</pre>
+
+<p>under the iframe section. It was already listed up under the IMG SRC entries but not for iframes. </p>
+
+<p>The main reason for this is that stratics forums uses mediamgr.ugo.com for alot of the ads and the site runs DOG SLOW.</p>
+
+<p>When are people going to realize that text ads work much better. People are assuming stratics forums are slow when the real problem is off-site third party banner ads!</p>
+
+<p>Another update: I've found a link that discusses where mozilla stores it's profiles for each OS. Alot of people have asked me where in the hell to actually put the userContent.css file.</p>
+
+<p>This is straight from <a href="http://www.mozilla.org/releases/mozilla1.0/#profiles">mozilla.org:</a></p>
+
+<p>Profile Locations<br />
+Windows %USERPROFILE%\Application Data\Mozilla\Profiles\[Profile Name]\[random string].slt\<br />
+Windows 2000 C:\Documents and Settings\[Windows Login Name]\Application Data\Mozilla\Profiles\[Profile Name]\[random string].slt\<br />
+Windows 95 & Windows 98 C:\Windows\Application Data\Mozilla\Profiles\[Profile Name]\[random string].slt\<br />
+Mac OS 9 Documents:Mozilla:[User Profile]:[random string].slt:<br />
+Mac OS X ~/Library/Mozilla/Profiles/[Profile Name]/[random string].slt/<br />
+Linux ~/.mozilla/[Profile Name]/[random string].slt/</p>
+
+
+<div class="posted">Posted by pugsly at <a href="http://www.lusis.org/mt/lusis/archives/2003_03.html#000087">04:07 PM</a></div>
+</div>
+
+
+
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/">
+<rdf:Description
+    rdf:about="http://www.lusis.org/mt/lusis/archives/cat_tips_and_tricks.html#000082"
+    trackback:ping="http://www.lusis.org/mt/mt-tb.cgi/14"
+    dc:title="Help for a troubled web browser"
+    dc:identifier="http://www.lusis.org/mt/lusis/archives/cat_tips_and_tricks.html#000082"
+    dc:subject="tips and tricks"
+    dc:description="People have been griping on the stratics forums about the banner ads now that customers have been forced to go..."
+    dc:creator="pugsly"
+    dc:date="2003-03-25T22:39:40-05:00" />
+</rdf:RDF>
+-->
+
+
+<div class="date">March 25, 2003</div>
+
+
+<div class="blogbody">
+<a name="000082"></a>
+<span class="title">Help for a troubled web browser</span>
+
+<p>People have been griping on the stratics forums about the banner ads now that customers have been forced to go there for support. I humbly offer these tips to help everyone.</p>
+
+
+<p>1) Download <a href="http://www.mozilla.org">mozilla.</a></p>
+
+<p>2) Download <a href="http://www.lusis.org/static/userContent.css">file</a>. I've added some changes for flash ads. If anyone can get the yahoo flash ads as well, let me know and I'll integrate the changes. They use some javascript funkyness.</p>
+
+<p>3) Put it in the appropriate directory. It goes into the chrome directory for your profile. Check <a href="http://www.flii.us/myworks/phoenix/pages/chrome.html">this site</a> for an example. It's uses the phoenix directory but replace  Phoenix in the examples with Mozilla.</p>
+
+<p>4) Browse the web snappy-like!</p>
+
+
+<div class="posted">Posted by pugsly at <a href="http://www.lusis.org/mt/lusis/archives/2003_03.html#000082">10:39 PM</a></div>
+</div>
+
+
+
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/">
+<rdf:Description
+    rdf:about="http://www.lusis.org/mt/lusis/archives/cat_tips_and_tricks.html#000081"
+    trackback:ping="http://www.lusis.org/mt/mt-tb.cgi/13"
+    dc:title="Anyone ever shop here?"
+    dc:identifier="http://www.lusis.org/mt/lusis/archives/cat_tips_and_tricks.html#000081"
+    dc:subject="tips and tricks"
+    dc:description="UpgradeNation.Com - Quick, Reliable, Affordable Upgrades..."
+    dc:creator="pugsly"
+    dc:date="2003-03-25T16:11:46-05:00" />
+</rdf:RDF>
+-->
+
+
+
+<div class="blogbody">
+<a name="000081"></a>
+<span class="title">Anyone ever shop here?</span>
+
+<p><a title="UpgradeNation.Com - Quick, Reliable, Affordable Upgrades" href="http://www.upgradenation.com/index.html">UpgradeNation.Com - Quick, Reliable, Affordable Upgrades</a></p>
+
+
+<p>I'm looking for info on these guys. They have some killer prices on compact flash(I'm eyeing a 256MB card) and wanted some reviews or comments.</p>
+
+
+<div class="posted">Posted by pugsly at <a href="http://www.lusis.org/mt/lusis/archives/2003_03.html#000081">04:11 PM</a></div>
+</div>
+
+
+
+
+
+<div class="date">March 25, 2002</div>
+
+
+<div class="blogbody">
+<a name="000031"></a>
+<span class="title">Quick and dirty hack for PDF printing</span>
+
+<p>I mentioned this on newsforge in response to the StarOffice article. I wanted to put a copy here for people who might not see that article.</p>
+
+
+<p>"The facts:</p>
+
+<p>1 - We need to cut costs. <br />
+2 - We have an occasional need to print to pdf format. <br />
+3 - Adobe PDF writer is expensive. <br />
+4 - What does John think we should do?</p>
+
+<p>After thinking for a moment, I came to another set of facts.</p>
+
+<p>1 - Under kde, I can print to pdf.<br />
+2 - I need the same thing on a network.<br />
+3 - Many printer drivers are postscript.<br />
+4 - Ghostscript has a ps2pdf command.</p>
+
+<p>How could I leverage this to my advantage?</p>
+
+<p>I googled a bit for a solution. I found a couple of sample scripts but nothing that fit the bill exactly. Below you can find the script I use as well as a section from my smb.conf for the printer:<br />
+<pre><br />
+#!/bin/sh<br />
+# I straight up stole this from somewhere on the web. I added alot of my own stuff. - JEV<br />
+DATE=`date +%b%d-%H%M%S`</p>
+
+<p>OUTDIR=/shr/pdfdropbox</p>
+
+<p># take the input from a postscript printdriver and convert to pdf<br />
+ps2pdf13 $1 $OUTDIR/$2-$DATE.temp<br />
+# optimize for quicker loading in Acrobat<br />
+pdfopt $OUTDIR/$2-$DATE.temp $OUTDIR/$2-$DATE.pdf<br />
+# Grab a snapshot in text format of the first page of the document to add to the email body<br />
+pdftotext -f 1 -l 1 $OUTDIR/$2-$DATE.pdf $OUTDIR/$2-$DATE.txt<br />
+# use mpack to mail the file along with using the first page of the document in <br />
+# text format as the message body</p>
+
+<p># this is fairly limited because it will only send to someone on OUR mailserver<br />
+mpack -s ""PDF file - First page in message body"" -d $OUTDIR/$2-$DATE.txt  \\<br />
+$OUTDIR/$2-$DATE.pdf $2@yourdomainhere.com</p>
+
+<p># clean up all the random shit we left lying around<br />
+rm -rf $1 $OUTDIR/$2-$DATE.*<br />
+</pre><br />
+from smb.conf:<br />
+<pre><br />
+[PDF Printer]<br />
+        comment = PDF Printer<br />
+        path = /tmp<br />
+        # force user = nobody<br />
+        guest ok = Yes<br />
+        printable = Yes<br />
+        print command = /usr/bin/printpdf %s %U<br />
+</pre><br />
+You'll need mpack which you can get <a href=""http://www.pcc.com/~jay/src/mail_news/mpack-1.5/ORIGINALS/"">here</a>. You could do the same thing with metamail (as the link says) but I was in a hurry.</p>
+
+<p>Under windows, we set up the printer as an HP Color LaserJet 5/5M PS. This is a good solid Postscript printer driver. Set it always to color and you're all set. Here's an example of the email it sends you. The text below is the body of the email message:</p>
+
+<p><i><br />
+Tech News - CNET.com                                                                                                                                                               Page 1 of 1</p>
+
+<p><br />
+                                                                        CNET tech sites: Price Comparisons | Product Reviews | Tech News | Downloads | Site map</p>
+
+<p>                                                                                                              Last Updated: Mar 25, 2002 12:03 PM</p>
+
+<p><br />
+                                                                                               </p>
+
+<p></p>
+
+<p><br />
+                                                                                                                               Search <br />
+                                                    Special Report                                   Personal Technology                                              <br />
+                                 Java jigsaw                                          PCs with pizzazz                                                          ©     <br />
+                                                                                                                                     ¡    ¢£¥¤    ¦§    ¨       §   <br />
+                                 As Sun enters its 20th year, it                      The PC industry is grappling <br />
+                                 faces a crucial dilemma: how                         with prices and profits. But <br />
+                                 to finally profit from Java's                        gamers are keeping one part                <br />
+                                 popularity with rivals.                              of the market red-hot.                    PlayStation 3:  <br />
+                                 * Stirring up Web services                                                                     The next generation  <br />
+                                                                                                                                 E-mail giants  <br />
+              Proposed anti-piracy bill draws fire                                                                              change the rules  <br />
+              Government and industry leaders say lawmakers would in effect decide the tech industry's                           <br />
+              ""winners and losers"" if proposed government controls on digital media devices become                              IBM acts to quell <br />
+              reality.                                                                                                          hard-drive concerns  <br />
+                                                                                                                                 <br />
+              March 25, 2002, 10:30 AM PST                                                                                      Easter egg hunt  <br />
+              eBay antitrust probe closed                                                                                       leads to DVDs  <br />
+                                                                                                                                 <br />
+              The Justice Department discontinues its investigation without taking any action against the                                                                 More <br />
+              online auction giant's conduct toward auction sites that list its content.  <br />
+              March 25, 2002, 10:00 AM PST </p>
+
+<p>              Intel unrolls Blueprints program  <br />
+              The company is offering corporations a series of designs to get technology installations up <br />
+              and running faster--and maybe drum up some chip business as well. <br />
+              March 25, 2002, 8:30 AM PST <br />
+              Cisco may cash in on spending rebound                                                                              <br />
+                                                                                                                                                  Is the Web making <br />
+              Last month was slow for IT and network spending by large corporate customers outside the                          the grade? <br />
+              telecom sector. But one analyst says the networking giant should benefit as things pick up.                       Jakob Nielsen, founder, Nielsen <br />
+              March 25, 2002, 9:45 AM PST                                                                                       Norman Group <br />
+              Travelocity levies fee on United tickets  <br />
+              update Responding to some airlines' decision to nix travel agents' commissions on ticket </p>
+
+<p><br />
+http://www.news.com/                                                                                                                                                                3/25/2002<br />
+</i></p>
+
+<p><a href=""http://www.lusis.org/samplepdf.pdf"">Here</a> is an example of the printed pdf. I only printed the first page and I also set it for landscape mode.</p>
+
+<p>A few caveats:<br />
+1 - Some fonts look like ass no matter what. This isn't an issue since the things we print to pdf are pretty standard.<br />
+2 - No security whatsoever.This seems to be soley in the domain of Adobe. And we all know what to think of adobe and security eh?<br />
+3 - No extra features. Like I said, this is a pretty limited and at the same time powerful solution. If you don't need a password protected pdf or any of the nifty indexing features, this is your tool.</p>
+
+<p>Hope this helps someone somewhere.</p>
+
+
+<div class="posted">Posted by pugsly at <a href="http://www.lusis.org/mt/lusis/archives/2002_03.html#000031">03:34 PM</a></div>
+</div>
+
+
+
+</div>
+</div>
+</div>
+<div id="links">
+<div class="powered">
+  Powered by<br /><a href="http://www.movabletype.org">Movable 
+  Type 2.64</a><br />
+  <br /> 
+  Template by<br />
+  <!--this template was modified from the original movable type templates by 
+  Kristine of Love-productions and blogstyles.
+  I'd appreciate it if you would keep a link back to blogstyles with this template!-->
+  <a href="http://blogstyles.com" target="_blank">BLOG<styles></a></div>
+</div>
+
+</body>
+</html>

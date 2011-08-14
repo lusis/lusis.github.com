@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<title>lusis.org: March 25, 2002 Archives</title>
+
+<link rel="stylesheet" href="http://www.lusis.org/mt/lusis//a3col.css" type="text/css" />
+
+</head>
+
+<body>	
+
+<div id="banner">
+lusis.org<br />
+<span class="description">We play the blaming game. Rants of a libertarian geek.</span>
+</div>
+
+<div class="container">
+
+<div id="content">
+<div id="menu">
+
+<a href="http://www.lusis.org/mt/lusis/archives/2002_03_16.html">« March 16, 2002</a> |
+
+<a href="http://www.lusis.org/mt/lusis/">Main</a>
+
+| <a href="http://www.lusis.org/mt/lusis/archives/2002_04_04.html">April 04, 2002 »</a>
+
+</div>
+<br>
+<div class="blog">
+
+
+
+<div class="date">March 25, 2002</div>
+
+
+<div class="blogbody">
+<a name="000031"></a>
+<span class="title">Quick and dirty hack for PDF printing</span>
+
+<p>I mentioned this on newsforge in response to the StarOffice article. I wanted to put a copy here for people who might not see that article.</p>
+
+
+<p>"The facts:</p>
+
+<p>1 - We need to cut costs. <br />
+2 - We have an occasional need to print to pdf format. <br />
+3 - Adobe PDF writer is expensive. <br />
+4 - What does John think we should do?</p>
+
+<p>After thinking for a moment, I came to another set of facts.</p>
+
+<p>1 - Under kde, I can print to pdf.<br />
+2 - I need the same thing on a network.<br />
+3 - Many printer drivers are postscript.<br />
+4 - Ghostscript has a ps2pdf command.</p>
+
+<p>How could I leverage this to my advantage?</p>
+
+<p>I googled a bit for a solution. I found a couple of sample scripts but nothing that fit the bill exactly. Below you can find the script I use as well as a section from my smb.conf for the printer:<br />
+<pre><br />
+#!/bin/sh<br />
+# I straight up stole this from somewhere on the web. I added alot of my own stuff. - JEV<br />
+DATE=`date +%b%d-%H%M%S`</p>
+
+<p>OUTDIR=/shr/pdfdropbox</p>
+
+<p># take the input from a postscript printdriver and convert to pdf<br />
+ps2pdf13 $1 $OUTDIR/$2-$DATE.temp<br />
+# optimize for quicker loading in Acrobat<br />
+pdfopt $OUTDIR/$2-$DATE.temp $OUTDIR/$2-$DATE.pdf<br />
+# Grab a snapshot in text format of the first page of the document to add to the email body<br />
+pdftotext -f 1 -l 1 $OUTDIR/$2-$DATE.pdf $OUTDIR/$2-$DATE.txt<br />
+# use mpack to mail the file along with using the first page of the document in <br />
+# text format as the message body</p>
+
+<p># this is fairly limited because it will only send to someone on OUR mailserver<br />
+mpack -s ""PDF file - First page in message body"" -d $OUTDIR/$2-$DATE.txt  \\<br />
+$OUTDIR/$2-$DATE.pdf $2@yourdomainhere.com</p>
+
+<p># clean up all the random shit we left lying around<br />
+rm -rf $1 $OUTDIR/$2-$DATE.*<br />
+</pre><br />
+from smb.conf:<br />
+<pre><br />
+[PDF Printer]<br />
+        comment = PDF Printer<br />
+        path = /tmp<br />
+        # force user = nobody<br />
+        guest ok = Yes<br />
+        printable = Yes<br />
+        print command = /usr/bin/printpdf %s %U<br />
+</pre><br />
+You'll need mpack which you can get <a href=""http://www.pcc.com/~jay/src/mail_news/mpack-1.5/ORIGINALS/"">here</a>. You could do the same thing with metamail (as the link says) but I was in a hurry.</p>
+
+<p>Under windows, we set up the printer as an HP Color LaserJet 5/5M PS. This is a good solid Postscript printer driver. Set it always to color and you're all set. Here's an example of the email it sends you. The text below is the body of the email message:</p>
+
+<p><i><br />
+Tech News - CNET.com                                                                                                                                                               Page 1 of 1</p>
+
+<p><br />
+                                                                        CNET tech sites: Price Comparisons | Product Reviews | Tech News | Downloads | Site map</p>
+
+<p>                                                                                                              Last Updated: Mar 25, 2002 12:03 PM</p>
+
+<p><br />
+                                                                                               </p>
+
+<p></p>
+
+<p><br />
+                                                                                                                               Search <br />
+                                                    Special Report                                   Personal Technology                                              <br />
+                                 Java jigsaw                                          PCs with pizzazz                                                          ©     <br />
+                                                                                                                                     ¡    ¢£¥¤    ¦§    ¨       §   <br />
+                                 As Sun enters its 20th year, it                      The PC industry is grappling <br />
+                                 faces a crucial dilemma: how                         with prices and profits. But <br />
+                                 to finally profit from Java's                        gamers are keeping one part                <br />
+                                 popularity with rivals.                              of the market red-hot.                    PlayStation 3:  <br />
+                                 * Stirring up Web services                                                                     The next generation  <br />
+                                                                                                                                 E-mail giants  <br />
+              Proposed anti-piracy bill draws fire                                                                              change the rules  <br />
+              Government and industry leaders say lawmakers would in effect decide the tech industry's                           <br />
+              ""winners and losers"" if proposed government controls on digital media devices become                              IBM acts to quell <br />
+              reality.                                                                                                          hard-drive concerns  <br />
+                                                                                                                                 <br />
+              March 25, 2002, 10:30 AM PST                                                                                      Easter egg hunt  <br />
+              eBay antitrust probe closed                                                                                       leads to DVDs  <br />
+                                                                                                                                 <br />
+              The Justice Department discontinues its investigation without taking any action against the                                                                 More <br />
+              online auction giant's conduct toward auction sites that list its content.  <br />
+              March 25, 2002, 10:00 AM PST </p>
+
+<p>              Intel unrolls Blueprints program  <br />
+              The company is offering corporations a series of designs to get technology installations up <br />
+              and running faster--and maybe drum up some chip business as well. <br />
+              March 25, 2002, 8:30 AM PST <br />
+              Cisco may cash in on spending rebound                                                                              <br />
+                                                                                                                                                  Is the Web making <br />
+              Last month was slow for IT and network spending by large corporate customers outside the                          the grade? <br />
+              telecom sector. But one analyst says the networking giant should benefit as things pick up.                       Jakob Nielsen, founder, Nielsen <br />
+              March 25, 2002, 9:45 AM PST                                                                                       Norman Group <br />
+              Travelocity levies fee on United tickets  <br />
+              update Responding to some airlines' decision to nix travel agents' commissions on ticket </p>
+
+<p><br />
+http://www.news.com/                                                                                                                                                                3/25/2002<br />
+</i></p>
+
+<p><a href=""http://www.lusis.org/samplepdf.pdf"">Here</a> is an example of the printed pdf. I only printed the first page and I also set it for landscape mode.</p>
+
+<p>A few caveats:<br />
+1 - Some fonts look like ass no matter what. This isn't an issue since the things we print to pdf are pretty standard.<br />
+2 - No security whatsoever.This seems to be soley in the domain of Adobe. And we all know what to think of adobe and security eh?<br />
+3 - No extra features. Like I said, this is a pretty limited and at the same time powerful solution. If you don't need a password protected pdf or any of the nifty indexing features, this is your tool.</p>
+
+<p>Hope this helps someone somewhere.</p>
+
+
+<div class="posted">Posted by pugsly at <a href="http://www.lusis.org/mt/lusis/archives/2002_03.html#000031">03:34 PM</a></div>
+</div>
+
+
+
+</div>
+</div>
+</div>
+<div id="links">
+<div class="powered">
+  Powered by<br /><a href="http://www.movabletype.org">Movable 
+  Type 2.64</a><br />
+  <br /> 
+  Template by<br />
+  <!--this template was modified from the original movable type templates by 
+  Kristine of Love-productions and blogstyles.
+  I'd appreciate it if you would keep a link back to blogstyles with this template!-->
+  <a href="http://blogstyles.com" target="_blank">BLOG<styles></a></div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,13 @@
+A note about my scripts:
+Scripts in the nagios directory have been fairly well tested. 
+I try to account for possible error and "fat fingers" that we all make.
+
+Feel free to let me know of any updates to these scripts that you think they need.
+
+The scripts in the usable directory are usable in our specific environment. 
+I just remember the hell I went though trying to find scripts for specific things. 
+I figure if I can save someone time with a starting point then I will.
+
+I make no guarantee that any of these scripts won't screw up your environment. 
+Always test these against pre-prod or dev servers first!
+I make no statement as to the asthetics of these scripts...especially the ones in the usable directory. 

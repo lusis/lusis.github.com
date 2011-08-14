@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<title>lusis.org: January 2003 Archives</title>
+
+<link rel="stylesheet" href="http://www.lusis.org/mt/lusis/styles-site.css" type="text/css" />
+<link rel="alternate" type="application/rss+xml" title="RSS" href="http://www.lusis.org/mt/lusis/index.rdf" />
+<link rel="start" href="http://www.lusis.org/mt/lusis/" title="Home" />
+<link rel="prev" href="http://www.lusis.org/mt/lusis/archives/Another 3 Column - Date Based" title="December 2002" />
+
+
+
+<script language="javascript" type="text/javascript">
+function OpenComments (c) {
+    window.open(c,
+                    'comments',
+                    'width=480,height=480,scrollbars=yes,status=yes');
+}
+
+function OpenTrackback (c) {
+    window.open(c,
+                    'trackback',
+                    'width=480,height=480,scrollbars=yes,status=yes');
+}
+</script>
+
+</head>
+
+<body>	
+
+<div id="banner">
+<h1><a href="http://www.lusis.org/mt/lusis/" accesskey="1">lusis.org</a></h1>
+<span class="description">We play the blaming game. Rants of a libertarian geek.</span>
+</div>
+
+<div id="container">
+
+<div class="blog">
+
+<div id="menu">
+<a href="http://www.lusis.org/mt/lusis/archives/Another 3 Column - Date Based">&laquo; December 2002</a> |
+
+<a href="http://www.lusis.org/mt/lusis/">Main</a>
+
+</div>
+
+</div>
+
+<div class="blog">
+
+
+<h2 class="date">January 17, 2003</h2>
+
+
+<div class="blogbody">
+<a name="000066"></a>
+<h3 class="title">Move complete</h3>
+
+<p>Okay I'm done!</p>
+
+<p>Everything has been migrated (by hand no less!) to the MovableType engine.</p>
+
+<p>I'm using the default layout right now. I'll spend some time this weekend creating a better "skin" for everything.</p>
+
+<p>The old site is still accesable <a href="http://www.lusis.org/index.nuke.php">here</a> but it won't be updated. All entries will be here now.</p>
+
+<p>The <a href="http://www.lusis.org/modules.php?op=modload&name=gallery&file=index">gallery </a> is still there as well but the URL *WILL* be changing soon.</p>
+
+
+<div class="posted">
+	Posted by pugsly at <a href="http://www.lusis.org/mt/lusis/archives/3col-Ind.html">11:04 AM</a>
+	
+	
+</div>
+
+</div>
+
+
+
+<h2 class="date">January 14, 2003</h2>
+
+
+<div class="blogbody">
+<a name="000001"></a>
+<h3 class="title">Moving to MovableType</h3>
+
+<p>For speed sake, I've decided to move over to MoveableType.</p>
+
+<p>Postnuke was overkill for what I was doing. I love php and I love Postnuke but I figured this would be a better solution.</p>
+
+<p>I'm a tinkerer. Always have been. I once ruined a clockradio by taking it apart then cutting the ends off the plug and sticking the individual wires in the socket.</p>
+
+<p>Turns out a fuse had blown but I was only 9 so I had no clue. More fuses were blown after I was done with it.</p>
+
+<p>I'll be migrating the stories over as soon as I can. Blogging is such a bad habit! And a bad word for that matter.</p>
+
+
+<div class="posted">
+	Posted by pugsly at <a href="http://www.lusis.org/mt/lusis/archives/3col-Ind.html">11:57 PM</a>
+	
+	
+</div>
+
+</div>
+
+
+</div>
+</div>
+
+</body>
+</html>

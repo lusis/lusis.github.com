@@ -1,0 +1,7 @@
+--- 
+name: updates-to-mhs
+layout: post
+title: Updates to mhs
+time: 2009-06-12 16:52:00 -04:00
+---
+So I did some updates to MHS (the mysql health daemon I wrote for work). I was implementing our scripting framework from bash in perl to provide the same wrapper functionality we have in our shell scripts.<br /><br />It's not as transparent but it logs script stop and start. This one is pretty useless outside of our shop because it's now implementing our own perl modules:<br /><br />HSWI::Base<br />HSWI::Log<br />HSWI::DB<br /><br />I also stopped using Proc::Daemon because of some logging issues I was seeing. No matter which order I did Proc::Daemon::Init(), logging would stop. I even changed Log::Log4perl to use init_and_watch but nothing worked. I ended up having to not only change to App::Daemon just to get the tty detach (we start mhs from an init script) but also stop using File::Dispatch::LogRotate because it doesn't honor setting ownership of log files.<br /><br />As soon as I have time to sanitize it, I'll post a new copy on dev.lusis.org.<div class="blogger-post-footer"><img width='1' height='1' src='https://blogger.googleusercontent.com/tracker/934985301455705990-522483964858905831?l=lusislog.blogspot.com' alt='' /></div>

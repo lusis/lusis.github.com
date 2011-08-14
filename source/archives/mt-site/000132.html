@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<title>lusis.org: Why I'll never buy another Linksys Product</title>
+
+<link rel="stylesheet" href="http://www.lusis.org/mt/lusis//a3col.css" type="text/css" />
+
+<script type="text/javascript" language="javascript">
+<!--
+
+function OpenTrackback (c) {
+    window.open(c,
+                    'trackback',
+                    'width=480,height=480,scrollbars=yes,status=yes');
+}
+
+var HOST = 'www.lusis.org';
+
+// Copyright (c) 1996-1997 Athenia Associates.
+// http://www.webreference.com/js/
+// License is granted if and only if this entire
+// copyright notice is included. By Tomer Shiran.
+
+function setCookie (name, value, expires, path, domain, secure) {
+    var curCookie = name + "=" + escape(value) + ((expires) ? "; expires=" + expires.toGMTString() : "") + ((path) ? "; path=" + path : "") + ((domain) ? "; domain=" + domain : "") + ((secure) ? "; secure" : "");
+    document.cookie = curCookie;
+}
+
+function getCookie (name) {
+    var prefix = name + '=';
+    var c = document.cookie;
+    var nullstring = '';
+    var cookieStartIndex = c.indexOf(prefix);
+    if (cookieStartIndex == -1)
+        return nullstring;
+    var cookieEndIndex = c.indexOf(";", cookieStartIndex + prefix.length);
+    if (cookieEndIndex == -1)
+        cookieEndIndex = c.length;
+    return unescape(c.substring(cookieStartIndex + prefix.length, cookieEndIndex));
+}
+
+function deleteCookie (name, path, domain) {
+    if (getCookie(name))
+        document.cookie = name + "=" + ((path) ? "; path=" + path : "") + ((domain) ? "; domain=" + domain : "") + "; expires=Thu, 01-Jan-70 00:00:01 GMT";
+}
+
+function fixDate (date) {
+    var base = new Date(0);
+    var skew = base.getTime();
+    if (skew > 0)
+        date.setTime(date.getTime() - skew);
+}
+
+function rememberMe (f) {
+    var now = new Date();
+    fixDate(now);
+    now.setTime(now.getTime() + 365 * 24 * 60 * 60 * 1000);
+    setCookie('mtcmtauth', f.author.value, now, '', HOST, '');
+    setCookie('mtcmtmail', f.email.value, now, '', HOST, '');
+    setCookie('mtcmthome', f.url.value, now, '', HOST, '');
+}
+
+function forgetMe (f) {
+    deleteCookie('mtcmtmail', '', HOST);
+    deleteCookie('mtcmthome', '', HOST);
+    deleteCookie('mtcmtauth', '', HOST);
+    f.email.value = '';
+    f.author.value = '';
+    f.url.value = '';
+}
+
+//-->
+</script>
+
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/">
+<rdf:Description
+    rdf:about="http://www.lusis.org/mt/lusis/archives/000132.html"
+    trackback:ping="http://www.lusis.org/mt/mt-tb.cgi/64"
+    dc:title="Why I&apos;ll never buy another Linksys Product"
+    dc:identifier="http://www.lusis.org/mt/lusis/archives/000132.html"
+    dc:subject="technology"
+    dc:description="I won&apos;t ever buy another linksys product...."
+    dc:creator="pugsly"
+    dc:date="2004-05-26T23:45:58-05:00" />
+</rdf:RDF>
+-->
+
+
+</head>
+
+<body>
+
+<div id="banner">
+lusis.org<br />
+<span class="description">We play the blaming game. Rants of a libertarian geek.</span>
+</div>
+
+<div id="content">
+
+
+<div id="menu">
+
+<a href="http://www.lusis.org/mt/lusis/archives/2004_05.html">« Commercial software ebuild for Gentoo</a> |
+
+<a href="http://www.lusis.org/mt/lusis/">Main</a>
+
+| <a href="http://www.lusis.org/mt/lusis/archives/2004_06.html">DNS changing »</a>
+
+</div>
+
+<div class="blog">
+
+<div class="date">May 26, 2004</div>	
+
+<div class="blogbody">
+
+<span class="title">Why I'll never buy another Linksys Product</span>
+
+<p>I won't ever buy another linksys product.</p>
+
+<a name="more"></a>
+<p>It's pretty simple really. I'm tired of dealing with the Linksys idea of changing something as essential as the chipset without changing the model number.</p>
+
+<p>This came up at work as we are working to migrate our workstations to Linux.</p>
+
+<p>Our current install base of well over 600 Windows PCs with Linksys WMP11 cards is useless under Linux. You see Linksys has decided in thier wisdom to continually change the chipset used in these cards and not let anyone know (not even on the box) that the cards aren't the same. </p>
+
+<p>The older models of WMP11 (version 1 and 2) work fine under Linux. The newer cards (version 3) do not. </p>
+
+<p>At this point we told our Linksys rep we were dropping them in favor of D-Link. The USB wireless keyfobs work under Linux, are cheaper to replace (no hardware tech needed on site) and D-Link has assured me that since this is the only product line they have that works under Mac OSX, they plan on keeping it. I made my distaste with Linksys VERY clear to our new D-Link rep.</p>
+
+<p>But the Linksys problem isn't simply applicable to the wireless card product line. It also leaks over into the WAP line as well. Currently at each of these locations we have a Linksys WAP11 access point. The model we have seems to have a nasty bug whereby you MUST input the Netmask and the gateway in the IP configuration screen in reverse order (i.e. the Netmask goes in the gateway section and vice-versa)!</p>
+
+<p>This is insane. So I check the Linksys website for updated firmware that would surely resolve this minor but seemlingly easy flaw to fix. Check this page:</p>
+
+<p><a href="http://www.linksys.com/download/">http://www.linksys.com/download/</a></p>
+
+<p>They have 4 different versions of this damn access point with the same name!</p>
+
+<p>How am I supposed to know which of the 4 I have when I have over 300 of these guys out there? It seems the only way is to compare the firmware version on the AP with the firmware on each model. IF the numbers are close enough you can bet that you found the right one.</p>
+
+<p>So I go through this and find out that Linksys hasn't updated the firmware for the AP we have since August of last year! I'm guessing they don't want to bother.</p>
+
+<p>Meanwhile I'm taking my business from Linksys to D-Link (and Netgear if need be) to avoid this kind of shoddy business. I expect more from Cisco. Then again I'm slowly replacing all my cisco switches with HP5308XL and 2924 models.</p>
+
+<span class="posted">Posted by pugsly at May 26, 2004 11:45 PM
+
+| <a href="http://www.lusis.org/mt/mt-tb.cgi?__mode=view&entry_id=132" onclick="OpenTrackback(this.href); return false">Trackback</a>
+
+<br /></span>
+
+</div>
+
+
+
+
+<div class="comments-head"><a name="comments"></a>Comments</div>
+
+
+
+<div class="comments-head">Post a comment</div>
+
+<div class="comments-body">
+<form method="post" action="http://www.lusis.org/mt/mt-comments.cgi" name="comments_form" onsubmit="if (this.bakecookie.checked) rememberMe(this)">
+<input type="hidden" name="static" value="1" />
+<input type="hidden" name="entry_id" value="132" />
+
+Name:<br />
+<input name="author" /><br /><br />
+
+Email Address:<br />
+<input name="email" /><br /><br />
+
+URL:<br />
+<input name="url" /><br /><br />
+
+Comments:<br />
+<textarea name="text" rows="10" cols="50"></textarea><br /><br />
+
+<input type="checkbox" name="bakecookie" />Remember info?<br /><br />
+
+<input type="submit" name="preview" value=" PREVIEW " />
+<input type="submit" name="post" value=" POST " /><br /><br />
+
+<input type="button" onclick="forgetMe(this.form)" value="FORGET PERSONAL INFORMATION" />
+</form>
+
+<script type="text/javascript" language="javascript">
+<!--
+document.comments_form.email.value = getCookie("mtcmtmail");
+document.comments_form.author.value = getCookie("mtcmtauth");
+document.comments_form.url.value = getCookie("mtcmthome");
+//-->
+</script>
+
+
+</div>
+</div>
+</div>
+
+<div id="links">
+<div class="powered">
+  Powered by<br /><a href="http://www.movabletype.org">Movable 
+  Type 2.64</a><br />
+  <br /> 
+  Template by<br />
+  <!--this template was modified from the original movable type templates by 
+  Kristine of Love-productions and blogstyles.
+  I'd appreciate it if you would keep a link back to blogstyles with this template!-->
+  <a href="http://blogstyles.com" target="_blank">BLOG<styles></a></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<title>lusis.org: Joe Job on my server</title>
+
+<link rel="stylesheet" href="http://www.lusis.org/mt/lusis//a3col.css" type="text/css" />
+
+<script type="text/javascript" language="javascript">
+<!--
+
+function OpenTrackback (c) {
+    window.open(c,
+                    'trackback',
+                    'width=480,height=480,scrollbars=yes,status=yes');
+}
+
+var HOST = 'www.lusis.org';
+
+// Copyright (c) 1996-1997 Athenia Associates.
+// http://www.webreference.com/js/
+// License is granted if and only if this entire
+// copyright notice is included. By Tomer Shiran.
+
+function setCookie (name, value, expires, path, domain, secure) {
+    var curCookie = name + "=" + escape(value) + ((expires) ? "; expires=" + expires.toGMTString() : "") + ((path) ? "; path=" + path : "") + ((domain) ? "; domain=" + domain : "") + ((secure) ? "; secure" : "");
+    document.cookie = curCookie;
+}
+
+function getCookie (name) {
+    var prefix = name + '=';
+    var c = document.cookie;
+    var nullstring = '';
+    var cookieStartIndex = c.indexOf(prefix);
+    if (cookieStartIndex == -1)
+        return nullstring;
+    var cookieEndIndex = c.indexOf(";", cookieStartIndex + prefix.length);
+    if (cookieEndIndex == -1)
+        cookieEndIndex = c.length;
+    return unescape(c.substring(cookieStartIndex + prefix.length, cookieEndIndex));
+}
+
+function deleteCookie (name, path, domain) {
+    if (getCookie(name))
+        document.cookie = name + "=" + ((path) ? "; path=" + path : "") + ((domain) ? "; domain=" + domain : "") + "; expires=Thu, 01-Jan-70 00:00:01 GMT";
+}
+
+function fixDate (date) {
+    var base = new Date(0);
+    var skew = base.getTime();
+    if (skew > 0)
+        date.setTime(date.getTime() - skew);
+}
+
+function rememberMe (f) {
+    var now = new Date();
+    fixDate(now);
+    now.setTime(now.getTime() + 365 * 24 * 60 * 60 * 1000);
+    setCookie('mtcmtauth', f.author.value, now, '', HOST, '');
+    setCookie('mtcmtmail', f.email.value, now, '', HOST, '');
+    setCookie('mtcmthome', f.url.value, now, '', HOST, '');
+}
+
+function forgetMe (f) {
+    deleteCookie('mtcmtmail', '', HOST);
+    deleteCookie('mtcmthome', '', HOST);
+    deleteCookie('mtcmtauth', '', HOST);
+    f.email.value = '';
+    f.author.value = '';
+    f.url.value = '';
+}
+
+//-->
+</script>
+
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/">
+<rdf:Description
+    rdf:about="http://www.lusis.org/mt/lusis/archives/000113.html"
+    trackback:ping="http://www.lusis.org/mt/mt-tb.cgi/45"
+    dc:title="Joe Job on my server"
+    dc:identifier="http://www.lusis.org/mt/lusis/archives/000113.html"
+    dc:subject="site news"
+    dc:description="Well it looks like I&apos;ve been Joe Job&apos;d...."
+    dc:creator="pugsly"
+    dc:date="2003-06-05T23:29:18-05:00" />
+</rdf:RDF>
+-->
+
+
+</head>
+
+<body>
+
+<div id="banner">
+lusis.org<br />
+<span class="description">We play the blaming game. Rants of a libertarian geek.</span>
+</div>
+
+<div id="content">
+
+
+<div id="menu">
+
+<a href="http://www.lusis.org/mt/lusis/archives/2003_06.html">« AH AH HAHAHAHAH AH AH HAHAHAHAH</a> |
+
+<a href="http://www.lusis.org/mt/lusis/">Main</a>
+
+| <a href="http://www.lusis.org/mt/lusis/archives/2003_06.html">That's John "Mr. CCNA" Vincent to you! »</a>
+
+</div>
+
+<div class="blog">
+
+<div class="date">June 05, 2003</div>	
+
+<div class="blogbody">
+
+<span class="title">Joe Job on my server</span>
+
+<p>Well it looks like I've been <a href="http://www.techtv.com/news/culture/story/0,24195,3415219,00.html" title="techtv.com">Joe Job'd.</a></p>
+
+<a name="more"></a>
+<p>Looks like someone snagged an email address from google groups and they're using it to send out a few viruses. It's also possible that the sender is someone who was already infected. Alot of newer viruses are using I.E. cache files to grab email addresses. I searched the groups myself and didn't find any reference to this email address posted by pine. This also leads to another caution. Pine likes to insert some random information in the headers for internal use.</p>
+
+<p>There are patches for pine to fix this but for now I'm telling my mailserver to block ANYTHING that is addressed to PINE*@* with a message about the Joe Job.</p>
+
+<p>Here's the original reject I got from w3.org. Notice that the destination address was random as well:</p>
+
+<pre>
+From: 	Mail Delivery Subsystem <MAILER-DAEMON@frink.w3.org>
+To: 	Pine.LNX.4.21.0003231947040.18601-100000@godspeed.lusis.org
+Subject: 	Returned mail: see transcript for details
+Date: 	Thu, 5 Jun 2003 22:16:03 -0400 (EDT)	
+        The original message was received at Thu, 5 Jun 2003 22:15:58 -0400 (EDT)
+from CPE-144-137-115-154.nsw.bigpond.net.au [144.137.115.154]
+
+<p>   ----- The following addresses had permanent fatal errors -----<br />
+<19991214121749.B12218@w3.org><br />
+    (reason: 550 5.1.1 <19991214121749.B12218@w3.org>... User unknown)</p>
+
+<p>   ----- Transcript of session follows -----<br />
+... while talking to w3.org.:<br />
+>>> DATA<br />
+<<< 550 5.1.1 <19991214121749.B12218@w3.org>... User unknown<br />
+550 5.1.1 <19991214121749.B12218@w3.org>... User unknown<br />
+<<< 503 5.0.0 Need RCPT (recipient)<br />
+        <br />
+        Reporting-MTA: dns; frink.w3.org<br />
+Received-From-MTA: DNS; CPE-144-137-115-154.nsw.bigpond.net.au<br />
+Arrival-Date: Thu, 5 Jun 2003 22:15:58 -0400 (EDT)</p>
+
+<p>Final-Recipient: RFC822; 19991214121749.B12218@w3.org<br />
+Action: failed<br />
+Status: 5.1.1<br />
+Remote-MTA: DNS; w3.org<br />
+Diagnostic-Code: SMTP; 550 5.1.1 <19991214121749.B12218@w3.org>... User unknown<br />
+Last-Attempt-Date: Thu, 5 Jun 2003 22:16:02 -0400 (EDT)<br />
+        <br />
+</pre></p>
+
+<span class="posted">Posted by pugsly at June 05, 2003 11:29 PM
+
+| <a href="http://www.lusis.org/mt/mt-tb.cgi?__mode=view&entry_id=113" onclick="OpenTrackback(this.href); return false">Trackback</a>
+
+<br /></span>
+
+</div>
+
+
+
+
+<div class="comments-head"><a name="comments"></a>Comments</div>
+
+
+
+<div class="comments-head">Post a comment</div>
+
+<div class="comments-body">
+<form method="post" action="http://www.lusis.org/mt/mt-comments.cgi" name="comments_form" onsubmit="if (this.bakecookie.checked) rememberMe(this)">
+<input type="hidden" name="static" value="1" />
+<input type="hidden" name="entry_id" value="113" />
+
+Name:<br />
+<input name="author" /><br /><br />
+
+Email Address:<br />
+<input name="email" /><br /><br />
+
+URL:<br />
+<input name="url" /><br /><br />
+
+Comments:<br />
+<textarea name="text" rows="10" cols="50"></textarea><br /><br />
+
+<input type="checkbox" name="bakecookie" />Remember info?<br /><br />
+
+<input type="submit" name="preview" value=" PREVIEW " />
+<input type="submit" name="post" value=" POST " /><br /><br />
+
+<input type="button" onclick="forgetMe(this.form)" value="FORGET PERSONAL INFORMATION" />
+</form>
+
+<script type="text/javascript" language="javascript">
+<!--
+document.comments_form.email.value = getCookie("mtcmtmail");
+document.comments_form.author.value = getCookie("mtcmtauth");
+document.comments_form.url.value = getCookie("mtcmthome");
+//-->
+</script>
+
+
+</div>
+</div>
+</div>
+
+<div id="links">
+<div class="powered">
+  Powered by<br /><a href="http://www.movabletype.org">Movable 
+  Type 2.64</a><br />
+  <br /> 
+  Template by<br />
+  <!--this template was modified from the original movable type templates by 
+  Kristine of Love-productions and blogstyles.
+  I'd appreciate it if you would keep a link back to blogstyles with this template!-->
+  <a href="http://blogstyles.com" target="_blank">BLOG<styles></a></div>
+</div>
+</body>
+</html>
