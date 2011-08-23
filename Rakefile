@@ -1,9 +1,6 @@
 require "rubygems"
 require "bundler/setup"
-
-# If you customize your site's index page setting custom_index to true
-# will preserve your changes when running `rake update_source`
-custom_index = false
+require "stringex"
 
 ## -- Rsync Deploy config -- ##
 # Be sure your public key is listed in your server's ~/.ssh/authorized_keys file
@@ -14,17 +11,18 @@ deploy_default = "push"
 # This will be configured for you when you run config_deploy
 deploy_branch  = "master"
 
-## -- Misc Configs, you probably have no reason to changes these -- ##
+## -- Misc Configs -- ##
 
-public_dir   = "public"    # compiled site directory
-source_dir   = "source"    # source file directory
-deploy_dir   = "_deploy"   # deploy directory (for Github pages deployment)
-stash_dir    = "_stash"    # directory to stash posts for speedy generation
-posts_dir    = "_posts"    # directory for blog files
-themes_dir   = ".themes"   # directory for blog files
-new_post_ext = "markdown"  # default new post file extension when using the new_post task
-new_page_ext = "markdown"  # default new page file extension when using the new_page task
-server_port  = "4000"      # port for preview server eg. localhost:4000
+public_dir      = "public"    # compiled site directory
+source_dir      = "source"    # source file directory
+blog_index_dir  = 'source'    # directory for your blog's index page (if you put your index in source/blog/index.html, set this to 'source/blog')
+deploy_dir      = "_deploy"   # deploy directory (for Github pages deployment)
+stash_dir       = "_stash"    # directory to stash posts for speedy generation
+posts_dir       = "_posts"    # directory for blog files
+themes_dir      = ".themes"   # directory for blog files
+new_post_ext    = "markdown"  # default new post file extension when using the new_post task
+new_page_ext    = "markdown"  # default new page file extension when using the new_page task
+server_port     = "4000"      # port for preview server eg. localhost:4000
 
 
 desc "Initial setup for Octopress: copies the default theme into the path of Jekyll's generator. Rake install defaults to rake install[classic] to install a different theme run rake install[some_theme_name]"
@@ -66,7 +64,7 @@ task :new_post, :title do |t, args|
   require './plugins/titlecase.rb'
   args.with_defaults(:title => 'new-post')
   title = args.title
-  filename = "#{source_dir}/#{posts_dir}/#{Time.now.strftime('%Y-%m-%d')}-#{title.downcase.gsub(/&/,'and').gsub(/[,'":\?!\(\)\[\]]/,'').gsub(/[\W\.]/, '-').gsub(/-+$/,'')}.#{new_post_ext}"
+  filename = "#{source_dir}/#{posts_dir}/#{Time.now.strftime('%Y-%m-%d')}-#{title.to_url}.#{new_post_ext}"
   puts "Creating new post: #{filename}"
   open(filename, 'w') do |post|
     system "mkdir -p #{source_dir}/#{posts_dir}";
@@ -126,7 +124,7 @@ end
 
 desc "Clean out caches: _code_cache, _gist_cache, .sass-cache"
 task :clean do
-  system "rm -rf _code_cache/** _gist_cache/** .sass-cache/**"
+  system "rm -rf _code_cache/** _gist_cache/** .sass-cache/** source/stylesheets/screen.css"
 end
 
 desc "Move sass to sass.old, install sass theme updates, replace sass/custom with sass.old/custom"
@@ -155,7 +153,8 @@ task :update_source, :theme do |t, args|
   system "mkdir -p #{source_dir}; cp -R #{themes_dir}/"+theme+"/source/. #{source_dir}"
   system "cp -Rn #{source_dir}.old/. #{source_dir}"
   system "cp -Rf #{source_dir}.old/_includes/custom/. #{source_dir}/_includes/custom/"
-  system "cp -Rf #{source_dir}.old/index.html #{source_dir}" if custom_index
+  system "mv -f #{source_dir}/index.html #{blog_index_dir}" if blog_index_dir != source_dir
+  system "cp -f #{source_dir}.old/index.html #{source_dir}" if blog_index_dir != source_dir
   puts "## Updated #{source_dir} ##"
 end
 
@@ -164,7 +163,19 @@ end
 ##############
 
 desc "Default deploy task"
-task :deploy => "#{deploy_default}" do
+multitask :deploy => [:copydot, "#{deploy_default}"] do
+end
+
+desc "copy dot files for deployment"
+task :copydot do
+  cd "#{source_dir}" do
+    exclusions = [".", "..", ".DS_Store"]
+    Dir[".*"].each do |file|
+      if !File.directory?(file) && !exclusions.include?(file)
+        cp(file, "../#{public_dir}");
+      end
+    end
+  end
 end
 
 desc "Deploy website via rsync"
@@ -174,7 +185,7 @@ task :rsync do
 end
 
 desc "deploy public directory to github pages"
-task :push do
+multitask :push do
   puts "## Deploying branch to Github Pages "
   (Dir["#{deploy_dir}/*"]).each { |f| rm_rf(f) }
   system "cp -R #{public_dir}/* #{deploy_dir}"
