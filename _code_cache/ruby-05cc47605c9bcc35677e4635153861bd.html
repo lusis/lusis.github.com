@@ -1,0 +1,31 @@
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">RedisActor</span>
+  <span class="kp">include</span> <span class="no">Celluloid</span><span class="o">::</span><span class="no">Actor</span>
+  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+    <span class="vi">@name</span> <span class="o">=</span> <span class="nb">name</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">info</span> <span class="s2">&quot;starting redis actor&quot;</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">start</span>
+   <span class="c1"># start watching redis</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+<span class="k">class</span> <span class="nc">BrokerActor</span>
+  <span class="kp">include</span> <span class="no">Celluloid</span><span class="o">::</span><span class="no">Actor</span>
+  <span class="c1"># constructor</span>
+  <span class="k">def</span> <span class="nf">process_watch</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="c1">#...</span>
+  <span class="k">end</span>
+  <span class="k">def</span> <span class="nf">do_work</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+    <span class="c1">#...</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">class</span> <span class="nc">HTTPPool</span>
+  <span class="c1"># you get the idea</span>
+<span class="k">end</span>
+
+<span class="vi">@http_pool</span> <span class="o">=</span> <span class="no">HTTPPool</span><span class="o">.</span><span class="n">supervise_as</span> <span class="ss">:http_pool</span><span class="p">,</span> <span class="s2">&quot;http_pool&quot;</span>
+<span class="vi">@broker_actor</span> <span class="o">=</span> <span class="no">BrokerActor</span><span class="o">.</span><span class="n">supervise_as</span> <span class="ss">:broker_actor</span><span class="p">,</span> <span class="s2">&quot;broker&quot;</span>
+<span class="vi">@redis_actor</span> <span class="o">=</span> <span class="no">RedisActor</span><span class="o">.</span><span class="n">supervise_as</span> <span class="ss">:redis_actor</span><span class="p">,</span> <span class="s2">&quot;redis&quot;</span>
+</pre>
+</div>

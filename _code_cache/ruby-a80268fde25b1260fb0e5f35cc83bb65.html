@@ -1,0 +1,15 @@
+<div class="highlight"><pre><span class="nb">require</span> <span class="s1">&#39;sinatra/base&#39;</span>
+
+<span class="k">class</span> <span class="nc">MyApp</span> <span class="o">&lt;</span> <span class="no">Sinatra</span><span class="o">::</span><span class="no">Base</span>
+  <span class="n">register</span> <span class="no">Noah</span><span class="o">::</span><span class="no">Sinatra</span>
+
+  <span class="n">noah_server</span> <span class="s2">&quot;http://localhost:5678&quot;</span>
+  <span class="n">noah_node_name</span> <span class="s2">&quot;myself&quot;</span>
+  <span class="n">noah_app_name</span> <span class="s2">&quot;MyApp&quot;</span>
+  <span class="n">noah_token</span> <span class="s2">&quot;somerandomlongstring&quot;</span>
+  <span class="n">dynamic_get</span> <span class="ss">:database_server</span>
+  <span class="n">dynamic_set</span> <span class="ss">:some_other_variable</span><span class="p">,</span> <span class="s2">&quot;foobar&quot;</span>
+  <span class="n">watch</span> <span class="ss">:this_other_node</span>
+<span class="k">end</span>
+</pre>
+</div>
