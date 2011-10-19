@@ -18,6 +18,7 @@ My previous post covered some of the annoying excuses and complaints that people
 
 I want to make one thing perfectly clear. I've said this several times before. You can get 90% of the way to a fully automated environment, never go that last 10% and still be better off than you were before. I understand that people have regulations, requirements and other things that prevent a fully automated system. You don't ever have to flip that switch but you should strive to get as close as possible.
 
+<!--more-->
 # Understanding the role of operations
 Operations is an interesting word. Outside of the field of IT it means something completely different than everywhere else in the business world. [According to Wikipedia](http://en.wikipedia.org/wiki/Business_operations):
 
@@ -85,7 +86,7 @@ I came up with this from first principles so I'm sure there's a better name for 
 
 System Administrators often pride ourselves on how cleverly and quickly we can solve a problem. It's good for our egos. It's not, however, good for our company. Take a little extra time and consider the longer term impact of what solution you're about to do. Step away from the desk and move. Consult peers. Many times I've come to the conclusion that my first instinct was the right one. However more often than not, I've come across another solution that would create less technical debt for us to deal with later. 
 
-A correlary to this is the decision to 'fix it or kick it'. That is i'do we spend an unpredictable amount of time trying to solve some obscure issue or do we simply recreate the instance providing the service from our above configuration management'. If you've gone through the previous step, you have should have amazing code confidence in your infrastructure. This is very important to have with Amazon EC2 where you can have an instance perform worse overtime thanks to the wonders of oversubscription and noisy neighbors.
+A correlary to this is the decision to 'fix it or kick it'. That is 'Do we spend an unpredictable amount of time trying to solve some obscure issue or do we simply recreate the instance providing the service from our above configuration management'. If you've gone through the previous step, you have should have amazing code confidence in your infrastructure. This is very important to have with Amazon EC2 where you can have an instance perform worse overtime thanks to the wonders of oversubscription and noisy neighbors.
 
 Fuck that. Provision a new instance and run your smoke tests (I/O test for instance). If the smoke tests fail, throw it away and start a new one. It's amazing the freedom of movement afforded by being able to describe your infrastructure as code.
 
@@ -101,10 +102,10 @@ Shooting in the dark sucks. Without some sort of baseline metric, you authoritat
 The key here is that getting those metrics be as frictionless as possible. To fully understand this, watch [this presentation from Coda Hale of Yammer](http://pivotallabs.com/talks/139-metrics-metrics-everywhere). Coda has also created a kick-ass metrics library for the JVM and others have duplicated his efforts in their respective languages.
 
 ## Backwards compatibility
-You need to adopt a culture of backwards compatibility between releases. This is not Microsoft levels we're talking about. This affects interim releases. As soon as you have upgraded all the components, you clean up the cruft and move on. This is critical to getting to zero/near-zero downtime deploys. This also allows you to 
+You need to adopt a culture of backwards compatibility between releases. This is not Microsoft levels we're talking about. This affects interim releases. As soon as you have upgraded all the components, you clean up the cruft and move on. This is critical to getting to zero/near-zero downtime deploys.
 
 ## Reduce interdependencies
-I won't go into the whole SOA buzzword bingo game here except to say that treating your internal systems like a third party vendor can have some benefits. You don't need to isolate the teams but you need to stop with shit like RMI. Have an established and versioned interface between your components. If component A needs to make a REST call to component B, upgrades to the B API should be versioned. A need version 1 of B's api. Meanwhile new component C can use version 2 of the API.
+I won't go into the whole SOA buzzword bingo game here except to say that treating your internal systems like a third party vendor can have some benefits. You don't need to isolate the teams but you need to stop with shit like RMI. Have an established and versioned interface between your components. If component A needs to make a REST call to component B, upgrades to the B API should be versioned. A needs version 1 of B's api. Meanwhile new component C can use version 2 of the API.
 
 ## Automation as a default
 While this ties a lot into the testing and configuration management topics, the real goal here is that you adopt a posture of automation by default. The reason for this should be clear in [Eric Ries' "Five Whys" post](http://www.startuplessonslearned.com/2009/07/how-to-conduct-five-whys-root-cause.html):
@@ -153,7 +154,7 @@ Specifically as it relates to databases, consider some of the following approach
 - Consider isolating access to a given table via a service. Instead of giving all your applications access to the 'users' table, create a users service that does that.
 - Start exercising code paths to new tables early by leveraging dark launches
 
-Some of these techniques would make Codd spin in his grave. Some of the headaches with data base
+Some of these techniques would make Codd spin in his grave.
 
 We're undergoing a similar situation right now. We originally stored a large amount of 'blob' data in Voldemort. This was a bit perplexing as we were already leveraging S3 for similar data. To migrate that data (several hundred gigs) we took the following approach:
 

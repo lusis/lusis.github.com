@@ -14,6 +14,7 @@ I thought this post was particularly apropos for several reasons. I just got bac
 
 I'm breaking this up into two parts since it's a big topic. The first one will cover the more "theoretical" aspects of the issue while the second will provide more concrete information.
 
+<!--more-->
 # Myths, Lies and other bullshit
 
 Before I go any further, we should probably clear up a few things.
