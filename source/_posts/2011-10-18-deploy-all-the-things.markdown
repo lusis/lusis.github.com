@@ -171,7 +171,7 @@ Now you might think that all this backwards compatibility creates cruft. It does
 # Swinging like a boss
 Here's another real world example:
 
-Our code base originally used a home-rolled load balancing tehcnique to communicate with one of our internal services. Additionally, all communication happened over RPC using Hessian. Eventually this became untenable and we decided to move to RabbitMQ and JSON. This was a pretty major change but at face value, we should have been able to manage with dual interfaces on the provider of the service. That didn't happen.
+Our code base originally used a home-rolled load balancing technique to communicate with one of our internal services. Additionally, all communication happened over RPC using Hessian. Eventually this became untenable and we decided to move to RabbitMQ and JSON. This was a pretty major change but at face value, we should have been able to manage with dual interfaces on the provider of the service. That didn't happen.
 
 You see, to be able to use the RabbitMQ libraries, we had to upgrade our version of Spring. Again, not a big deal. However our version of Hessian was so old that the version of Hessian we would have to use with the new version of Spring was backwards incompatible. This is yak shaving at its finest, folks. So basically we had to upgrade 5 different components all at once just to get to where we wanted and NEEDED to be for the long term.
 
