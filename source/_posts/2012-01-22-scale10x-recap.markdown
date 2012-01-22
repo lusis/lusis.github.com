@@ -34,7 +34,7 @@ I like to think I'm pretty pragmatic. I love the new shiny. I love pretty graphs
 
 ### Yes
 Why are you looking to switch? Is it unreliable? Is it painful to configure? Basically, if it's getting the job done and has relatively minor overhead there's no reason to switch.
-The pain points for me with monitoring solutions usually come much later. It doesn't scale or scaling it is difficult. It doesn't provide the visibility I need. It's unreliable (usually do to scaling problems).
+The pain points for me with monitoring solutions usually come much later. It doesn't scale or scaling it is difficult. It doesn't provide the visibility I need. It's unreliable (usually due to scaling problems).
 Until then, use what you've got and be guard for early signs of problems like check latency going up or missed notifications.
 
 If you have a configuration management solution in place, it probably has native support for configuring Nagios. When you add a new host to your environment, you only need to tell your CM tool to run on your monitoring server. If you've done any sort of logical grouping, you'll have the right things monitored quickly.
