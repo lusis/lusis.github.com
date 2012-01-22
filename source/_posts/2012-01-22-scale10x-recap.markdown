@@ -81,7 +81,7 @@ Someone said it best when he described Juju as "apt for services". It's quite ev
 In the Juju world, a single charm could be written in one spot in Python and another spot in Bash. It pushes too much responsibility to the end user NOT to mess something up. I dare say that idemopotence doesn't even exist in Juju.
 
 ## A fair shake
-Again, I'm going to do some more playing around with Juju. I think it can meet a critical need for folks but I think they need to revisit what problem they're trying to accomplish. I appreciate the work they've done and I'm totally excited that orchestration is getting the proper attention. The presenters were fantastic.
+Again, I'm going to do some more playing around with Juju. I think it can meet a critical need for folks but I think they need to revisit what problem they're trying to solve. I appreciate the work they've done and I'm totally excited that orchestration is getting the proper attention. The presenters were fantastic.
 
 # Other stuff
 I attended a really good talk about the history of Openstack and where it's going. It was great. As someone who is working with openstack professionally now (and had just dealt with some of its warts not 3 days before hand), I found it very valuable. Also congrats to the speaker, [Jesse Andrews](https://twitter.com/anotherjesse) on the birth of his first child!
