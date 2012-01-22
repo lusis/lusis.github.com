@@ -7,7 +7,7 @@ categories: ["devops", "scale10x", "community"]
 ---
 
 This past week I had the awesome pleasure of participating in my first [SoCal Linux Expo](http://www.socallinuxexpo.org/). As I later discovered, this was the 10th installment of this awesome event (hence the 10x).
-
+<!-- more -->
 # The email and enStratus
 I got an email from [Ilan Rabinovitch](https://twitter.com/irabinovitch) just as things were going down with me headed to [enStratus](http://enstratus.com). Since the event was going to be right around the time I started, I pretty much put it out of my mind.
 Then I realized that [my boss](https://twitter.com/botchagalupe) was going to be attending. I figured it wouldn't hurt to ask and it was decided that I would shadow John on his trip to enStratus HQ for my manditory cultural immersion (translation: does the fat redneck own a winter coat?) and on to SCaLE. While I didn't make it to Minnesota (diverted to San Jose on business), I did still make it to the conference.
