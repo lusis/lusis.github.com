@@ -78,7 +78,7 @@ The problem is that in an attempt to be the Nagios (unlimited flexibility) of co
 
 Someone said it best when he described Juju as "apt for services". It's quite evident that the same broken mentality that apt takes to managing packages is applied to Juju as well. Charms have upgrade and downgrade steps. They're just as complicated too. Not only is there no standard (since charms can be written in any language) it's actually detrimental. The reason for a common DSL or language like the ones exposed by CM tools is not some academic mental masturbation. It's repeatability and efficiency. I can go into a puppet shop and look at a module and know what it does. I can look at most chef recipes (outside of ones that might use a custom LWRP) and know what's going on.
 
-In the Juju world, a single charm could be written in one spot in Python and another spot in Bash. It pushes too much responsibility to the end user NOT to mess something up. I dare say that idemopotence doesn't even exist in Juju.
+In the Juju world, a single charm could be written in one spot in Python and another spot in Bash. It pushes too much responsibility to the end user NOT to mess something up. I dare say that idempotence doesn't even exist in Juju.
 
 ## A fair shake
 Again, I'm going to do some more playing around with Juju. I think it can meet a critical need for folks but I think they need to revisit what problem they're trying to solve. I appreciate the work they've done and I'm totally excited that orchestration is getting the proper attention. The presenters were fantastic.
