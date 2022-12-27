@@ -1,0 +1,62 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=format-detection content="telephone=no"><title>Why Monitoring Sucks | blog.lusis.org</title><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#ff3db4><meta name=theme-color content="#ffffff"><link rel=stylesheet href=https://blog.lusis.org/css/main.min.e34415025514319010e741089e6920454053855755ba465f66943ad102d2cb08.css></head><body><nav><header><div class=site-title><a href=/>blog.lusis.org</a></div></header><div class=nav-menu><a class="color-link nav-link" href=https://blog.lusis.org/index.xml target=_blank rel=noopener type=application/rss+xml>RSS</a></div><footer class=footer><div class=social-icons></div><p><a href=https://github.com/kimcc/hugo-theme-noteworthy target=_blank rel=noopener>Noteworthy theme</a></p><p><a href=https://gohugo.io target=_blank rel=noopener>Built with Hugo</a></p><script src=https://blog.lusis.org/js/main.min.a7205ef73b078c8daed6fe1b0826e8ba229ffabbb69d299d9446cf41f2c7d8aa.js integrity="sha256-pyBe9zsHjI2u1v4bCCbouiKf+ru2nSmdlEbPQfLH2Ko=" crossorigin=anonymous></script></footer></nav><div id=content class=content-container><h1 class=post-title>Why Monitoring Sucks</h1><time>June 5, 2011</time><div><p><p><em>(and what we&rsquo;re doing about it)</em></p><p>About two weeks ago someone made a tweet. At this point, I don&rsquo;t
+remember who said it but the gist was that &ldquo;monitoring sucks&rdquo;. I
+happened to be knee-deep in frustrating bullshit around that topic and
+was currently evaluating the same effing tools I&rsquo;d evaluated at every
+other company over the past 10 years or so. So I did what seems to be
+S.O.P for me these days. I started something.</p><h1 id=but-does-monitoring-really-suck>But does monitoring REALLY suck?</h1><p>Heck no! Monitoring is AWESOME. Metrics are AWESOME. I love it. Here&rsquo;s
+what I don&rsquo;t love: - Having my hands tied with the model of host and
+service bindings. - Having to set up &ldquo;fake&rdquo; hosts just to group
+arbitrary metrics together - Having to either collect metrics twice -
+once for alerting and another for trending - Only being able to see my
+metrics in 5 minute intervals - Having to chose between shitty interface
+but great monitoring or shitty monitoring but great interface - Dealing
+with a monitoring system that thinks <strong>IT</strong> is the system of truth for
+my environment - Perl (I kid&mldr;sort of) - Not actually having any real
+choices</p><p>Yes, yes I know:</p><blockquote><p>You can just combine Nagios + collectd + graphite + cacti +
+pnp4nagios and you have everything you need!</p></blockquote><p>Seriously? Kiss my ass. I&rsquo;m a huge fan of the Unix pipeline philosophy
+but, christ, have you ever heard the phrase &ldquo;antipattern&rdquo;?</p><h1 id=so-what-the-hell-are-you-going-to-do-about-it>So what the hell are you going to do about it?</h1><p>I&rsquo;m going to let smart people be smart and do smart things.</p><p>Step one was getting everyone who had similar complaints together on
+IRC. That went pretty damn well. Step two was creating a github repo.
+Seriously. Step two should ALWAYS be &ldquo;create a github repo&rdquo;. Step three?
+Hell if I know.</p><p>Here&rsquo;s what I do know. There are plenty of frustrated system
+administrators, developers, engineers, &ldquo;devops&rdquo; and everything under the
+sun who don&rsquo;t want much. All they really want is for shit to work. When
+shit breaks, they want to be notified. They want pretty graphs. They
+want to see business metrics along side operational ones. They want to
+have a 52-inch monitor in the office that everyone can look at and say:</p><blockquote><p>See that red dot? That&rsquo;s bad. Here&rsquo;s what was going on when we got
+that red dot. Let&rsquo;s fix that shit and go get beers</p></blockquote><h1 id=about-the-repo>About the &ldquo;repo&rdquo;</h1><p>So the plan I have in place for the repository is this. We don&rsquo;t really
+need code. What we need is an easy way for people to contribute ideas.
+The plan I have in place for this is partially underway. There&rsquo;s now a
+<em>monitoringsucks</em> organization on Github. Pretty much anyone who is
+willing to contribute can get added to the team. The idea is that, as
+smart people think of smart shit, we can create new repository under
+some unifying idea and put blog posts, submodules, reviews,
+ideas..whatever into that repository so people have an easy place to go
+get information. I&rsquo;d like to assign someone per repository to be the
+owner. We&rsquo;re all busy but this is something we&rsquo;re all highly interested
+in. If we spread the work out and allow easy contribution, then we can
+get some real content up there.</p><p>I also want to keep the repos as light and cacheable as possible. The
+organization is under the github &ldquo;free&rdquo; plan right now and I&rsquo;d like to
+keep it that way.</p><h2 id=blog-posts-repo>Blog Posts Repo</h2><p>This repo serves as a place to collect general information about blog
+posts people come across. Think of it as hyper-local delicious in a
+DVCS.</p><p>Currently, by virtue of the first commit, Michael Conigliaro is the
+&ldquo;owner&rdquo;. You can follow him on twitter and github as @mconigliaro</p><h2 id=irc-logs-repo>IRC Logs Repo</h2><p>This repo is a log of any &ldquo;scheduled&rdquo; irc sessions. Personally, I don&rsquo;t
+think we need a distinct #monitoringsucks channel but people want to
+keep it around. The logs in this repo are not full logs. Just those from
+when someone says &ldquo;Hey smart people. Let&rsquo;s think of smart shit at this
+date/time&rdquo; on twitter.</p><p>Currently <strong>I</strong> appear to be the owner of this repo. I would love for
+someone who can actually make the logs look good to take this over.</p><h2 id=tools-repo>Tools Repo</h2><p>This repo is really more of a &ldquo;curation&rdquo; repo. The plan is that each
+directory is the name of some tool with two things it in:</p><ul><li>A README.md as a review of the tool</li><li>A submodule link to the tool&rsquo;s repo (where appropriate)</li></ul><p>Again, I think I&rsquo;m running point on this one. Please note that the
+submodule links APPEAR to have some sort of UI issue on github. Every
+submodule appears to point to Dan DeLeo&rsquo;s &lsquo;critical&rsquo; project.</p><h2 id=metrics-catalog-repo>Metrics Catalog Repo</h2><p>This is our latest member and it already has an official manager! Jason
+Dixon (@obfuscurity on github/twitter - jdixon on irc) suggested it so
+he get&rsquo;s to run it ;) The idea here is that this will serves as a set of
+best practices around what metrics you might want to collect and why.
+I&rsquo;m leaving the organization up to Jason but I suggested a
+per-app/service/protocol directory.</p><h1 id=wrap-up>Wrap Up</h1><p>So that&rsquo;s where we are. Where it goes, I have no idea. I just want to
+help where ever I can. If you have any ideas, hit me up on
+twitter/irc/github/email and let me know. It might help to know that if
+you suggest something, you&rsquo;ll probably be made the person reponsible for
+it ;)</p><p><strong>Update!</strong></p><p>It was our good friend Sean Porter (@portertech on twitter), that we
+have to thank for all of this ;)</p><p><a href="https://picasaweb.google.com/lh/photo/Zi1k9F_7lBKjcN8dtJlXXQ?feat=embedwebsite"><img src=https://lh5.googleusercontent.com/-O6mNvCvCPyU/TexPV1P9YaI/AAAAAAAAAWk/7ZQ8BkXUyn8/s144/monitoring-sucks.png alt=image></a>
+From <a href="https://picasaweb.google.com/lusisjv/PublicPhotos?feat=embedwebsite">Public Photos</a></p><p><strong>Update (again)</strong></p><p>It was kindly pointed out that I never actually included a link to the
+repositories. Here they are:</p><p><a href=https://github.com/monitoringsucks>https://github.com/monitoringsucks</a></p></p></div><div class=page-footer></div></div><footer class=footer-mobile><div class=social-icons></div><div class=footer-mobile-links><p><a href=https://github.com/kimcc/hugo-theme-noteworthy target=_blank rel=noopener>Noteworthy theme</a></p><span class=divider-bar>|</span><p><a href=https://gohugo.io target=_blank rel=noopener>Built with Hugo</a></p></div><script src=https://blog.lusis.org/js/main.min.a7205ef73b078c8daed6fe1b0826e8ba229ffabbb69d299d9446cf41f2c7d8aa.js integrity="sha256-pyBe9zsHjI2u1v4bCCbouiKf+ru2nSmdlEbPQfLH2Ko=" crossorigin=anonymous></script></footer></body></html>

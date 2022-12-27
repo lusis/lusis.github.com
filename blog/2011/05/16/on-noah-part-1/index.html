@@ -1,0 +1,100 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=format-detection content="telephone=no"><title>On Noah Part 1 | blog.lusis.org</title><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#ff3db4><meta name=theme-color content="#ffffff"><link rel=stylesheet href=https://blog.lusis.org/css/main.min.e34415025514319010e741089e6920454053855755ba465f66943ad102d2cb08.css></head><body><nav><header><div class=site-title><a href=/>blog.lusis.org</a></div></header><div class=nav-menu><a class="color-link nav-link" href=https://blog.lusis.org/index.xml target=_blank rel=noopener type=application/rss+xml>RSS</a></div><footer class=footer><div class=social-icons></div><p><a href=https://github.com/kimcc/hugo-theme-noteworthy target=_blank rel=noopener>Noteworthy theme</a></p><p><a href=https://gohugo.io target=_blank rel=noopener>Built with Hugo</a></p><script src=https://blog.lusis.org/js/main.min.a7205ef73b078c8daed6fe1b0826e8ba229ffabbb69d299d9446cf41f2c7d8aa.js integrity="sha256-pyBe9zsHjI2u1v4bCCbouiKf+ru2nSmdlEbPQfLH2Ko=" crossorigin=anonymous></script></footer></nav><div id=content class=content-container><h1 class=post-title>On Noah Part 1</h1><time>May 16, 2011</time><div><p><p><em>This is the first part in a series of posts going over Noah</em></p><p>As you may have heard (from my own mouth no less), I&rsquo;ve got a smallish
+side project I&rsquo;ve been working on called
+<a href=https://github.com/lusis/Noah>Noah</a>.</p><p>It&rsquo;s a project I&rsquo;ve been wanting to work on for a long time now and
+earlier this year I got off my ass and started hacking. The response has
+been nothing short of overwhelming. I&rsquo;ve heard from so many people how
+they&rsquo;re excited for it and nothing could drive me harder to work on it
+than that feedback. To everyone who doesn&rsquo;t run away when I talk your
+ear off about it, thank you so much.</p><p>Since I never really wrote an &ldquo;official&rdquo; post about it, I thought this
+would be a good opportunity to talk about what it is, what my ideas are
+and where I&rsquo;d like to see it go in the future.</p><h1 id=so-why-noah>So why Noah?</h1><p><em>fair warning. much of the following may be duplicates of information in
+the Noah wiki</em></p><p>The inspiration for Noah came from a few places but the biggest
+inspiration is <a href=http://goo.gl/WGCxY>Apache Zookeeper</a>. Zookeeper is one
+of those things that by virtue of its design is a BUNCH of different
+things. It&rsquo;s all about perspective. I&rsquo;m going to (yet again) paste the
+description of Zookeeper straight from the project site:</p><pre><code>ZooKeeper is a centralized service for maintaining configuration information, naming, providing distributed synchronization, and providing group services.
+</code></pre><p>Now that might be a bit confusing at first. Which is it? Is it a
+configuration management system? A naming system? It&rsquo;s all of them and,
+again, it&rsquo;s all about perspective.</p><p>Zookeeper, however, has a few problems for my standard use case.</p><ul><li>Limited client library support</li><li>Requires persistent connections to the server for full benefit</li></ul><p>By the first, I mean that the only official language bindings are C and
+Java. There&rsquo;s contributed Python support and Twitter maintains a Ruby
+library. However all of these bindings are &ldquo;native&rdquo; and must be
+compiled. There is also a command-line client that you can use for
+interacting as well - one in Java and two C flavors.</p><p>The second is more of a showstopper. Zookeeper uses the client
+connection to the server as in-band signaling. This is how watches
+(discussed in a moment) are communicated to clients. Persistent
+connections are simply not always an option. I can&rsquo;t deploy something to
+Heroku or AppEngine that requires that persistent connection. Even if I
+could, it would be cost-prohibitive and honestly wouldn&rsquo;t make sense.</p><p>Looking at the list of features I loved about ZK, I thought &ldquo;How would I
+make that work in the disconnected world?&rdquo;. By that I mean what would it
+take to implement any or all of the Zookeeper functionality as a service
+that other applications could use?</p><p>From that thought process, I came up with Noah. The name is only a play
+on the concept of a zookeeper and holds no other real significance other
+than irritation at least two people named Noah when I talk about the
+project.</p><p>So working through the feature list, I came up with a few things I
+<strong>REALLY</strong> wanted. I wanted Znodes, Watches and I wanted to do it all
+over HTTP so that I could have the broadest set of client support. JSON
+is really the defacto standard for web &ldquo;messaging&rdquo; at this point so
+that&rsquo;s what I went with. Basically the goal was &ldquo;If your language can
+make HTTP requests and parse JSON, you can write a Noah client&rdquo;</p><h1 id=znodes-and-noah-primitives>Znodes and Noah primitives</h1><p>Zookeeper has a shared hierarchical namespace similar to a UNIX
+filesystem. Points in the hierarchy are called <code>znodes</code>. Essentially
+these are arbitrary paths where you can store bits of data - up to 1MB
+in size. These znodes are unique absolute paths. For instance:</p><pre><code>//systems/foo/bar/networks/kansas/router-1/router-2
+</code></pre><p>Each fully qualified path is a unique znode. Znodes can be ephemeral or
+persistent. Zookeeper also has some primitives that can be applied to
+znodes such as &lsquo;sequence`.</p><p>When I originally started working on Noah, so that I could work with a
+model, I created some base primitives that would help me demonstrate an
+example of some of the use cases:</p><ul><li>Host</li><li>Service</li><li>Application</li><li>Configuration</li></ul><p>These primitives were actual models in the Noah code base with a strict
+contract on them. As an example, Hosts must have a status and can have
+any number of services associated with them. Services MUST be tied
+explicity to a host. Applications can have Configurations (or not) and
+Configurations can belong to any number of Applications or not.
+Additionally, I had another &ldquo;data type&rdquo; that I was simply calling
+Ephemerals. This is similar to the Zookeeper znode model. Originally I
+intended for Ephemerals to be just that - ephemeral. But I&rsquo;ve backed off
+that plan. In Noah, Ephemerals can be either persistent or truely
+ephemeral (not yet implemented).</p><p>So now I had a data model to work with. A place to store information and
+flexibility to allow people to use the predefined primitives or the
+ephemerals for storing arbitrary bits of information.</p><h1 id=living-the-disconnected-life>Living the disconnected life</h1><p>As I said, the model for my implementation was &ldquo;disconnected&rdquo;. When
+thinking about how to implement Watches in a disconnected model, the
+only thing that made sense to me was a callback system. Clients would
+register an interest on an object in the system and when that object
+changed, they would get notified by the method of their choosing.</p><p>One thing about Watches in Zookeeper that annoys me is that they&rsquo;re
+one-shot deals. If you register a watch on a znode, once that watch is
+triggered, you have to REREGISTER the watch. First off this creates, as
+documented by the ZK project, a window of opportunity where you could
+miss another change to that watch. Let&rsquo;s assume you aren&rsquo;t using a
+language where interacting with Zookeeper is a synchronous process:</p><ul><li>Connect to ZK</li><li>Register watch on znode</li><li>Wait</li><li>Change happens</li><li>Watch fires</li><li>Process watch event</li><li>Reregister watch on znode</li></ul><p>In between those last two steps, you risk missing activity on the znode.
+In the Noah world, watches are persistent. This makes sense for two
+reasons. The first is that the latency between a watch callback being
+fired and proccessed could be much higher than the persistent connection
+in ZK. The window of missed messages is simply much greater. We could
+easily be talking 100&rsquo;s of milliseconds of latency just to get the
+message and more so to reregister the watch.</p><p>Secondly, the registration of Watches in Noah is, by nature of Noah&rsquo;s
+design and as a byproduct, disconnected from the consumer of those
+watches. This offers much greater flexibility in what watches can do.
+Let&rsquo;s look at a few examples.</p><p>First off, it&rsquo;s important to understand how Noah handles callbacks. The
+message format of a callback in Noah is simply a JSON representation of
+the changed state of an object and some metadata about the action taken
+(i.e. delete, create, update). Watches can be registered on distinct
+objects, a given path (and thus all the children under that path) and
+further refined down to a given action. Out of the box, Noah ships with
+one callback handler - http. This means that when you register a watch
+on a path or object, you provide an http endpoint where Noah can post
+the aforementioned JSON message. What you do with it from there is up to
+you.</p><p>By virtue of the above, the callback system is also designed to be
+&lsquo;pluggable&rsquo; for lack of a better word. While the out of the box
+experience is an http post, you could easily write a callback handler
+that posted the message to an AMQP exchange or wrote the information to
+disk as a flat file. The only requirement is that you represent the
+callback location as a single string. The string will be parsed as a url
+and broken down into tokens that determine which plugin to call.</p><p>So this system allows for you to distribute watches to multiple systems
+with a single callback. Interestingly enough, this same watch callback
+system forms the basis of how Noah servers will share changes with each
+other in the future.</p><h1 id=wrap-up---part-1>Wrap up - Part 1</h1><p>So wrapping up what I&rsquo;ve discussed, here are the key take aways:</p><ul><li>Noah is a &lsquo;port&rsquo; of specific Zookeeper functionality to a
+disconnected and asynchronous world</li><li>Noah uses HTTP and JSON as the interface to the server</li><li>Noah has both traditional ZK-style Ephemerals as well as opinionated
+Primitives</li><li>Noah uses a pluggable callback system to approximate the Watch
+functionality in Zookeeper</li><li>Clients can be written in any language that can speak HTTP and
+understand JSON (yes, even a shell script)</li></ul><h1 id=part-2-and-beyond>Part 2 and beyond</h1><p>In part two of this series we&rsquo;ll discuss some of the additions to Noah
+that aren&rsquo;t a part of Zookeeper such as Tags and Links. Part 3 will
+cover the underlying technology which I am intentionally not discussing
+at this point. Part 4 will be a roadmap of my future plans for Noah.</p></p></div><div class=page-footer></div></div><footer class=footer-mobile><div class=social-icons></div><div class=footer-mobile-links><p><a href=https://github.com/kimcc/hugo-theme-noteworthy target=_blank rel=noopener>Noteworthy theme</a></p><span class=divider-bar>|</span><p><a href=https://gohugo.io target=_blank rel=noopener>Built with Hugo</a></p></div><script src=https://blog.lusis.org/js/main.min.a7205ef73b078c8daed6fe1b0826e8ba229ffabbb69d299d9446cf41f2c7d8aa.js integrity="sha256-pyBe9zsHjI2u1v4bCCbouiKf+ru2nSmdlEbPQfLH2Ko=" crossorigin=anonymous></script></footer></body></html>

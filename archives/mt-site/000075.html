@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<title>lusis.org: GRRR</title>
+
+<link rel="stylesheet" href="http://www.lusis.org/mt/lusis//a3col.css" type="text/css" />
+
+<script type="text/javascript" language="javascript">
+<!--
+
+function OpenTrackback (c) {
+    window.open(c,
+                    'trackback',
+                    'width=480,height=480,scrollbars=yes,status=yes');
+}
+
+var HOST = 'www.lusis.org';
+
+// Copyright (c) 1996-1997 Athenia Associates.
+// http://www.webreference.com/js/
+// License is granted if and only if this entire
+// copyright notice is included. By Tomer Shiran.
+
+function setCookie (name, value, expires, path, domain, secure) {
+    var curCookie = name + "=" + escape(value) + ((expires) ? "; expires=" + expires.toGMTString() : "") + ((path) ? "; path=" + path : "") + ((domain) ? "; domain=" + domain : "") + ((secure) ? "; secure" : "");
+    document.cookie = curCookie;
+}
+
+function getCookie (name) {
+    var prefix = name + '=';
+    var c = document.cookie;
+    var nullstring = '';
+    var cookieStartIndex = c.indexOf(prefix);
+    if (cookieStartIndex == -1)
+        return nullstring;
+    var cookieEndIndex = c.indexOf(";", cookieStartIndex + prefix.length);
+    if (cookieEndIndex == -1)
+        cookieEndIndex = c.length;
+    return unescape(c.substring(cookieStartIndex + prefix.length, cookieEndIndex));
+}
+
+function deleteCookie (name, path, domain) {
+    if (getCookie(name))
+        document.cookie = name + "=" + ((path) ? "; path=" + path : "") + ((domain) ? "; domain=" + domain : "") + "; expires=Thu, 01-Jan-70 00:00:01 GMT";
+}
+
+function fixDate (date) {
+    var base = new Date(0);
+    var skew = base.getTime();
+    if (skew > 0)
+        date.setTime(date.getTime() - skew);
+}
+
+function rememberMe (f) {
+    var now = new Date();
+    fixDate(now);
+    now.setTime(now.getTime() + 365 * 24 * 60 * 60 * 1000);
+    setCookie('mtcmtauth', f.author.value, now, '', HOST, '');
+    setCookie('mtcmtmail', f.email.value, now, '', HOST, '');
+    setCookie('mtcmthome', f.url.value, now, '', HOST, '');
+}
+
+function forgetMe (f) {
+    deleteCookie('mtcmtmail', '', HOST);
+    deleteCookie('mtcmthome', '', HOST);
+    deleteCookie('mtcmtauth', '', HOST);
+    f.email.value = '';
+    f.author.value = '';
+    f.url.value = '';
+}
+
+//-->
+</script>
+
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/">
+<rdf:Description
+    rdf:about="http://www.lusis.org/mt/lusis/archives/000075.html"
+    trackback:ping="http://www.lusis.org/mt/mt-tb.cgi/7"
+    dc:title="GRRR"
+    dc:identifier="http://www.lusis.org/mt/lusis/archives/000075.html"
+    dc:subject="technology"
+    dc:description="Okay I&apos;m miffed...."
+    dc:creator="pugsly"
+    dc:date="2003-02-25T14:17:53-05:00" />
+</rdf:RDF>
+-->
+
+
+</head>
+
+<body>
+
+<div id="banner">
+lusis.org<br />
+<span class="description">We play the blaming game. Rants of a libertarian geek.</span>
+</div>
+
+<div id="content">
+
+
+<div id="menu">
+
+<a href="http://www.lusis.org/mt/lusis/archives/2003_02.html">« Number one, ENGAGE!</a> |
+
+<a href="http://www.lusis.org/mt/lusis/">Main</a>
+
+| <a href="http://www.lusis.org/mt/lusis/archives/2003_03.html">Links O' the Day »</a>
+
+</div>
+
+<div class="blog">
+
+<div class="date">February 25, 2003</div>	
+
+<div class="blogbody">
+
+<span class="title">GRRR</span>
+
+<p>Okay I'm miffed.</p>
+
+<a name="more"></a>
+<p>I was doing a normal emerge on my home system (gentoo) and upgraded glibc. It seems that codeweavers crossover AND transgaming winex are now borked. It's not a HUGE deal (I can't remember the last time I actually NEEDED the quicktime plugin under linux and I use my laptop to play Ultima Online since UOAssist doesn't play well with WineX.) but it's still annoying.  </p>
+
+<p>What gets me is I went from glibc-2.3.1 to glibc-2.3.2. How much could have changed in a freaking DOT RELEASE?</p>
+
+<p>I'm not so sure that the Transgaming people are willing to help out on the matter. The answer about it being b0rked came from the codeweaver team who actually seem to care about the customers. I'm not a big fan of the Transgaming method of supporting games.  Sure the vote method is nice but when it comes down to me just wanting UOAssist to work, it doesn't do much good. My hope is that whatever fixes are integrated into WineX 3.0 will automatically fix it.</p>
+
+<p>My REAL problem with Transgaming is the release schedule. It seems the keep tabs on when the majority of the subscriptions are expiring and then they don't release until AFTER that date. Sort of a microcosm of the whole subscription software model. At least the old version doesn't expire.</p>
+
+<p>I REALLY like the method that The Kompany uses with Kapital. I get a non-redistributable copy of the Kapital sourcecode to build myself if the precompiled ones don't work. I understand that Transgaming has Safedisc code to worry about but that could be handled like Nvidia does where those libs must be downloaded alone and integrated at compile time.</p>
+
+<p>Who knows. If anyone has any tips on the glibc problem or can assure me that downgrading my glibc is safe, I would appreciate it!</p>
+
+<span class="posted">Posted by pugsly at February 25, 2003 02:17 PM
+
+| <a href="http://www.lusis.org/mt/mt-tb.cgi?__mode=view&entry_id=75" onclick="OpenTrackback(this.href); return false">Trackback</a>
+
+<br /></span>
+
+</div>
+
+
+
+</div>
+</div>
+</div>
+
+<div id="links">
+<div class="powered">
+  Powered by<br /><a href="http://www.movabletype.org">Movable 
+  Type 2.64</a><br />
+  <br /> 
+  Template by<br />
+  <!--this template was modified from the original movable type templates by 
+  Kristine of Love-productions and blogstyles.
+  I'd appreciate it if you would keep a link back to blogstyles with this template!-->
+  <a href="http://blogstyles.com" target="_blank">BLOG<styles></a></div>
+</div>
+</body>
+</html>

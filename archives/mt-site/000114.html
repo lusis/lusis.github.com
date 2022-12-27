@@ -1,0 +1,217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<title>lusis.org: That's John "Mr. CCNA" Vincent to you!</title>
+
+<link rel="stylesheet" href="http://www.lusis.org/mt/lusis//a3col.css" type="text/css" />
+
+<script type="text/javascript" language="javascript">
+<!--
+
+function OpenTrackback (c) {
+    window.open(c,
+                    'trackback',
+                    'width=480,height=480,scrollbars=yes,status=yes');
+}
+
+var HOST = 'www.lusis.org';
+
+// Copyright (c) 1996-1997 Athenia Associates.
+// http://www.webreference.com/js/
+// License is granted if and only if this entire
+// copyright notice is included. By Tomer Shiran.
+
+function setCookie (name, value, expires, path, domain, secure) {
+    var curCookie = name + "=" + escape(value) + ((expires) ? "; expires=" + expires.toGMTString() : "") + ((path) ? "; path=" + path : "") + ((domain) ? "; domain=" + domain : "") + ((secure) ? "; secure" : "");
+    document.cookie = curCookie;
+}
+
+function getCookie (name) {
+    var prefix = name + '=';
+    var c = document.cookie;
+    var nullstring = '';
+    var cookieStartIndex = c.indexOf(prefix);
+    if (cookieStartIndex == -1)
+        return nullstring;
+    var cookieEndIndex = c.indexOf(";", cookieStartIndex + prefix.length);
+    if (cookieEndIndex == -1)
+        cookieEndIndex = c.length;
+    return unescape(c.substring(cookieStartIndex + prefix.length, cookieEndIndex));
+}
+
+function deleteCookie (name, path, domain) {
+    if (getCookie(name))
+        document.cookie = name + "=" + ((path) ? "; path=" + path : "") + ((domain) ? "; domain=" + domain : "") + "; expires=Thu, 01-Jan-70 00:00:01 GMT";
+}
+
+function fixDate (date) {
+    var base = new Date(0);
+    var skew = base.getTime();
+    if (skew > 0)
+        date.setTime(date.getTime() - skew);
+}
+
+function rememberMe (f) {
+    var now = new Date();
+    fixDate(now);
+    now.setTime(now.getTime() + 365 * 24 * 60 * 60 * 1000);
+    setCookie('mtcmtauth', f.author.value, now, '', HOST, '');
+    setCookie('mtcmtmail', f.email.value, now, '', HOST, '');
+    setCookie('mtcmthome', f.url.value, now, '', HOST, '');
+}
+
+function forgetMe (f) {
+    deleteCookie('mtcmtmail', '', HOST);
+    deleteCookie('mtcmthome', '', HOST);
+    deleteCookie('mtcmtauth', '', HOST);
+    f.email.value = '';
+    f.author.value = '';
+    f.url.value = '';
+}
+
+//-->
+</script>
+
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/">
+<rdf:Description
+    rdf:about="http://www.lusis.org/mt/lusis/archives/000114.html"
+    trackback:ping="http://www.lusis.org/mt/mt-tb.cgi/46"
+    dc:title="That&apos;s John &quot;Mr. CCNA&quot; Vincent to you!"
+    dc:identifier="http://www.lusis.org/mt/lusis/archives/000114.html"
+    dc:subject="john&apos;s world"
+    dc:description="Well I passed the CCNA...."
+    dc:creator="pugsly"
+    dc:date="2003-06-13T08:44:21-05:00" />
+</rdf:RDF>
+-->
+
+
+</head>
+
+<body>
+
+<div id="banner">
+lusis.org<br />
+<span class="description">We play the blaming game. Rants of a libertarian geek.</span>
+</div>
+
+<div id="content">
+
+
+<div id="menu">
+
+<a href="http://www.lusis.org/mt/lusis/archives/2003_06.html">« Joe Job on my server</a> |
+
+<a href="http://www.lusis.org/mt/lusis/">Main</a>
+
+| <a href="http://www.lusis.org/mt/lusis/archives/2003_06.html">*Sigh* »</a>
+
+</div>
+
+<div class="blog">
+
+<div class="date">June 13, 2003</div>	
+
+<div class="blogbody">
+
+<span class="title">That's John "Mr. CCNA" Vincent to you!</span>
+
+<p>Well I passed the CCNA.</p>
+
+<a name="more"></a>
+<p>Let me just tell you that the test is NOT easy. There is ALOT of stuff to know. It helps that I've been "doing" for the past 5+ years but it doesn't make it any easier.</p>
+
+<p>I don't always remember commands off the top of my head and I have to occasionally look some things up.</p>
+
+<p>Having said that, here are my tips for the CCNA.</p>
+
+<p>1) Know subnetting like the back of your hand. I spent time to make sure I UNDERSTOOD it and then went back and made my own memorization charts. Know why the shortcuts work.</p>
+
+<p>2) Routing is pretty important. I had more routing than switching questions.</p>
+
+<p>3) Know subnetting.</p>
+
+<p>4) Know IOS. The labs are not that easy. You have some access to "sh?" and "?" commands but you the labs are pretty involved. You don't want to waste time typing "encap?" "encapsulation ?" "encapsulation frame-relay ?" and on and on. The tab key DOES not work. Shortcuts such as "sh int e 0" are valid though. You aren't penalized for spelling mistakes either. I think the way the labs work are by comparing the configs left after you get done with one that is correct. </p>
+
+<p>5) Know subnetting.</p>
+
+<p>That's all I remember. Honestly. When I took my Microsoft tests, they weren't this hard (although I understand that they've gotten more real world and less regugitation). Even if you pass with a low score (hard to get since passing is 849/1000), you'll feel like you earned it. If you KNOW there are some areas that you feel like you performed not so well on, take a week off and then go back and read them after you pass the test. That is, if you feel like the CCNA is more than just a path to a higher paycheck. For me, it was a way to show employers that I know what I'm talking about.</p>
+
+<p>Oh yeah, since I've been a network administrator for several years now, I just purchased the self-study guide for the 640-607 and the flash card kit. I'd also suggest getting a <a href="http://safari.informit.com" title="I love Safari">Safari Account</a>. Might I suggest you check out "Cisco® CCNA® Exam #640-607 Certification Guide" and print the "Foundation Summary" for each chapter. You can keep these around for the rest of your career as a quick ref. Also print out the Chapter 12 scenarios and black out the answers. Sit down and do them and then compare with the correct answers. These were probably the greatest help to me as it's a set of three scenarios that covers everything in a real world style example.</p>
+
+<p>Good luck to anyone else taking it. If I get the job I've been working on, I plan on taking the <a href="http://www.extremenetworks.com/education/cert/ExtremeNetworksAssociate.asp" title="Extreme Networks">ENE</a> in several months. since they use Extreme stuff in-house.</p>
+
+<span class="posted">Posted by pugsly at June 13, 2003 08:44 AM
+
+| <a href="http://www.lusis.org/mt/mt-tb.cgi?__mode=view&entry_id=114" onclick="OpenTrackback(this.href); return false">Trackback</a>
+
+<br /></span>
+
+</div>
+
+
+
+
+<div class="comments-head"><a name="comments"></a>Comments</div>
+
+
+
+<div class="comments-head">Post a comment</div>
+
+<div class="comments-body">
+<form method="post" action="http://www.lusis.org/mt/mt-comments.cgi" name="comments_form" onsubmit="if (this.bakecookie.checked) rememberMe(this)">
+<input type="hidden" name="static" value="1" />
+<input type="hidden" name="entry_id" value="114" />
+
+Name:<br />
+<input name="author" /><br /><br />
+
+Email Address:<br />
+<input name="email" /><br /><br />
+
+URL:<br />
+<input name="url" /><br /><br />
+
+Comments:<br />
+<textarea name="text" rows="10" cols="50"></textarea><br /><br />
+
+<input type="checkbox" name="bakecookie" />Remember info?<br /><br />
+
+<input type="submit" name="preview" value=" PREVIEW " />
+<input type="submit" name="post" value=" POST " /><br /><br />
+
+<input type="button" onclick="forgetMe(this.form)" value="FORGET PERSONAL INFORMATION" />
+</form>
+
+<script type="text/javascript" language="javascript">
+<!--
+document.comments_form.email.value = getCookie("mtcmtmail");
+document.comments_form.author.value = getCookie("mtcmtauth");
+document.comments_form.url.value = getCookie("mtcmthome");
+//-->
+</script>
+
+
+</div>
+</div>
+</div>
+
+<div id="links">
+<div class="powered">
+  Powered by<br /><a href="http://www.movabletype.org">Movable 
+  Type 2.64</a><br />
+  <br /> 
+  Template by<br />
+  <!--this template was modified from the original movable type templates by 
+  Kristine of Love-productions and blogstyles.
+  I'd appreciate it if you would keep a link back to blogstyles with this template!-->
+  <a href="http://blogstyles.com" target="_blank">BLOG<styles></a></div>
+</div>
+</body>
+</html>

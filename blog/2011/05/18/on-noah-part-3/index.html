@@ -1,0 +1,104 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=format-detection content="telephone=no"><title>On Noah Part 3 | blog.lusis.org</title><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#ff3db4><meta name=theme-color content="#ffffff"><link rel=stylesheet href=https://blog.lusis.org/css/main.min.e34415025514319010e741089e6920454053855755ba465f66943ad102d2cb08.css></head><body><nav><header><div class=site-title><a href=/>blog.lusis.org</a></div></header><div class=nav-menu><a class="color-link nav-link" href=https://blog.lusis.org/index.xml target=_blank rel=noopener type=application/rss+xml>RSS</a></div><footer class=footer><div class=social-icons></div><p><a href=https://github.com/kimcc/hugo-theme-noteworthy target=_blank rel=noopener>Noteworthy theme</a></p><p><a href=https://gohugo.io target=_blank rel=noopener>Built with Hugo</a></p><script src=https://blog.lusis.org/js/main.min.a7205ef73b078c8daed6fe1b0826e8ba229ffabbb69d299d9446cf41f2c7d8aa.js integrity="sha256-pyBe9zsHjI2u1v4bCCbouiKf+ru2nSmdlEbPQfLH2Ko=" crossorigin=anonymous></script></footer></nav><div id=content class=content-container><h1 class=post-title>On Noah Part 3</h1><time>May 18, 2011</time><div><p><p><em>This is the third part in a series on Noah. <a href=http://goo.gl/l3Mgt>Part 1</a> and <a href=http://goo.gl/Nj2TN>Part 2</a> are available as well</em></p><p>In Part 1 and 2 of this series I covered background on Zookeeper and
+discussed the similarities and differences between it and Noah. This
+post is discussing the technology stack under Noah and the reasoning for
+it.</p><h1 id=a-little-back-story>A little back story</h1><p>I&rsquo;ve told a few people this but my original intention was to use Noah as
+a way to learn Erlang. However this did not work out. I needed to get a
+proof of concept out much quicker than the ramp up time it would take to
+<a href=http://learnyousomeerlang.com/>learn me some Erlang</a>. I had this
+grandiose idea to slap mnesia, riak_core and webmachine into a tasty
+ball of Zookeeper clonage.</p><p>I am not a developer by trade. I don&rsquo;t have any formal education in
+computer science (or anything for that matter). The reason I mention
+this is to say that programming is hard work for me. This has two side
+effects:</p><ul><li>It takes me considerably longer than a working developer to code
+what&rsquo;s in my head</li><li>I can only really learn a new language when I have an itch to
+scratch. A real world problem to model.</li></ul><p>So in the interest of time, I fell back to a language I&rsquo;m most
+comfortable with right now, Ruby.</p><h1 id=sinatra-and-ruby>Sinatra and Ruby</h1><p>Noah isn&rsquo;t so much a web application as it is this &lsquo;api thing&rsquo;. There&rsquo;s
+no proper front end and honestly, you guys don&rsquo;t want to see what my
+design deficient mind would create. I like to joke that in the world of
+MVC, I stick to the M and C. Sure, APIs have views but not in the &ldquo;click
+the pretty button sense&rdquo;.</p><p>I had been doing quite a bit of glue code at the office using
+<a href=http://www.sinatrarb.com>Sinatra</a> (and EventMachine) so I went with
+that. Sinatra is, if you use sheer number of clones in other languages
+as an example, a success for writing API-only applications. I also
+figured that if I wanted to slap something proper on the front, I could
+easily integrate it with <a href=http://www.padrinorb.com>Padrino</a>.</p><p>But now I had to address the data storage issue.</p><h1 id=redis>Redis</h1><p>Previously, as a way to learn Python at another company, I wrote an
+application called <a href=https://github.com/lusis/vogeler>Vogeler</a>. That
+application had a lot of moving parts - CouchDB for storage and RabbitMQ
+for messaging.</p><p>I knew from dealing with CouchDB on CentOS5 that I wasn&rsquo;t going to use
+THAT again. Much of it would have been overkill for Noah anyway. I
+realized I really needed nothing more than a key/value store. That
+really left me with either Riak or Redis. I love Riak but it wasn&rsquo;t the
+right fit in this case. I needed something with a smaller dependency
+footprint. Mind you Riak is VERY easy to install but managing Erlang
+applications is still a bit edgy for some folks. I needed something
+simpler.</p><p>I also realized early on that I needed some sort of basic queuing
+functionality. That really sealed Redis for me. Not only did it have
+zero external dependencies, but it also met the needs for queuing. I
+could use <code>lists</code> as dedicated direct queues and I could use the
+built-in <code>pubsub</code> as a broadcast mechanism. Redis also has a fast atomic
+counter that could be used to approximate the ZK sequence primitive
+should I want to do that.</p><p>Additionally, Redis has master/slave (not my first choice) support for
+limited scaling as well as redundancy. One of my original design goals
+was that Noah behave like a traditional web application. This is a model
+ops folks understand very well at this point.</p><h1 id=eventmachine>EventMachine</h1><p>When you think asynchronous in the Ruby world, there&rsquo;s really only one
+tool that comes to mind, EventMachine. Noah is designed for asynchronous
+networks and is itself asynchronous in its design. The callback agent
+itself uses EventMachine to process watches. As I said previously, this
+is simply using an EM friendly Redis driver that can do <code>PSUBSCRIBE</code>
+(using em-hiredis) and send watch messages (using em-http-request since
+we only support HTTP by default).</p><h1 id=ohm>Ohm</h1><p>Finally I slapped <a href=http://ohm.keyvalue.org>Ohm</a> on top as the
+abstraction layer for Redis access. Ohm, if you haven&rsquo;t used it, is
+simply one of if not the best Ruby library for working with Redis. It&rsquo;s
+easily extensible, very transparent and frankly, it just gets the hell
+out of your way. A good example of this is converting some result to a
+hash. By default, Ohm only returns the id of the record. Nothing more.
+It also makes it VERY easy to drop past the abstraction and operate on
+Redis directly. It even provides helpers to get the keys it uses to
+query Redis. A good example of this is in the Linking and Tagging code.
+The following is a method in the Tag model:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ruby data-lang=ruby><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>members</span><span style=color:#f92672>=</span>(member)
+</span></span><span style=display:flex><span>	  self<span style=color:#f92672>.</span>key<span style=color:#f92672>[</span><span style=color:#e6db74>:members</span><span style=color:#f92672>].</span>sadd(member<span style=color:#f92672>.</span>key)
+</span></span><span style=display:flex><span>	  member<span style=color:#f92672>.</span>tag! self<span style=color:#f92672>.</span>name <span style=color:#66d9ef>unless</span> member<span style=color:#f92672>.</span>tags<span style=color:#f92672>.</span>member?(self)
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>end</span>
+</span></span></code></pre></div><p>Because Links and Tags are a one-to-many across multiple models, I drop
+down to Redis and use <code>sadd</code> to add the object to a Redis set of objects
+sharing the same tag.</p><p>It also has a very handy feature which is how the core of Watches are
+done. You can define hooks at any phase of Redis interaction - before
+and after saves, creates, updates and deletes. the entire Watch system
+is nothing more than calling these post hooks to format the state of the
+object as JSON, add metadata and send the message using <code>PUBLISH</code>
+messages to Redis with the Noah namespace as the channel.</p><h1 id=distribution-vectors>Distribution vectors</h1><p>I&rsquo;ve used this phrase with a few people. Essentially, I want as many
+people as possible to be able to use the Noah server component. I&rsquo;ve
+kept the Ruby dependencies to a minimum and I&rsquo;ve made sure that every
+single one works on MRI 1.8.7 up to 1.9.2 as well as JRuby. I already
+distribute the most current release as a war that can be deployed to a
+container or run standalone. I want the lowest barrier to entry to get
+the broadest install base possible. When a new PaaS offering comes out,
+I pester the hell out of anyone I can find associated with it so I can
+get deploy instructions written for Noah. So far you can run it on
+Heroku (using the various hosted Redis providers), CloudFoundry and
+dotcloud.</p><p>I&rsquo;m a bit more lax on the callback daemon. Because it can be written in
+any language that can talk to the Redis pubsub system and because it has
+&ldquo;stricter&rdquo; performance needs, I&rsquo;m willing to make the requirements for
+the &ldquo;official&rdquo; daemon more stringent. It currently ONLY works on MRI
+(mainly due to the em-hiredis requirement).</p><h2 id=doing-things-differently>Doing things differently</h2><p>Some people have asked me why I didn&rsquo;t use technology A or technology B.
+I think I addressed that mostly above but I&rsquo;ll tackle a couple of key
+ones.</p><p>ZeroMQ</p><p>The main reason for not using 0mq was that I wasn&rsquo;t really aware of it.
+Were I to start over and still be using Ruby, I&rsquo;d probably give it a
+good strong look. The would still be the question of the storage
+component though. There&rsquo;s still a possible place for it that I&rsquo;ll
+address in part four.</p><p>NATS</p><p>This was something I simply had no idea about until I started poking
+around the CloudFoundry code base. I can almost guarantee that NATS will
+be a part of Noah in the future. Expect much more information about that
+in part four.</p><p>MongoDB</p><p>You have got to be kidding me, right? I don&rsquo;t trust my data (or anyone
+else&rsquo;s for that matter) to a product that doesn&rsquo;t understand what
+durability means when we&rsquo;re talking about databases.</p><p>Insert favorite data store here</p><p>As I said, Redis was the best way to get multiple required functionality
+into a single product. Why does a data storage engine have a pubsub
+messaging subsystem built in? I don&rsquo;t know off the top of my head but
+I&rsquo;ll take it.</p><h2 id=wrap-up---part-3>Wrap up - Part 3</h2><p>So again, because I evidently like recaps, here&rsquo;s the take away:</p><ul><li>The key components in Noah are Redis and Sinatra</li><li>Noah is written in Ruby because of time constraints in learning a
+new language</li><li>Noah strives for the server component to have the broadest set of
+distribution vectors as possible</li><li>Ruby dependencies are kept to a minimum to ensure the previous point</li><li>The lightest possible abstractions (Ohm) are used.</li><li>Stricter requirements exist for non-server components because of
+flexibility in alternates</li><li>I really should learn me some erlang</li><li>I&rsquo;m not a fan of MongoDB</li></ul><p>If you haven&rsquo;t guessed, I&rsquo;m doing one part a night in this series.
+Tomorrow is part four which will cover the future plans for Noah. I&rsquo;m
+also planning on a bonus part five to cover things that didn&rsquo;t really
+fit into the first four.</p></p></div><div class=page-footer></div></div><footer class=footer-mobile><div class=social-icons></div><div class=footer-mobile-links><p><a href=https://github.com/kimcc/hugo-theme-noteworthy target=_blank rel=noopener>Noteworthy theme</a></p><span class=divider-bar>|</span><p><a href=https://gohugo.io target=_blank rel=noopener>Built with Hugo</a></p></div><script src=https://blog.lusis.org/js/main.min.a7205ef73b078c8daed6fe1b0826e8ba229ffabbb69d299d9446cf41f2c7d8aa.js integrity="sha256-pyBe9zsHjI2u1v4bCCbouiKf+ru2nSmdlEbPQfLH2Ko=" crossorigin=anonymous></script></footer></body></html>

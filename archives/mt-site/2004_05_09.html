@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<title>lusis.org: May 09, 2004 Archives</title>
+
+<link rel="stylesheet" href="http://www.lusis.org/mt/lusis//a3col.css" type="text/css" />
+
+</head>
+
+<body>	
+
+<div id="banner">
+lusis.org<br />
+<span class="description">We play the blaming game. Rants of a libertarian geek.</span>
+</div>
+
+<div class="container">
+
+<div id="content">
+<div id="menu">
+
+<a href="http://www.lusis.org/mt/lusis/archives/2004_02_01.html">« February 01, 2004</a> |
+
+<a href="http://www.lusis.org/mt/lusis/">Main</a>
+
+| <a href="http://www.lusis.org/mt/lusis/archives/2004_05_26.html">May 26, 2004 »</a>
+
+</div>
+<br>
+<div class="blog">
+
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/">
+<rdf:Description
+    rdf:about="http://www.lusis.org/mt/lusis/archives/2004_05_09.html#000131"
+    trackback:ping="http://www.lusis.org/mt/mt-tb.cgi/63"
+    dc:title="Commercial software ebuild for Gentoo"
+    dc:identifier="http://www.lusis.org/mt/lusis/archives/2004_05_09.html#000131"
+    dc:subject="Gentoo"
+    dc:description="Problem: I need to run some commercial software on Gentoo that doesn&apos;t have an ebuild and comes in RPM format..."
+    dc:creator="pugsly"
+    dc:date="2004-05-09T19:40:26-05:00" />
+</rdf:RDF>
+-->
+
+
+<div class="date">May 09, 2004</div>
+
+
+<div class="blogbody">
+<a name="000131"></a>
+<span class="title">Commercial software ebuild for Gentoo</span>
+
+<p>Problem: I need to run some commercial software on Gentoo that doesn't have an ebuild and comes in RPM format only.</p>
+
+
+<p>Solution: <a href="http://forums.gentoo.org/viewtopic.php?t=171234">This "Call to Arms" on the Gentoo Chat forums</a></p>
+
+<p>The first ebuild is a modified version of  an ebuild that sandymac[at]gentoo.org did for the Tivoli Storage Manager Backup Client. His version was for 5.1.5. We have 5.2.2 running at our datacenter right now. The server runs on RHAS 3.0 and all of the clients, save three, are RedHat boxes. </p>
+
+<p>The Gentoo clients are:</p>
+
+<p>Firebird Database Server: for our Data Warehouse<br />
+Cups Server A and Cups Server B: Handles all of the printing for our web application. (Our locations are not allowed to print things themselves only server initiated printing is allowed)</p>
+
+<p>These three servers need client access to the TSM server for backups. My original thought was to use rsync to one of the redhat boxes and store the files there for backup but that wasn't elegent enough. It also adds one more step that could break along the way.  Considering I don't want to get a call from a junior admin at 4AM because he can't figure out how to restore the DW database or our printer pool, I'll use TSM and create nodes for the Gentoo servers.</p>
+
+<p>I'm creating the entry here so I can provide a full tarball of a portage overlay. I'm also looking for more widespread commenting on the whole process.</p>
+
+<p>You can get the tarball <a href="http://www.lusis.org/static/gentoo/tsm-ba.tar.gz">HERE</a></p>
+
+
+<div class="posted">Posted by pugsly at <a href="http://www.lusis.org/mt/lusis/archives/2004_05.html#000131">07:40 PM</a></div>
+</div>
+
+
+
+</div>
+</div>
+</div>
+<div id="links">
+<div class="powered">
+  Powered by<br /><a href="http://www.movabletype.org">Movable 
+  Type 2.64</a><br />
+  <br /> 
+  Template by<br />
+  <!--this template was modified from the original movable type templates by 
+  Kristine of Love-productions and blogstyles.
+  I'd appreciate it if you would keep a link back to blogstyles with this template!-->
+  <a href="http://blogstyles.com" target="_blank">BLOG<styles></a></div>
+</div>
+
+</body>
+</html>

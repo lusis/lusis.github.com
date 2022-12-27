@@ -1,0 +1,109 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta http-equiv=x-ua-compatible content="IE=edge,chrome=1"><meta name=viewport content="width=device-width,initial-scale=1"><meta name=format-detection content="telephone=no"><title>On Noah Part 4 | blog.lusis.org</title><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=manifest href=/manifest.json><link rel=mask-icon href=/safari-pinned-tab.svg color=#ff3db4><meta name=theme-color content="#ffffff"><link rel=stylesheet href=https://blog.lusis.org/css/main.min.e34415025514319010e741089e6920454053855755ba465f66943ad102d2cb08.css></head><body><nav><header><div class=site-title><a href=/>blog.lusis.org</a></div></header><div class=nav-menu><a class="color-link nav-link" href=https://blog.lusis.org/index.xml target=_blank rel=noopener type=application/rss+xml>RSS</a></div><footer class=footer><div class=social-icons></div><p><a href=https://github.com/kimcc/hugo-theme-noteworthy target=_blank rel=noopener>Noteworthy theme</a></p><p><a href=https://gohugo.io target=_blank rel=noopener>Built with Hugo</a></p><script src=https://blog.lusis.org/js/main.min.a7205ef73b078c8daed6fe1b0826e8ba229ffabbb69d299d9446cf41f2c7d8aa.js integrity="sha256-pyBe9zsHjI2u1v4bCCbouiKf+ru2nSmdlEbPQfLH2Ko=" crossorigin=anonymous></script></footer></nav><div id=content class=content-container><h1 class=post-title>On Noah Part 4</h1><time>May 20, 2011</time><div><p><p><em>This is the fourth part in a series on Noah. <a href=http://goo.gl/l3Mgt>Part 1</a>, <a href=http://goo.gl/Nj2TN>Part 2</a> and <a href=http://goo.gl/RsZtZ>Part 3</a> are available as well</em></p><p>In Part 1 and 2 of this series I covered background on Zookeeper and
+discussed the similarities and differences between it and Noah. Part 3
+was about the components underneath Noah that make it tick.</p><p>This post is about the &ldquo;future&rdquo; of Noah. Since I&rsquo;m a fan of Fourcast
+podcast, I thought it would be nice to do an immediate, medium and long
+term set of goals.</p><h1 id=immediate-future---the-road-to-10>Immediate Future - the road to 1.0</h1><p>In the most immediate future there are a few things that need to happen.
+These are in no specific order.</p><ul><li><p>General</p><ul><li>Better test coverage ESPECIALLY around the watch subsystem</li><li>Full code comment coverage</li><li>Chef cookbooks/Puppet manifests for doing a full install</li><li>&ldquo;fatty&rdquo; installers for a standalone server</li><li>Documentation around operational best practices</li><li>Documentation around clustering, redundancy and hadr</li><li>Documentation around integration best practices</li><li>Performance testing</li></ul></li><li><p>Noah Server</p><ul><li>Expiry flags and reaping for Ephemerals</li><li>Convert mime-type in Configurations to make sense</li><li>Untag and Unlink support</li><li>Refactor how you specify Redis connection information</li><li>Integrated metrics for monitoring (failed callbacks, expired
+ephemeral count, that kind of stuff)</li></ul></li><li><p>Watcher callback daemon</p><ul><li>Make the HTTP callback plugin more flexible</li><li>Finish binscript for the watcher daemon</li></ul></li><li><p>Other</p><ul><li>Finish <a href=http://goo.gl/B65aL>Boat</a></li><li>Finish NoahLite LWRP for Chef (using Boat)</li><li>A few more HTTP-based callback plugins (Rundeck, Jenkins)</li></ul></li></ul><p>Now that doesn&rsquo;t look like a very cool list but it&rsquo;s a lot of work for
+one person. I don&rsquo;t blame anyone for not getting excited about it. The
+goal now is to get a functional and stable application out the door that
+people can start using. Mind you I think it&rsquo;s usable now (and I&rsquo;m
+already using it in &ldquo;production&rdquo;).</p><p>Obviously if anyone has something else they&rsquo;d like to see on the list,
+let me know.</p><h1 id=medium-rare>Medium Rare</h1><p>So beyond that 1.0 release, what&rsquo;s on tap? Most of the work will
+probably occur around the watcher subsystem and the callback daemon.
+However there are a few key server changes I need to implement.</p><ul><li><p>Server</p><ul><li>Full ACL support on every object at every level</li><li>Token-based and SSH key based credentialing</li><li>Optional versioning on every object at every level</li><li>Accountability/Audit trail</li><li>Implement a long-polling interface for inband watchers</li></ul></li><li><p>Watcher callback daemon</p><ul><li>Decouple the callback daemon from the Ruby API of the server.
+Instead the daemon itself needs to be a full REST client of the
+Noah server</li><li>Break out the &ldquo;official&rdquo; callback daemon into a distinct package</li></ul></li><li><p>Clients</p><ul><li>Sinatra Helper</li></ul></li></ul><p>Also during this period, I want to spend time building up the ecosystem
+as a whole. You can see a general mindmap of that
+<a href=https://github.com/lusis/Noah/wiki/Ecosystem>here</a>.</p><p>Going into a bit more detail&mldr;</p><h2 id=tokens-and-keys>Tokens and keys</h2><p>It&rsquo;s plainly clear that something which has the ability to make runtime
+environment changes needs to be secure. The first thing to roll off the
+line post-1.0 will be that functionality. Full ACL support for all
+entries will be enabled and in can be set at any level in the namespace
+just the same as Watches.</p><h2 id=versioning-and-auditing>Versioning and Auditing</h2><p>Again for all entires and levels in the namespace, versioning and
+auditing will be allowed. The intention is that the number of revisions
+and audit entries are configurable as well - not just an enable/disable
+bit.</p><h2 id=in-band-watches>In-band watches</h2><p>While I&rsquo;ve lamented the fact that watches were in-band only in
+Zookeeper, there&rsquo;s a real world need for that model. The idea of
+long-polling functionality is something I&rsquo;d actually like to have by 1.0
+but likely won&rsquo;t happen. The intent is simply that when you call say
+<code>/some/path/watch</code>, you can pass an optional flag in the message stating
+that you want to watch that endpoint for a fixed amount of time for any
+changes. Optionally a way to subscribe to all changes over long-polling
+for a fixed amount of time is cool too.</p><h2 id=agent-changes>Agent changes</h2><p>These two are pretty high on my list. As I said, there&rsquo;s a workable
+solution with minimal tech debt going into the 1.0 release but long
+term, this needs to be a distinct package. A few other ideas I&rsquo;m kicking
+around are allowing configurable filtering on WHICH callback types an
+agent will handle. The idea is that you can specify that this invocation
+only handle http callbacks while this other one handles AMQP.</p><h2 id=sinatra-helper>Sinatra Helper</h2><p>One idea I&rsquo;d REALLY like to come to fruition is the Sinatra Helper. I
+envision it working something like this:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-ruby data-lang=ruby><span style=display:flex><span>
+</span></span><span style=display:flex><span>	require <span style=color:#e6db74>&#39;sinatra/base&#39;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>class</span> <span style=color:#a6e22e>MyApp</span> <span style=color:#f92672>&lt;</span> <span style=color:#66d9ef>Sinatra</span><span style=color:#f92672>::</span><span style=color:#66d9ef>Base</span>
+</span></span><span style=display:flex><span>	  register <span style=color:#66d9ef>Noah</span><span style=color:#f92672>::</span><span style=color:#66d9ef>Sinatra</span>
+</span></span><span style=display:flex><span>	
+</span></span><span style=display:flex><span>	  noah_server <span style=color:#e6db74>&#34;http://localhost:5678&#34;</span>
+</span></span><span style=display:flex><span>	  noah_node_name <span style=color:#e6db74>&#34;myself&#34;</span>
+</span></span><span style=display:flex><span>	  noah_app_name <span style=color:#e6db74>&#34;MyApp&#34;</span>
+</span></span><span style=display:flex><span>	  noah_token <span style=color:#e6db74>&#34;somerandomlongstring&#34;</span>
+</span></span><span style=display:flex><span>	  dynamic_get <span style=color:#e6db74>:database_server</span>
+</span></span><span style=display:flex><span>	  dynamic_set <span style=color:#e6db74>:some_other_variable</span>, <span style=color:#e6db74>&#34;foobar&#34;</span>
+</span></span><span style=display:flex><span>	  watch <span style=color:#e6db74>:this_other_node</span>
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>end</span>
+</span></span></code></pre></div><p>The idea is that the helper allows you to register your application very
+easily with Noah for other components in your environment to be know. As
+a byproduct, you get the ability to get/set certain configuration
+parameters entirely in Noah. The watch setting is kind of cool as well.
+What will happen is if you decide to <code>watch</code> something this way, the
+helper will create a random (and yes, secure) route in your application
+that watch events can notify. In this way, your Sinatra application can
+be notified of any changes and will automatically &ldquo;reconfigure&rdquo; itself.</p><p>Obviously I&rsquo;d love to see other implementations of this idea for other
+languages and frameworks.</p><h1 id=long-term-changes>Long term changes</h1><p>There aren&rsquo;t so much specific list items here as general themes and
+ideas. While I list these as long term, I&rsquo;ve already gotten an offer to
+help with some of them so they might actually get out sooner.</p><h2 id=making-noah-itself-distributed>Making Noah itself distributed</h2><p>This is something I&rsquo;m VERY keen on getting accomplished and would really
+consider it the fruition of what Noah itself does. The idea is simply
+that multiple Noah servers themselves are clients of other Noah servers.
+I&rsquo;ve got several ideas about how to accomplish this but I got an
+interesting follow up from someone on Github the other day. He asked
+what my plans were in this area and we had several lengthy emails back
+and forth including an offer to work on this particular issue.</p><p>Obviously there are a whole host of issues to consider. Race conditions
+in ordered delivery of Watch callbacks (getting a status &ldquo;down&rdquo; after a
+status &ldquo;up&rdquo; when it&rsquo;s supposed to be the other way around..) and
+eventual consistency spring to mind first.</p><p>The general architecture idea that was offered up is to use
+<a href=https://github.com/derekcollison/nats>NATS</a> as the mechanism for
+accomplishing this. In the same way that there would be AMQP callback
+support, there would be NATS support. Additional Noah servers would only
+need to know one other member to bootstrap and everything else happens
+using the natural flows within Noah.</p><p>The other part of that is how to handle the Redis part. The natural
+inclination is to use the upcoming Redis clustering but that&rsquo;s not
+something I want to do. I want each Noah server to actually include its
+OWN Redis instance &ldquo;embedded&rdquo; and not need to rely on any external
+mechanism for replication of the data. Again, the biggest validation of
+what Noah is designed to do is using only Noah itself to do it.</p><h2 id=move-off-redisswappable-persistence>Move off Redis/Swappable persistence</h2><p>If NATS says anything to me, it says &ldquo;Why do you even need Redis?&rdquo;. If
+you recall, I went with Redis because it solved multiple problems. If I
+can find a persistence mechanism that I can use without any external
+service running, I&rsquo;d love to use it.</p><h2 id=zeromq>ZeroMQ</h2><p>If I were to end up moving off Redis, I&rsquo;d need a cross platform and
+cross language way to handle the pubsub component. NATS would be the
+first idea but NATS is Ruby only (unless I&rsquo;ve missed something). ZeroMQ
+appears to have broad language and platform support so writing custom
+agents in the same vein as the Redis PUBSUB method should be feasible.</p><h2 id=nanite-style-agents>Nanite-style agents</h2><p>This is more of a command-and-control topic but a set of
+high-performance specialized agents on systems that can watch the PUBSUB
+backend or listen for callbacks would be awesome. This would allow you
+really integrate Noah into your infrastructure beyond the application
+level. Use it to trigger a puppet or chef run, reboot instances or do
+whatever. This is really about bringing what I wanted to accomplish with
+Vogeler into Noah.</p><h2 id=the-paxos-question>The PAXOS question</h2><p>A lot of people have asked me about this. I&rsquo;ll state right now that I
+can only make it through about 20-30% of any reading about Paxos before
+my brain starts to melt. However in the interest of proving myself the
+fool, I think it would be possible to implement some Paxos like
+functionality on top of Noah. Remember that Noah is fundamentally about
+fully disconnected nodes. What better example of a network of unreliable
+processors than ones that never actually talk to each other. The problem
+is that the use case for doing it in Noah is fairly limited so as not to
+be worth it.</p><p>The grand scheme is that Noah helps enable the construction of systems
+where you can say &ldquo;This component is free to go off and operate in this
+way secure in the knowledge that if something it needs to know changes,
+someone will tell it&rdquo;. I did say &ldquo;grand&rdquo; didn&rsquo;t I? At some point, I may
+hit the limit of what I can do using only Ruby. Who knows.</p><h1 id=wrap-up---part-4>Wrap up - Part 4</h1><p>Again with the recap</p><ul><li>Get to 1.0 with a stable and fixed set of functionality</li><li>Nurture the Noah ecosystem</li><li>Make it easy for people to integrate Noah into thier applications</li><li>Get all meta and make Noah itself distributed using Noah</li><li>Minimize the dependencies even more</li><li>Build skynet</li></ul><p><em>I&rsquo;m not kidding on that last one. Ask me about Parrot AR drones and
+Noah sometime</em></p><p>If you made it this far, I want to say thank you to anyone who read any
+or all of the parts. Please don&rsquo;t hesitate to contact me with any
+questions about the project.</p></p></div><div class=page-footer></div></div><footer class=footer-mobile><div class=social-icons></div><div class=footer-mobile-links><p><a href=https://github.com/kimcc/hugo-theme-noteworthy target=_blank rel=noopener>Noteworthy theme</a></p><span class=divider-bar>|</span><p><a href=https://gohugo.io target=_blank rel=noopener>Built with Hugo</a></p></div><script src=https://blog.lusis.org/js/main.min.a7205ef73b078c8daed6fe1b0826e8ba229ffabbb69d299d9446cf41f2c7d8aa.js integrity="sha256-pyBe9zsHjI2u1v4bCCbouiKf+ru2nSmdlEbPQfLH2Ko=" crossorigin=anonymous></script></footer></body></html>

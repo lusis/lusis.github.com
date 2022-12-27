@@ -1,0 +1,211 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<title>lusis.org: November 2002 Archives</title>
+
+<link rel="stylesheet" href="http://www.lusis.org/mt/lusis//a3col.css" type="text/css" />
+
+</head>
+
+<body>	
+
+<div id="banner">
+lusis.org<br />
+<span class="description">We play the blaming game. Rants of a libertarian geek.</span>
+</div>
+
+<div class="container">
+
+<div id="content">
+<div id="menu">
+
+<a href="http://www.lusis.org/mt/lusis/archives/2002_10.html">« October 2002</a> |
+
+<a href="http://www.lusis.org/mt/lusis/">Main</a>
+
+| <a href="http://www.lusis.org/mt/lusis/archives/2002_12.html">December 2002 »</a>
+
+</div>
+<br>
+<div class="blog">
+
+
+
+<div class="date">November 30, 2002</div>
+
+
+<div class="blogbody">
+<a name="000059"></a>
+<span class="title">Recent downtime</span>
+
+<p>Well you might have noticed that the site was down for a while over the holiday weekend. Let me explain what happened as much as possible.</p>
+
+
+<p>I got a call from my boss Friday afternoon around 2:30. It seems he couldn't get to our marketing website. I checked some things from the house and sure enough we were down hard. </p>
+
+<p>My next step is to call the office and see if it was just the internet circuit or all three t's.</p>
+
+<p>Fast busy.</p>
+
+<p>I started fearing the worst. We have issues with power in our area. It's not uncommon for us to have brownouts in the middle of the day. I figured we had an extended power outage and the UPS's died. </p>
+
+<p>Since I have 45 minute drive to the office, I kept trying to call every so often. I also was wondering if the alarms were out if the power had been off this long. Still busy.</p>
+
+<p>I get to the office and see we have power. I pick up handset and try to dial out. No free lines.</p>
+
+<p>I headed into the phone room and see that all three smart jacks are dead. No lights. Nothing.</p>
+
+<p>I call Qwest and MCI and figure whoever gets to bellsouth the fastest will be my hero. </p>
+
+<p>After playing about all of the cribbage I could play whilst working with our providers, I decide to grab a laptop and hook it up to a POTS line to browse the web.</p>
+
+<p>No dial tone?</p>
+
+<p>I then check the fax machines and realize that I can't get anything. Time to call Bellsouth business services directly on those lines. Turns out they have ""a cable problem"".</p>
+
+<p>I call back our providers and explain to them what info I got from Bellsouth. I tell them I'm going home and I'll wait for Bellsouth to contact me.</p>
+
+<p>That's when it gets good.</p>
+
+<p>As I'm leaving the office, I see 3 bellsouth trucks down by the box. I'm an amicable guy so I wanted to go apologize for having them rush out when I didn't realize it was a larger problem. As I walk up and shout hello, I notice three of the saddest and most pissed off guys on the planet. I explain who I am and then they decide to show me the  phone box.</p>
+
+<p>It's in tatters. Wires are everywhere. I can't say much other than that on the issue because there's an active police involvement but this was some nasty stuff. Let's leave it with this. There were 1200 pairs in that box. Not one was left.</p>
+
+<p>So as you can see, this wasn't something lame like hardware failure whilst I was out of town. It was much more serious and I apologise to everyone involved.</p>
+
+
+<div class="posted">Posted by pugsly at <a href="http://www.lusis.org/mt/lusis/archives/2002_11.html#000059">06:30 PM</a></div>
+</div>
+
+
+
+
+
+<div class="date">November 25, 2002</div>
+
+
+<div class="blogbody">
+<a name="000058"></a>
+<span class="title">Changes afoot at lusis.org</span>
+
+<p>Some commonly used features of lusis.org will be disabled soon. Read on to find out how it might affect you!</p>
+
+
+<p>Before we go any further, click these two links:</p>
+
+<p><a href="http://www.lusis.org/ca.crt"> My Certficate Authority root certificate</a> - All ssl services (https, imaps, webmin) will be signed by this CA.</p>
+
+<p><a href="http://www.lusis.org/ca.crl">My Certificate Authority Revocation List</a> - All revocations are in this list and it's update every 7 days. This will be more important when I start issuing user certificates.</p>
+
+<p>Many of the things I will be implementing <br />
+The following services are being disabled with no chance for reactivation:</p>
+
+<p>-ftp<br />
+-telnet</p>
+
+<p>The following changes are up for discussion on a per user basis:</p>
+
+<p>- imap<br />
+- pop3</p>
+
+<p><br />
+My preference on those two is to move to imaps and spop. Fetchmail and other common mail clients now fully support digital certificates. For those not in the know, certificates are what you use when connecting to a site via ssl (https:// in the url bar). </p>
+
+<p>There are now plenty of freeware and opensource tools along with the standard commercial tools for connecting securely to a host on the internet. </p>
+
+<p>Besides using other options, you can easily build an encrypted tunnel to lusis.org using ssh. As with the others, there are freeware,opensource and commercial products available to do this.</p>
+
+<p><b>The List</b></p>
+
+<p>I'm going to run down a list of tools I use at home and work to connect securely to lusis.org at all times. This not only includes digital certificates but creating ssh tunnels as well. For each product listed, the license is in parentheses next to the name.</p>
+
+<p>1) SecureCRT (commercial) - <a href="http://www.vandyke.com/products/securecrt/index.html">VanDyke</a><br />
+If you're stuck in Windows world, this is THE commercial package for terminal connections. It supports ssh1/ssh2, telnet, rlogin, serial and tapi protocols. The company I work for owns a few SecureCRT licenses for me. You can connect securely to lusis.org as well as build ssh-based vpn tunnels.</p>
+
+<p>2) Entunnel (commercial) - <a href="http://www.vandyke.com/products/entunnel/index.html">VanDyke</a></p>
+
+<p>This is a new product from VanDyke. We recieved a free license for it by being SecureCRT subscribers (now THAT'S how you show your customers you appreciate them). It's basically a tunnel-only version of SecureCRT. The interface is easy to understand and it sits happily in the system tray letting you know it's doing its job. It's much cheaper than SecureCRT as well. I currently use this at work to create a tunnel for IMAP and SMTP to lusis.org so I can securly read mail at work. If you can afford it, I suggest you get this! You can create a tunnel for all of your commonly used services such as imap,pop3 and smtp quick and easy.</p>
+
+<p>3) OpenSSH (Open Source) - Any linux/bsd distribution on the planet!</p>
+
+<p>This is what I use at home. There are windows ports as well using <a href="http://www.cygwin.com">CygWin</a> but I don't run Windows at home so I don't care. I used the Windows version at work until we got the free license for Entunnel.</p>
+
+<p>Basically ssh has the functionality included to create tunnels. An example would be:</p>
+
+<pre>
+ssh -f -L25:godspeed.lusis.org:25 -L143:godspeed.lusis.org:143 -l username godspeed.lusis.org  'tail -f logfile'
+</pre>
+
+<p>This will forward all connections to your local machine on ports 143 (IMAP) and 25 (SMTP) to the server godspeed.lusis.org (that's us!)</p>
+
+<p>This way, you would set up your mail client to user localhost for the incoming and outgoing servers. That's it! Easy as pie. </p>
+
+<p>The part at the end is the command you want to execute on the remote server. I like to run this in a transparent window under X so I can see my remote webserver logfiles.  </p>
+
+<p>I also use HostKey authentication on lusis.org.</p>
+
+<p>When I log into X at home, gnome-ssh-askpass pops up and asks me for my passphrase. I enter it and my entire X session has access to lusis.org without a password.  Knowing the passwords *I* choose, I'd rather type a really secure and long passphrase once than typing the password over and over since it's equally long and complicated.</p>
+
+<p>I'll be creating some howto's on this (allthough there are plenty on the web) in the method that works best for me.</p>
+
+<p>4)  Winscp2 (freeware) - <a href="http://winscp.vse.cz/eng/">WinSCP2</a></p>
+
+<p>I was at work one day and someone needed access to my server to upload some files. Consider I have ftp restricted on lusis, and didn't want to change it, I took the long approach and hit google. This is what I came up with. It presents a nice two-pane file view of a remote host using ssh and scp. If you use something OTHER than MS FrontPage (Hi Mike!) to create your sites, then this is the way to go when you need to upload the pages. Pretty standard stuff. It's like most other ftp clients on the market.</p>
+
+<p>5) gftp (Open Source) - <a href="http://www.gftp.org">gftp.org</a></p>
+
+<p>If you want a gui under *nix similar to winscp2, then gftp is for you. It's a gtk based ftp client that not only supports ftp and http but ssh transfers as well. I think it's included by default in gnome-desktop.</p>
+
+<p>6) webmin (Open Source) - <a href="http://www.webmin.com">Webmin</a></p>
+
+<p>I saw this on the desktop of a diehard NT guy who I was helping learn linux. I had NEVER heard of the project (kept my head buried in the command line I guess). Every since then, I've installed it on all the servers at the office and on lusis.org as well. The main reason I mention it is that i've got a webmin group that all users are in that give them access to the basics of thier accounts: file manager, ssh client, change password, scheduled tasks. The filemanager and ssh tools are java based. The other two are html based. With those four tools, you can upload files to your webpage, edit files directly on the server, change your password and create any cron jobs you need for your site (such as syndication or pulling weather - Tomislav included ;> ).</p>
+
+<p>It operates under https and uses a non-standard port that may or may not be open on your firewall if you need to get to it from, say, work. </p>
+
+<p></p>
+
+<p>I've got a few other options as well that I've either implemented or have thought about.<br />
+1) Secure webmail -<br />
+I've had <a href="twig.screwdriver.net">Twig</a> setup in the past. I got frustrated with it because each consecutive upgrade would wipe the database. I don't think that's the case anymore but there are other options as well. Squirellmail and Imp come to mind. </p>
+
+<p>Pros - access email from ANYWHERE that has a web browser.<br />
+Cons - Dedicated IP address required for ssl.</p>
+
+<p>2) Webdav - search google</p>
+
+<p>I did a test with this and it left a sour taste in my mouth. It's probably me but it just didn't feel secure. Sure you can wrap it in ssl but I didn't like that I would have to give an IP address to each site that needed webdav access. It also didn't have any real authentication built in. If things have changed, I'd look at it again but for now I'm going to let it slide. There are other ways to do things.</p>
+
+<p>3) User certificates - </p>
+
+<p>I'm thinking about issuing these for people when it comes to using webmin and webmail.  I already use one for the admin account to webmin. Seems the most secure to me. I'll take any emails from detractors though.</p>
+
+<p>That leads me to the final point. If anyone has any comments about personal experiences with any of the things I've discussed, I'd be glad to hear them. If you use any of the services on lusis.org, let me know as well how it might impact you. Maybe we can reach a workaround.</p>
+
+<p>Hope this provides some interesting information and look for some tools (shell scripts, delphi applications, tutorials) that I'll be creating to do some of these things.</p>
+
+
+<div class="posted">Posted by pugsly at <a href="http://www.lusis.org/mt/lusis/archives/2002_11.html#000058">03:48 PM</a></div>
+</div>
+
+
+
+</div>
+</div>
+</div>
+<div id="links">
+<div class="powered">
+  Powered by<br /><a href="http://www.movabletype.org">Movable 
+  Type 2.64</a><br />
+  <br /> 
+  Template by<br />
+  <!--this template was modified from the original movable type templates by 
+  Kristine of Love-productions and blogstyles.
+  I'd appreciate it if you would keep a link back to blogstyles with this template!-->
+  <a href="http://blogstyles.com" target="_blank">BLOG<styles></a></div>
+</div>
+
+</body>
+</html>
