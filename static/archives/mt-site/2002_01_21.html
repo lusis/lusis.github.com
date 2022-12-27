@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<title>lusis.org: January 21, 2002 Archives</title>
+
+<link rel="stylesheet" href="http://www.lusis.org/mt/lusis//a3col.css" type="text/css" />
+
+</head>
+
+<body>	
+
+<div id="banner">
+lusis.org<br />
+<span class="description">We play the blaming game. Rants of a libertarian geek.</span>
+</div>
+
+<div class="container">
+
+<div id="content">
+<div id="menu">
+
+<a href="http://www.lusis.org/mt/lusis/archives/2002_01_01.html">« January 01, 2002</a> |
+
+<a href="http://www.lusis.org/mt/lusis/">Main</a>
+
+| <a href="http://www.lusis.org/mt/lusis/archives/2002_01_29.html">January 29, 2002 »</a>
+
+</div>
+<br>
+<div class="blog">
+
+
+
+<div class="date">January 21, 2002</div>
+
+
+<div class="blogbody">
+<a name="000020"></a>
+<span class="title">Sometimes I hate software vendors.</span>
+
+<p>It seems they go out of thier way to piss of network admins.</p>
+
+
+<p>Let's take for example one <a href="http://www.webex.com">WebEx</a></p>
+
+<p>This is from <a href="http://www.maxagrid.com/Technical/WebEx/WebExSecurity.html">Maxagrid.com</a>  about the WebEx plugin:</p>
+
+<p><i>When establishing this connection, the client first attempts to connect using TCP port 1270. If this port is blocked by a firewall, the client will tunnel the communications using HTTP port 80. Establishing communications in this manner eliminates the need to reconfigure firewalls to take advantage of the meeting center. This helps ensure compliance with corporate firewall policies for optimal security. The WebEx client is firewall friendly and will work seamlessly with proxy servers and firewall deployments.</i></p>
+
+<p>Note that WebEx will happily tunnel through http if it can't get a direct connection!</p>
+
+<p><b>DAMNIT I DON'T WANT IT TO TUNNEL THROUGH HTTP!</b></p>
+
+<p>I am tired of everyone and his uncle writing applications that will "happily" tunnel through http. I have a network to run. I have my job on the line in relation to security and this network. Why can't these damn companies work WITH firewall developers and not against them? I had the hardest damn time just blocking gnutella and other P2P apps. Now many of the slashdot ilk will tell me  I shouldn't block them but most of those people are 12 and have never worked in a corporate environment much less flipped a burger at the local Arby's.</p>
+
+<p>Understand this software developers. The network of another company is not yours to play around with.  If I have to, I will block every damn class C I find that does this crap. I did it with napster and I did it with the Gnutella hubs and I did it with Musiccity and I'll damn sure block any traffic with squid to any regex that even REMOTLY matches WebEx. It's all I have left to do.</p>
+
+<p>Users. You are at work to (duh!) work. Downloading the latest fucking movie off Morpheus is not your job. That is unless you work for those wanker companies that scan P2P for copyright (what a joke) violations. </p>
+
+<p>Maybe we'll get to the point (aren't we there yet with stateful inspection?) that can block a packet based on the packet itself. I'd love to see that implemented into ipf, pf or iptables at some point. I don't care that I need a beefy box to be my firewall as long as I can say I've done my best to block unwanted traffic.</p>
+
+<p>I guess I'm done now ranting and I still don't feel any better. WebEx, you can blow me and I'm off to write a regex for Squid.<br />
+</p>
+
+
+<div class="posted">Posted by pugsly at <a href="http://www.lusis.org/mt/lusis/archives/2002_01.html#000020">04:20 PM</a></div>
+</div>
+
+
+
+</div>
+</div>
+</div>
+<div id="links">
+<div class="powered">
+  Powered by<br /><a href="http://www.movabletype.org">Movable 
+  Type 2.64</a><br />
+  <br /> 
+  Template by<br />
+  <!--this template was modified from the original movable type templates by 
+  Kristine of Love-productions and blogstyles.
+  I'd appreciate it if you would keep a link back to blogstyles with this template!-->
+  <a href="http://blogstyles.com" target="_blank">BLOG<styles></a></div>
+</div>
+
+</body>
+</html>

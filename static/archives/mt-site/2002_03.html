@@ -1,0 +1,291 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<title>lusis.org: March 2002 Archives</title>
+
+<link rel="stylesheet" href="http://www.lusis.org/mt/lusis//a3col.css" type="text/css" />
+
+</head>
+
+<body>	
+
+<div id="banner">
+lusis.org<br />
+<span class="description">We play the blaming game. Rants of a libertarian geek.</span>
+</div>
+
+<div class="container">
+
+<div id="content">
+<div id="menu">
+
+<a href="http://www.lusis.org/mt/lusis/archives/2002_02.html">« February 2002</a> |
+
+<a href="http://www.lusis.org/mt/lusis/">Main</a>
+
+| <a href="http://www.lusis.org/mt/lusis/archives/2002_04.html">April 2002 »</a>
+
+</div>
+<br>
+<div class="blog">
+
+
+
+<div class="date">March 25, 2002</div>
+
+
+<div class="blogbody">
+<a name="000031"></a>
+<span class="title">Quick and dirty hack for PDF printing</span>
+
+<p>I mentioned this on newsforge in response to the StarOffice article. I wanted to put a copy here for people who might not see that article.</p>
+
+
+<p>"The facts:</p>
+
+<p>1 - We need to cut costs. <br />
+2 - We have an occasional need to print to pdf format. <br />
+3 - Adobe PDF writer is expensive. <br />
+4 - What does John think we should do?</p>
+
+<p>After thinking for a moment, I came to another set of facts.</p>
+
+<p>1 - Under kde, I can print to pdf.<br />
+2 - I need the same thing on a network.<br />
+3 - Many printer drivers are postscript.<br />
+4 - Ghostscript has a ps2pdf command.</p>
+
+<p>How could I leverage this to my advantage?</p>
+
+<p>I googled a bit for a solution. I found a couple of sample scripts but nothing that fit the bill exactly. Below you can find the script I use as well as a section from my smb.conf for the printer:<br />
+<pre><br />
+#!/bin/sh<br />
+# I straight up stole this from somewhere on the web. I added alot of my own stuff. - JEV<br />
+DATE=`date +%b%d-%H%M%S`</p>
+
+<p>OUTDIR=/shr/pdfdropbox</p>
+
+<p># take the input from a postscript printdriver and convert to pdf<br />
+ps2pdf13 $1 $OUTDIR/$2-$DATE.temp<br />
+# optimize for quicker loading in Acrobat<br />
+pdfopt $OUTDIR/$2-$DATE.temp $OUTDIR/$2-$DATE.pdf<br />
+# Grab a snapshot in text format of the first page of the document to add to the email body<br />
+pdftotext -f 1 -l 1 $OUTDIR/$2-$DATE.pdf $OUTDIR/$2-$DATE.txt<br />
+# use mpack to mail the file along with using the first page of the document in <br />
+# text format as the message body</p>
+
+<p># this is fairly limited because it will only send to someone on OUR mailserver<br />
+mpack -s ""PDF file - First page in message body"" -d $OUTDIR/$2-$DATE.txt  \\<br />
+$OUTDIR/$2-$DATE.pdf $2@yourdomainhere.com</p>
+
+<p># clean up all the random shit we left lying around<br />
+rm -rf $1 $OUTDIR/$2-$DATE.*<br />
+</pre><br />
+from smb.conf:<br />
+<pre><br />
+[PDF Printer]<br />
+        comment = PDF Printer<br />
+        path = /tmp<br />
+        # force user = nobody<br />
+        guest ok = Yes<br />
+        printable = Yes<br />
+        print command = /usr/bin/printpdf %s %U<br />
+</pre><br />
+You'll need mpack which you can get <a href=""http://www.pcc.com/~jay/src/mail_news/mpack-1.5/ORIGINALS/"">here</a>. You could do the same thing with metamail (as the link says) but I was in a hurry.</p>
+
+<p>Under windows, we set up the printer as an HP Color LaserJet 5/5M PS. This is a good solid Postscript printer driver. Set it always to color and you're all set. Here's an example of the email it sends you. The text below is the body of the email message:</p>
+
+<p><i><br />
+Tech News - CNET.com                                                                                                                                                               Page 1 of 1</p>
+
+<p><br />
+                                                                        CNET tech sites: Price Comparisons | Product Reviews | Tech News | Downloads | Site map</p>
+
+<p>                                                                                                              Last Updated: Mar 25, 2002 12:03 PM</p>
+
+<p><br />
+                                                                                               </p>
+
+<p></p>
+
+<p><br />
+                                                                                                                               Search <br />
+                                                    Special Report                                   Personal Technology                                              <br />
+                                 Java jigsaw                                          PCs with pizzazz                                                          ©     <br />
+                                                                                                                                     ¡    ¢£¥¤    ¦§    ¨       §   <br />
+                                 As Sun enters its 20th year, it                      The PC industry is grappling <br />
+                                 faces a crucial dilemma: how                         with prices and profits. But <br />
+                                 to finally profit from Java's                        gamers are keeping one part                <br />
+                                 popularity with rivals.                              of the market red-hot.                    PlayStation 3:  <br />
+                                 * Stirring up Web services                                                                     The next generation  <br />
+                                                                                                                                 E-mail giants  <br />
+              Proposed anti-piracy bill draws fire                                                                              change the rules  <br />
+              Government and industry leaders say lawmakers would in effect decide the tech industry's                           <br />
+              ""winners and losers"" if proposed government controls on digital media devices become                              IBM acts to quell <br />
+              reality.                                                                                                          hard-drive concerns  <br />
+                                                                                                                                 <br />
+              March 25, 2002, 10:30 AM PST                                                                                      Easter egg hunt  <br />
+              eBay antitrust probe closed                                                                                       leads to DVDs  <br />
+                                                                                                                                 <br />
+              The Justice Department discontinues its investigation without taking any action against the                                                                 More <br />
+              online auction giant's conduct toward auction sites that list its content.  <br />
+              March 25, 2002, 10:00 AM PST </p>
+
+<p>              Intel unrolls Blueprints program  <br />
+              The company is offering corporations a series of designs to get technology installations up <br />
+              and running faster--and maybe drum up some chip business as well. <br />
+              March 25, 2002, 8:30 AM PST <br />
+              Cisco may cash in on spending rebound                                                                              <br />
+                                                                                                                                                  Is the Web making <br />
+              Last month was slow for IT and network spending by large corporate customers outside the                          the grade? <br />
+              telecom sector. But one analyst says the networking giant should benefit as things pick up.                       Jakob Nielsen, founder, Nielsen <br />
+              March 25, 2002, 9:45 AM PST                                                                                       Norman Group <br />
+              Travelocity levies fee on United tickets  <br />
+              update Responding to some airlines' decision to nix travel agents' commissions on ticket </p>
+
+<p><br />
+http://www.news.com/                                                                                                                                                                3/25/2002<br />
+</i></p>
+
+<p><a href=""http://www.lusis.org/samplepdf.pdf"">Here</a> is an example of the printed pdf. I only printed the first page and I also set it for landscape mode.</p>
+
+<p>A few caveats:<br />
+1 - Some fonts look like ass no matter what. This isn't an issue since the things we print to pdf are pretty standard.<br />
+2 - No security whatsoever.This seems to be soley in the domain of Adobe. And we all know what to think of adobe and security eh?<br />
+3 - No extra features. Like I said, this is a pretty limited and at the same time powerful solution. If you don't need a password protected pdf or any of the nifty indexing features, this is your tool.</p>
+
+<p>Hope this helps someone somewhere.</p>
+
+
+<div class="posted">Posted by pugsly at <a href="http://www.lusis.org/mt/lusis/archives/2002_03.html#000031">03:34 PM</a></div>
+</div>
+
+
+
+
+
+<div class="date">March 16, 2002</div>
+
+
+<div class="blogbody">
+<a name="000030"></a>
+<span class="title">Wow...again I say wow</span>
+
+<p>I just bought the "Queen of the Damned" soundtrack and it kicks some SERIOUS ass.</p>
+
+
+<p>"I've been a fan of Korn (and specifically Jon Davis) for several years now. I used to think that Korn was nothing but a white-trash metal band. I enjoyed hearing a few songs from ""Life Is Peachy"" on the radio but nothing that stuck with me.</p>
+
+<p>Then one day my ex-roomate, ninja, played ""Daddy"" for me. I've been a fan ever since. That song made me realize the depth that Jon Davis could sing with and his talent as a musician. Korn never ceases to amaze me with each album.</p>
+
+<p>When I heard that Jon Davis wrote some of the songs for ""Queen of the Damned"", I knew I had to have the soundtrack.</p>
+
+<p>I haven't seen the movie yet. But at least I can listen to the music.</p>
+
+<p>I knew that due to some contact bullshit, Jon Davis couldn't sing on the soundtrack but that he called in a few favors for vocals.( or at least the label did )</p>
+
+<p>Wayne Static (of Static-X)<br />
+David Draiman (of Disturbed)<br />
+Chester Bennington (of Linkin Park)<br />
+Marylin Manson (of weirdo fame ;>)<br />
+Jay Gordon (of Orgy)</p>
+
+<p>Tell me that's not a killer lineup? </p>
+
+<p>The album also has various other songs already out an about from other band's albums like the Deftones (Change), Papa Roach (who cares? allthough I did see the lead singer guy at the Atlanta Airport the last time Michelle came down), Static-X and even Tricky (this man is a god).</p>
+
+<p><br />
+A few other interesting notes about the album:</p>
+
+<p>Head and Munkey  played guitars on all almost all the songs that Davis wrote.</p>
+
+<p>Richard Gibbs (of Oingo Boingo and several other projects) teamed up with Davis and a full orchestra to do the score. </p>
+
+<p>When I read the name Richard Gibbs, I wasn't initally sure who he was. After all, the only person people remember from Oingo Boingo is Danny Elfman ;)</p>
+
+<p>I hit AMG and looked him up. The first set of results listed a TON of gospel albums. I clicked for more information and verified that it was the same guy. Wacky. It seems this guy gets around more than a drunk sorority girl at U.G.A.</p>
+
+<p>All in all I seriously suggest you get this cd. It's actually the first cd I've bought in several years without having first downloaded it from the internet to decide if I like it.</p>
+
+<p>Here are some links about the cd:</p>
+
+<p><a href="http://www.allmusic.com/cg/amg.dll?p=amg&sql=A7gq5g4jptv8z">All Music guide entry on the cd</a></p>
+
+<p><a href="http://www.allmusic.com/cg/amg.dll?p=amg&sql=Bmvzyxdfbjol7">AMG Entry for Richard Gibbs</a></p>
+
+<p><a href="http://www.shoutweb.com/interviews/jonathand0302.phtml">Shoutweb interview with Jon Davis</a>(check out the bizzare picture!)</p>
+
+
+<div class="posted">Posted by pugsly at <a href="http://www.lusis.org/mt/lusis/archives/2002_03.html#000030">01:37 PM</a></div>
+</div>
+
+
+
+
+
+<div class="date">March 02, 2002</div>
+
+
+<div class="blogbody">
+<a name="000029"></a>
+<span class="title">Slashdot goes subscription</span>
+
+<p>Well it seems slashdot plans on going to a subscription service.</p>
+
+
+<p>"And I could give a rat's ass. </p>
+
+<p>I don't read slashdot as often as I used to. I am an old school slashdot reader too. It just seems that things went the way of the dodo. The trolls took over for a while and that really turned me off. I went over to <a href=""http://www.kuro5hin.org"">K5</a> and started getting involved in some discussions that actually involved people of intelligence. People who were over the age of 15 and had actually dealt with and been involved in a corporate job for any amount of time.</p>
+
+<p>But this isn't a rail against slashdot and the current state of affairs. It's about the subscription service they will be using soon. I'm not even going to bitch about the fact that they are charging for something that was once free. Here's what I plan on bitching about.....</p>
+
+<p>slashdot is charging the people who make slashdot so popular.</p>
+
+<p>You see, slashdot doesn't provide any sort of service or any information that couldn't be gotten elsewhere. Sure we can read about Rob proposing to his girlfriend (congrats by the way, and I mean that!). We can read about Jeff's shit getting burned in a fire (way back when). We can even read the Katz stories about C64's in Ashcanistan (or was it an Amiga? ;>) being used to download movies and games for the first time in years if we didn't all have his stories filtered out. </p>
+
+<p>But that's it. There are occasionally some good book reviews (which are contributed by others for the most part), but by in large, slashdot is a collection of links to OTHER things on the web and a discussion about those links from other people. Slashdot doesn't produce anything. The inbreeding that is OSDN does not count. A thinkgeek banner from slashdot doesn't count.</p>
+
+<p>I feel bad for the guys honestly. Slashdot is a monster that *I* wouldn't want to handle. Dealing with 14 yr old dickheads that now are devising ways to cost them as much money as possible is NOT going to be fun but banner ads were and always will be a horrible idea.</p>
+
+<p>The web is NOT the same medium as TV. It doesn't work that way. I think <a href=""http://www.fuckedcompany.com"">pud</a> had it right when he created httpads. </p>
+
+<p>Personally I haven't seen a banner ad in a long time. I used junkbuster (and now guidescope) to filter them out. My time is valuable. Waiting for a page to load because of some wanker-ass punch the monkey banner takes up that time.</p>
+
+<p>What the guys at slashdot need to do is farm themselves out as perl guru's. Maybe write custom extensions to slashcode for companies that need a service like slashdot. I could care less if slashcode was GPL or not. I don't think it would be as powerful as it is today if it weren't but if Rob/Jeff/et. al had said from the start ""Slashdot will always be free but slashcode will not so it can subsidize slashdot itself"" I would have been just as happy. What better advertising can a product want than to be one of the single most popular points on the web and prove it's ability as such?<br />
+I guess what I'm trying to say is this.</p>
+
+<p>If you plan on starting a website from now on, make everything clear up front. If you provide a tangible service to someone, charge for it from the get go. Find that point where people actually WANT to pay you. Find that balance between free and pay content. Make it worth it. I'm all for opensource. I think it's a viable business model. I think that software will eventually become a commodity and that people will only care to pay when you value add. I buy copies of redhat to this day. Not only because I support the company, but because I like the bumper stickers ;) I don't need a manual. I don't need a getting started guide. I do like having access to system profiles online so I can see at a glance what updates I need for each of my systems. Sure I could do it myself but as I said in before, my time is valuable. When I'm not dealing with Sharp's shitty ass copier products, I'm dealing with a Norstar Modular ICS 4.1 and startalk combination. I'm thinking of ways to help save the company money by using SDMS as a document management system for our sales team.  You see my point? Most of the people who read slashdot and fall under the age of 18 have no clue what it means to make a living. Not all but most. They don't understand what it means to deal with the larger stuff and putting off your own personal agenda in the face of a solution that works.</p>
+
+<p>It all boils down to this: slashdot is going to start charging to block out banner ads and I don't care. </p>
+
+<p>You see, this is my personal website graciously allowed to be hosted by my boss in exchange for a place to host his own website. I can say whatever I want because I control the router.</p>
+
+<p>Oh yeah and if anyone plans on linking this elsewhere (it could happen but it wouldn't matter either way) at least let me know first so I can create a static page for people to use and maybe get a mirror up first."<br />
+</p>
+
+
+<div class="posted">Posted by pugsly at <a href="http://www.lusis.org/mt/lusis/archives/2002_03.html#000029">08:20 PM</a></div>
+</div>
+
+
+
+</div>
+</div>
+</div>
+<div id="links">
+<div class="powered">
+  Powered by<br /><a href="http://www.movabletype.org">Movable 
+  Type 2.64</a><br />
+  <br /> 
+  Template by<br />
+  <!--this template was modified from the original movable type templates by 
+  Kristine of Love-productions and blogstyles.
+  I'd appreciate it if you would keep a link back to blogstyles with this template!-->
+  <a href="http://blogstyles.com" target="_blank">BLOG<styles></a></div>
+</div>
+
+</body>
+</html>

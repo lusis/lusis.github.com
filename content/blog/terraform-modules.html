@@ -1,0 +1,413 @@
+
++++
+title = "Terraform modules for fun and profit"
+date = "2015-10-12"
+slug = "2015/10/12/terraform-modules-for-fun-and-profit/"
+Categories = []
++++
+
+
+<p>I&rsquo;ve been using it for a while on a smaller scale but a recent project at <a href="http://stormpath.com">work</a> had me putting it through its paces and working out the issues I had. A few of my issues in the past have revolved around:</p>
+
+<ul>
+<li>reusability</li>
+<li>composability</li>
+<li>lifecycle</li>
+<li>&ldquo;safety&rdquo; (i.e. don&rsquo;t blow away an entire running stack accidentally)</li>
+<li>scope</li>
+</ul>
+
+
+<h1>Scope</h1>
+
+<p>One of the mistakes I made when first using terraform was trying to &ldquo;do too much&rdquo; with it. Like many people, I wanted to see how much I could replace the &ldquo;fragility&rdquo; of existing CM-focused stacks (i.e. <code>knife ec2</code> commands in a NOTES.md file) with something &ldquo;better&rdquo;.</p>
+
+<p>As I used Terraform, I tried to put more and more logic into it. I ended up fighting trying to get things like data about the current launch into userdata. Once I scaled back the scope of what I tried to do with Terraform, it became much easier to use it &ldquo;the right way&rdquo;. Combined with Packer to build images with just a BIT more baked in, things got much easier.</p>
+
+<p>If you can&rsquo;t bake immutable amis for your stack (and I think that most non-trivial cases can&rsquo;t yet), don&rsquo;t try to fit application lifecycle into terraform. I would argue that fitting application lifecycle into terraform is too much for a few reason.</p>
+
+<h1>Safety</h1>
+
+<p>Terraform does its job really well. Too well sometimes. Imagine the following scenario:</p>
+
+<ul>
+<li>provision VPC</li>
+<li>provision ELB</li>
+<li>provision an RDS instance</li>
+<li>provision instances with userdata to pull an application and run it</li>
+</ul>
+
+
+<p>You stand up your infrastructure with Terraform using the steps above. All is well. Now you need release a new version of your application.</p>
+
+<ul>
+<li>update the userdata to pull the new version of the application</li>
+<li><code>terraform apply</code></li>
+</ul>
+
+
+<p>Boom you&rsquo;ve just updated yourself into an outage. Any change you make to your terraform code will cause terraform to destroy that resource and recreate it.
+Now terraform has the following:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>lifecycle {
+</span><span class='line'>  create_before_destroy = true
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>but it does have limitations and you&rsquo;re forcing everyone to not forget to add that. Honestly that doesn&rsquo;t instill too much confidence that I won&rsquo;t automate myself in the foot.</p>
+
+<p>I realized the trick to terraform safety is to minimize the number of tf files you might have to modify as standard operation. By limiting its scope appropriately and through reuse/composability you can do this. About that reuse thing&hellip;</p>
+
+<h1>Composability/Reuse</h1>
+
+<p>And now we get to the part that will level up your Terraform game - using modules.</p>
+
+<p>The problem is that Terraform modules are currently the least documented part of the Terraform ecosystem either in the official documentation or the community precisely because they are a bit difficult to grok. At the end I&rsquo;m going to point you to some community resources that helped me figure it all out myself.</p>
+
+<h2>Outputs</h2>
+
+<p>The biggest thing that helped me understand modules was finally groking that <a href="https://www.terraform.io/docs/configuration/outputs.html">outputs</a> are NOT just for displaying at the end of a <code>terraform apply</code> or for use as variables in subshells with <code>terraform output</code>.</p>
+
+<p>When using modules, outputs are essentially part of the public API to your module. Once I framed it this way I realized that Terraform modules are libraries except there are no methods to call.</p>
+
+<h2>Modules as Libraries</h2>
+
+<p>A module defines its contract in two ways:</p>
+
+<ul>
+<li>Here are the inputs I can take</li>
+<li>Here are the outputs I give you</li>
+</ul>
+
+
+<p>Once you start moving some of your Terraform code into modules, you will be forced to create this contract for yourself. Let&rsquo;s take an example from AWS that is highly reusable, VPC creation:</p>
+
+<h3>variables.tf</h3>
+
+<p>First we define our inputs in <code>variables.tf</code>:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>variable "mymod_region" {}
+</span><span class='line'>variable "mymod_az" {}
+</span><span class='line'>variable "mymod_vpc_cidr" {}
+</span><span class='line'>variable "mymod_private_subnet" {}
+</span><span class='line'>variable "mymod_public_subnet" {}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We&rsquo;re defining 5 inputs for this VPC all prefixed with <code>mymod</code> (more on that in a moment). This module is for creating a VPC that has two subnets - one for instances that get public IPs (like a nat instance) and one for private instances. We could add others here (and our internal vpc module actually provides for a subnet in each AZ of the region used). You can certainly provide sane defaults for these if the module is intended for specific internal use but I would say NOT to do that in the interest of forcing yourself to make it properly reusable.</p>
+
+<h3>outputs.tf</h3>
+
+<p>Now we define some outputs:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>output "vpc_id" { value = "${aws_vpc.default.id}" }
+</span><span class='line'>output "private_subnet_id" { value = "${aws_subnet.private.id}" }
+</span><span class='line'>output "public_subnet_id" { value = "${aws_subnet.public.id}" }</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This is where we return things in the format that most people are used to seeing in terraform (<em>resource.name.attribute</em>).
+At this point we now have a module that takes information in, does something and spits back out some data for us.</p>
+
+<h2>Using the module</h2>
+
+<p>Now let&rsquo;s say we need to launch an instance into the public subnet and we want to use this VPC module. So we create a new terraform project/repo with the following files:</p>
+
+<ul>
+<li><code>main.tf</code>: Holds our module import definitions.</li>
+<li><code>instance.tf</code>: Terraform code for the instance resource.</li>
+<li><code>outputs.tf</code>: The data we&rsquo;re outputing</li>
+<li><code>variables.tf</code>: The variables we&rsquo;re using</li>
+</ul>
+
+
+<h3><code>variables.tf</code></h3>
+
+<p>We&rsquo;ll start here. You&rsquo;ll notice we&rsquo;re going to mix and match our variables for the instance as well as the ones needed by the VPC module. I&rsquo;m not going to include all of the things I might make a variable in the interest of length:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>variable "aws_region" { default = "us-west-2" }
+</span><span class='line'>variable "az" { default = "us-west-2a" }
+</span><span class='line'>variable "ami" {}
+</span><span class='line'>variable "vpc_cidr" {}
+</span><span class='line'>variable "private_subnet" {}</span></code></pre></td></tr></table></div></figure>
+
+
+<h3><code>main.tf</code></h3>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>provider "aws" { region = "${var.aws_region}" }
+</span><span class='line'>module "vpc" {
+</span><span class='line'>  source = "git::ssh://git@gitserver/org/my-tf-modules//vpc" // double slash intended. See terraform documentation
+</span><span class='line'>  mymod_region = "${var.aws_region}"
+</span><span class='line'>  mymod_az = "${var.az}"
+</span><span class='line'>  mymod_vpc_cidr = "${var.vpc_cidr}"
+</span><span class='line'>  mymod_private_subnet = "${var.private_subnet}"
+</span><span class='line'>  mymod_public_subnet = "${var.public_subnet}"
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The reason I prefixed the inputs in the VPC module was to help with clarity. This is why it makes it (for me) easier to see where the flow of inputs and outputs is.</p>
+
+<h3><code>instance.tf</code></h3>
+
+<p>I&rsquo;m going to truncate this code a bit only to show where we reuse the various variables:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>resource "aws_instance" "node1" {
+</span><span class='line'>  ami = "${var.ami}"
+</span><span class='line'>  subnet_id = "${module.vpc.private_subnet_id}"
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>As you can see we&rsquo;re using a bit of our local variables (the ami) with the variables from the VPC module. Obviously there are other things that are required here to actually launch that resource but you get the idea.</p>
+
+<h2>Some gotchas with modules</h2>
+
+<p>These aren&rsquo;t hard and fast rules but they will help your sanity</p>
+
+<h3>Don&rsquo;t nest modules</h3>
+
+<p>Looking above you might think that you could convert that into another module (an instance module which uses the VPC module). Don&rsquo;t.
+Module variable/output visibility is from the ROOT module only. In the case of nested module usage, the root module is not the one you&rsquo;re writing but the transitive module&rsquo;s caller.</p>
+
+<p>If you were to try and create a module that does these things you would end up needing to create inputs on each outer module to pass down to any modules IT calls as well as outputs to bubble the information all the way back up to the code from where you&rsquo;re using the module.</p>
+
+<p>i.e:</p>
+
+<ul>
+<li>instance module will need to define inputs that it accepts to pass to the vpc module</li>
+<li>instance module will need to define outputs that duplicate what is returned from the vpc module</li>
+</ul>
+
+
+<p>That becomes VERY cumbersome. Be very shallow with your module usage. Use a single wrapper project to pull in all the modules you need.</p>
+
+<h2>You can duplicate modules under different names</h2>
+
+<p>This is very handy (though cumbersome in terms of duplication of code). The following is from one of our internal &ldquo;wrapper&rdquo; project that launches a 3-node version of our stack for testing</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+<span class='line-number'>64</span>
+<span class='line-number'>65</span>
+<span class='line-number'>66</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>resource "aws_key_pair" "deployer" {
+</span><span class='line'>  key_name = "${var.orgname}-deployer-key"
+</span><span class='line'>  public_key = "${file("${var.orgname}-deployer-key.pub")}"
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>module "vpc" {
+</span><span class='line'>  source = "git::ssh://git@repo/org/tf-modules.git//vpc"
+</span><span class='line'>  spath_orgname = "${var.orgname}"
+</span><span class='line'>  spath_nat_ami = "${lookup(var.amis, var.aws_region)}"
+</span><span class='line'>  spath_nat_a_private_ip = "${var.nat_a_private_ip}"
+</span><span class='line'>  spath_nat_b_private_ip = "${var.nat_b_private_ip}"
+</span><span class='line'>  spath_nat_c_private_ip = "${var.nat_c_private_ip}"
+</span><span class='line'>  spath_public_subnet_a_cidr = "${var.public_subnet_a_cidr}"
+</span><span class='line'>  spath_public_subnet_b_cidr = "${var.public_subnet_b_cidr}"
+</span><span class='line'>  spath_public_subnet_c_cidr = "${var.public_subnet_c_cidr}"
+</span><span class='line'>  spath_private_subnet_a_cidr = "${var.private_subnet_a_cidr}"
+</span><span class='line'>  spath_private_subnet_b_cidr = "${var.private_subnet_b_cidr}"
+</span><span class='line'>  spath_private_subnet_c_cidr = "${var.private_subnet_c_cidr}"
+</span><span class='line'>  spath_vpc_cidr = "${var.vpc_cidr}"
+</span><span class='line'>  spath_keyname = "${var.orgname}-deployer-key"
+</span><span class='line'>  aws_region = "${var.aws_region}"
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>module "rds" {
+</span><span class='line'>  source = "git::ssh://git@repo/org/tf-modules.git//rds"
+</span><span class='line'>  spath_orgname = "${var.orgname}"
+</span><span class='line'>  iam_rds_user = "${var.iam_rds_user}"
+</span><span class='line'>  iam_rds_password = "${var.iam_rds_password}"
+</span><span class='line'>  spath_rds_sg_id = "${module.vpc.default_sg_id}"
+</span><span class='line'>  spath_rds_private_subnet_a_id = "${module.vpc.private_subnet_a_id}"
+</span><span class='line'>  spath_rds_private_subnet_b_id = "${module.vpc.private_subnet_b_id}"
+</span><span class='line'>  spath_rds_private_subnet_c_id = "${module.vpc.private_subnet_c_id}"
+</span><span class='line'>  aws_region = "${var.aws_region}"
+</span><span class='line'>}
+</span><span class='line'>module "dockernode_subnet_a" {
+</span><span class='line'>  source = "git::ssh://git@repo/org/tf-modules.git//dockerhost"
+</span><span class='line'>  spath_orgname = "${var.orgname}"
+</span><span class='line'>  dockernode_ami = "${lookup(var.amis, var.aws_region)}"
+</span><span class='line'>  dockernode_keypair_name = "${var.orgname}-deployer-key"
+</span><span class='line'>  dockernode_subnet_id = "${module.vpc.private_subnet_a_id}"
+</span><span class='line'>  dockernode_az = "${module.vpc.private_subnet_a_az}"
+</span><span class='line'>  dockernode_sg_id = "${module.vpc.default_sg_id}"
+</span><span class='line'>  aws_region = "${var.aws_region}"
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>module "dockernode_subnet_b" {
+</span><span class='line'>  source = "git::ssh://git@repo/org/tf-modules.git//dockerhost"
+</span><span class='line'>  spath_orgname = "${var.orgname}"
+</span><span class='line'>  dockernode_ami = "${lookup(var.amis, var.aws_region)}"
+</span><span class='line'>  dockernode_keypair_name = "${var.orgname}-deployer-key"
+</span><span class='line'>  dockernode_subnet_id = "${module.vpc.private_subnet_b_id}"
+</span><span class='line'>  dockernode_az = "${module.vpc.private_subnet_b_az}"
+</span><span class='line'>  dockernode_sg_id = "${module.vpc.default_sg_id}"
+</span><span class='line'>  aws_region = "${var.aws_region}"
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>module "dockernode_subnet_c" {
+</span><span class='line'>  source = "git::ssh://git@repo/org/tf-modules.git//dockerhost"
+</span><span class='line'>  spath_orgname = "${var.orgname}"
+</span><span class='line'>  dockernode_ami = "${lookup(var.amis, var.aws_region)}"
+</span><span class='line'>  dockernode_keypair_name = "${var.orgname}-deployer-key"
+</span><span class='line'>  dockernode_subnet_id = "${module.vpc.private_subnet_c_id}"
+</span><span class='line'>  dockernode_az = "${module.vpc.private_subnet_c_az}"
+</span><span class='line'>  dockernode_sg_id = "${module.vpc.default_sg_id}"
+</span><span class='line'>  aws_region = "${var.aws_region}"
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You can see we&rsquo;re reusing the &ldquo;dockerhost&rdquo; module three times under different names. This is because we want to launch a host in each AZ in the region. Terraform currently lacks logic for making that sort of balancing easy so we do it this way. Also note that we&rsquo;re refering to other modules in when pass information into another module.</p>
+
+<p>This is okay as this is our root module and it has that visibility.</p>
+
+<h2>Let the graph resolver work for you</h2>
+
+<p>If you can avoid it, don&rsquo;t try to define dependencies yourself (i.e. using <code>depends_on</code>. You can&rsquo;t use it in module blocks anyway). Instead use variable names that give Terraform the information it needs to build the dependency graph itself. By using <code>${module.vpc.private_subnet_c_id}</code> as the <code>subnet_id</code> for <code>dockernode_subnet_c</code>, Terraform can infer the dependency itself and know that it needs to run that module FIRST before touching this one.</p>
+
+<h2>None of this addresses tfstate</h2>
+
+<p>Everything I&rsquo;ve shown so far doesn&rsquo;t address reusing STATE from a terraform run. These modules are great if you want to provide reusable code that people can use for standing up VPCs but what if you want to share the VPC itself.</p>
+
+<p>Recently terraform has added support for <a href="https://www.terraform.io/docs/state/remote.html">&ldquo;remote state&rdquo;</a>. This allows you to pull in the outputs of another terraform run so that it can be used elsewhere.</p>
+
+<p>If you recall earlier I mentioned that minimizing the need to touch terraform files after initial run helps to cut down on the risk of inadvertant destruction of resources. By using the remote state functionality you can provision your main VPC and refer to its IDs in other terraform code without having to touch the base VPC code.</p>
+
+<p>Mind you this does mean that the modifier of the VPC could could accidentally wipe infrastructure but this is a step in the right direction.</p>
+
+<h2>Don&rsquo;t forget about <code>null_resource</code></h2>
+
+<p>While it doesn&rsquo;t participate in the graph fully, the <code>null_resource</code> can come in really handy. It&rsquo;s currently undocumented but you can see an example of usage <a href="https://gist.github.com/lusis/9c0fd50e0de51c3d80b2">here</a>.</p>
+
+<p>The <code>null_resource</code> allows you to attach to run provisioners outside of a formal resource (such as an instance). You&rsquo;ll probably have to be explicit with dependencies when using the null resource but the limited to scope for it should be okay.</p>
+
+<h2>paths, paths and more paths</h2>
+
+<p>You may notice that our vpc module above makes reference to nat nodes. Our model for VPC usage is one Nat instance per AZ. The nat instance creation, however, is scoped inside the VPC module. It also happens to use a <code>remote-exec</code> provisioner (which requires the SSH key that we create as part of the wrapping terraform scripts).</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>resource "aws_instance" "nat_a" {
+</span><span class='line'>  // elided
+</span><span class='line'>  provisioner "remote-exec" {
+</span><span class='line'>    inline = [ "printf '${template_file.iptables_config.rendered}' &gt; /tmp/iptables.sav" ]
+</span><span class='line'>    connection {
+</span><span class='line'>        type = "ssh"
+</span><span class='line'>        user = "admin"
+</span><span class='line'>        key_file = "${path.cwd}/${var.spath_keyname}"
+</span><span class='line'>        agent = false
+</span><span class='line'>    }
+</span><span class='line'>  }
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here we define the path to the key file as being in <code>path.cwd</code>. This means we can create the ssh key in a wrapper terraform script, dump it to the current directory and the nat instance creation will know how to find it. There are other path variables availble (from the TF documentation</p>
+
+<blockquote><p>To reference path information, the syntax is path.TYPE. TYPE can be cwd, module, or root. cwd will interpolate the cwd. module will interpolate the path to the current module. root will interpolate the path of the root module. In general, you probably want the path.module variable.</p><footer><strong>terraform</strong> <cite><a href='https://www.terraform.io/docs/configuration/interpolation.html'>www.terraform.io/docs/&hellip;</a></cite></footer></blockquote>
+
+
+<h2>Modules are vendored</h2>
+
+<p>When you use modules, the first thing you&rsquo;ll have to do is <code>terraform get</code>. This pulls modules into the <code>.terraform</code> directory. Once you do that, unless you do another <code>terraform get -update=true</code>, you&rsquo;ve essentially vendored those modules. This is nice as you know an upstream change won&rsquo;t immediately invalidate and destroy your infra. I would suggest checking those into your wrapper repo.</p>
+
+<h1>Wrap up</h1>
+
+<p>I hope this has helped you with using terraform a bit. One of the best resources I found on module usage that really helped things click was the <a href="http://bobtfish.github.io/blog/2015/03/29/terraform-from-the-ground-up/">following awesome blogpost</a> from Tom Doran (@bobtfish) on the subject. He&rsquo;s made some really useful github repos demonstrating a bunch of stuff. Additionally the work done by Brandon Burton <a href="https://github.com/terraform-community-modules">here</a> can give good examples as well.</p>

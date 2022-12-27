@@ -1,0 +1,9 @@
+[submodule "themes/ananke"]
+	path = themes/ananke
+	url = https://github.com/theNewDynamic/gohugo-theme-ananke
+[submodule "themes/toha"]
+	path = themes/toha
+	url = https://github.com/hugo-toha/toha
+[submodule "themes/noteworthy"]
+	path = themes/noteworthy
+	url = https://github.com/kimcc/hugo-theme-noteworthy

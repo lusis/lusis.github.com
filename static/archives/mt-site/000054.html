@@ -1,0 +1,205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<title>lusis.org: Larry Wall interview</title>
+
+<link rel="stylesheet" href="http://www.lusis.org/mt/lusis//a3col.css" type="text/css" />
+
+<script type="text/javascript" language="javascript">
+<!--
+
+function OpenTrackback (c) {
+    window.open(c,
+                    'trackback',
+                    'width=480,height=480,scrollbars=yes,status=yes');
+}
+
+var HOST = 'www.lusis.org';
+
+// Copyright (c) 1996-1997 Athenia Associates.
+// http://www.webreference.com/js/
+// License is granted if and only if this entire
+// copyright notice is included. By Tomer Shiran.
+
+function setCookie (name, value, expires, path, domain, secure) {
+    var curCookie = name + "=" + escape(value) + ((expires) ? "; expires=" + expires.toGMTString() : "") + ((path) ? "; path=" + path : "") + ((domain) ? "; domain=" + domain : "") + ((secure) ? "; secure" : "");
+    document.cookie = curCookie;
+}
+
+function getCookie (name) {
+    var prefix = name + '=';
+    var c = document.cookie;
+    var nullstring = '';
+    var cookieStartIndex = c.indexOf(prefix);
+    if (cookieStartIndex == -1)
+        return nullstring;
+    var cookieEndIndex = c.indexOf(";", cookieStartIndex + prefix.length);
+    if (cookieEndIndex == -1)
+        cookieEndIndex = c.length;
+    return unescape(c.substring(cookieStartIndex + prefix.length, cookieEndIndex));
+}
+
+function deleteCookie (name, path, domain) {
+    if (getCookie(name))
+        document.cookie = name + "=" + ((path) ? "; path=" + path : "") + ((domain) ? "; domain=" + domain : "") + "; expires=Thu, 01-Jan-70 00:00:01 GMT";
+}
+
+function fixDate (date) {
+    var base = new Date(0);
+    var skew = base.getTime();
+    if (skew > 0)
+        date.setTime(date.getTime() - skew);
+}
+
+function rememberMe (f) {
+    var now = new Date();
+    fixDate(now);
+    now.setTime(now.getTime() + 365 * 24 * 60 * 60 * 1000);
+    setCookie('mtcmtauth', f.author.value, now, '', HOST, '');
+    setCookie('mtcmtmail', f.email.value, now, '', HOST, '');
+    setCookie('mtcmthome', f.url.value, now, '', HOST, '');
+}
+
+function forgetMe (f) {
+    deleteCookie('mtcmtmail', '', HOST);
+    deleteCookie('mtcmthome', '', HOST);
+    deleteCookie('mtcmtauth', '', HOST);
+    f.email.value = '';
+    f.author.value = '';
+    f.url.value = '';
+}
+
+//-->
+</script>
+
+
+
+</head>
+
+<body>
+
+<div id="banner">
+lusis.org<br />
+<span class="description">We play the blaming game. Rants of a libertarian geek.</span>
+</div>
+
+<div id="content">
+
+
+<div id="menu">
+
+<a href="http://www.lusis.org/mt/lusis/archives/2002_09.html">« oh wow</a> |
+
+<a href="http://www.lusis.org/mt/lusis/">Main</a>
+
+| <a href="http://www.lusis.org/mt/lusis/archives/2002_09.html">Interesting quotes »</a>
+
+</div>
+
+<div class="blog">
+
+<div class="date">September 06, 2002</div>	
+
+<div class="blogbody">
+
+<span class="title">Larry Wall interview</span>
+
+<p>Slashdot did an interview with Larry Wall, the guy who created Perl and it rocks.</p>
+
+<a name="more"></a>
+<p>Sort of continuing the thread I started yesterday about religion, I thought I would paste a bit from the interview here:<br />
+<b><br />
+7) Role of Religion?<br />
+by Anonymous Cowdog<br />
+</b><br />
+<i><br />
+I remember reading at some point that you are a Christian, and there have been suggestions that some of your early missionary impulses (a desire to do good, help others) are perhaps part of the zeal you have put into Perl over the years.</p>
+
+<p>Preferring a scientific view, I am not religious, and have no desire to be. Perhaps there is a God, but if there is, I think he/she has no opposable thumbs; in other words, has no power to change anything; reality is just playing out according to the laws of physics (whatever those are).</p>
+
+<p>Please tell us how in the world a scientific or at least technical mind can believe in God, and what role religion has played in your work on Perl.<br />
+</i><br />
+<b>A:</b><br />
+<i><br />
+Well, hmm, that's a topic for an entire essay, or a book, or a life. But I'll try to keep it short.</p>
+
+<p>When you say ""how in the world"", I take it to mean that you find it more or less inconceivable that someone with a scientific mind (or at least technical mind, hah!) could chooose to believe in God. I'd like to at least get you to the point where you find it conceivable. I expect a good deal of the problem is that you are busy disbelieving a different God than the one I am busy believing in. In theological discussions more than any other kind, it's easy to talk at right angles and never even realize it.</p>
+
+<p>So let me try to clarify what I mean, and reduce it to as few information bits as possible. A lot of people have a vested interest in making this a lot tougher to swallow than it needs to be, but it's supposed to be simple enough that a child can understand it. It doesn't take great energetic gobs of faith on your part--after all, Jesus said you only have to have faith the size of a mustard seed. So just how big is that, in information theory terms? I think it's just two bits big. Please allow me to qoute a couple "bits" from Hebrews, slightly paraphrased:</p>
+
+<p>You can't please God the way Enoch did without some faith, because those who come to God must (minimally) believe that:<br />
+    A) God exists, and<br />
+    B) God is good to people who really look for him.</p>
+
+<p>That's it. The "good news" is so simple that a child can understand it, and so deep that a philosopher can't.</p>
+
+<p>Now, it appears that you're willing to admit the possibility of bit A being a 1, so you're almost halfway there. Or maybe you're a quarter way there on average, if it's a qubit that's still flopping around like Shoedinger's Cat. You're the observer there, not me--unless of course you're dead. :-)</p>
+
+<p>A lot of folks get hung up at point B for various reasons, some logical and some moral, but mostly because of Shroedinger again. People are almost afraid to observe the B qubit because they don't want the wave function to collapse either to a 0 or a 1, since both choices are deemed unpalatable. A lot of people who claim to be agnostics don't take the position so much because they don't know, but because they don't want to know, sometimes desperately so.</p>
+
+<p>Because if it turns out to be a 0, then we really are the slaves of our selfish genes, and there's no basis for morality other than various forms of tribalism.</p>
+
+<p>And because if it turns out to be a 1, then you have swallow a whole bunch of flim-flam that goes with it. Or do you?</p>
+
+<p>Let me admit to you that I came at this from the opposite direction. I grew up in a religious culture, and I had to learn to "unswallow" an awful lot of stuff in order to strip my faith down to these two bits.</p>
+
+<p>I tried to strip it down further, but I couldn't, because God told me: "That's far enough. I already flipped your faith bits to 1, because I'm a better Observer than you are. You are Shroedinger's cat in reverse--you were dead spiritually, but I've already examined the qubits for you, and I think they're both 1. Who are you to disagree with me?"</p>
+
+<p>So, who am I to disagree with God? :-) If he really is the Author of the universe, he's allowed to observe the qubits, and he's probably even allowed to cheat occasionally and force a few bit flips to make it a better story. That's how Authors work. Whether or not they have thumbs...</p>
+
+<p>Once you see the universe from that point of view, many arguments fade into unimportance, such as Hawking's argument that the universe fuzzed into existence at the beginning, and therefore there was no creator. But it's also true that the Lord of the Rings fuzzed into existence, and that doesn't mean it doesn't have a creator. It just means that the creator doesn't create on the same schedule as the creature's.</p>
+
+<p>If God is creating the universe sideways like an Author, then the proper place to look for the effects of that is not at the fuzzy edges, but at the heart of the story. And I am personally convinced that Jesus stands at the heart of the story. The evidence is there if you care to look, and if you don't get distracted by the claims of various people who have various agendas to lead you in every possible direction, and if you don't fall into the trap of looking for a formula rather than looking for God as a person. All human institutions are fallible, and will create a formula for you to determine whether you belong to the tribe or not. Very often these formulas are called doctrines and traditions and such, and there is some value in them, as there is some value in any human culture. But they all kind of miss the point.</p>
+
+<p>"Systematic theology" is an oxymoron. God is not a system. Christians are fond of asking: "What would Jesus do in this situation?" Unfortunately, they very rarely come up with the correct answer, which is: "Something unexpected!" If the Creator really did write himself into his own story, that's what we ought to expect to see. Creative solutions.</p>
+
+<p>And this creativity is intended to be transitive. We are expected to be creative. And we're expected to help others be creative.</p>
+
+<p>And that leads us back (finally) to the last part of your question, how all this relates to Perl.</p>
+
+<p>Perl is obviously my attempt to help other people be creative. In my little way, I'm sneakily helping people understand a bit more about the sort of people God likes.</p>
+
+<p>Going further, we have the notion that a narrative should be defined by its heart and not by its borders. That ties in with my linguistic notions that things ought to be defined by prototype rather than by formula. It ties in to my refusal to define who is or is not a "good" Perl programmer, or who exactly is or isn't a member of the "Perl community". These things are all defined by their centers, not by their peripheries.</p>
+
+<p>The philosophy of TMTOWTDI ("There's more than one way to do it.") is a direct result of observing that the Author of the universe is humble, and chooses to exercise control in subtle rather than in heavy-handed ways. The universe doesn't come with enforced style guidelines. Creative people will develop style on their own. Those are the sort of people that will make heaven a nice place.</p>
+
+<p>And finally, there is the underlying conviction that, if you define both science and religion from their true centers, they cannot be in confict. So despite all the "religiosity" of Perl culture, we also believe in the benefits of computer science. I didn't put lexicals and closures into Perl 5 just because I thought people would start jumping up and down and shouting "Hallelujah!" (Which happens, but that's not why I did it.)</p>
+
+<p>And now let's all sing hymn #42... <br />
+</i></p>
+
+<p>This is some deep stuff that any geek can understand and appreciate.  The interesting thing is that Larry isn't trying to win any converts with this statement. Someone asked him a justification for his faith and he gave it.</p>
+
+<p>It's a good read overall.</p>
+
+<p>Check out the entire interview <a href="http://interviews.slashdot.org/article.pl?sid=02/09/06/1343222&mode=thread&tid=145">here</a>.<br />
+ There's quite a few technical discussions involved about Perl (which some of you may not give a rat's ass) but the whole thing is pretty neat to sit through.</p>
+
+<span class="posted">Posted by pugsly at September 06, 2002 01:00 PM
+
+<br /></span>
+
+</div>
+
+
+
+</div>
+</div>
+</div>
+
+<div id="links">
+<div class="powered">
+  Powered by<br /><a href="http://www.movabletype.org">Movable 
+  Type 2.64</a><br />
+  <br /> 
+  Template by<br />
+  <!--this template was modified from the original movable type templates by 
+  Kristine of Love-productions and blogstyles.
+  I'd appreciate it if you would keep a link back to blogstyles with this template!-->
+  <a href="http://blogstyles.com" target="_blank">BLOG<styles></a></div>
+</div>
+</body>
+</html>

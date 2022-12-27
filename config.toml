@@ -1,0 +1,5 @@
+baseURL = 'https://blog.lusis.org/'
+languageCode = 'en-us'
+title = 'blog.lusis.org'
+theme = 'noteworthy'
+staticDir = ['static']

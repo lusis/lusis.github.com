@@ -1,0 +1,486 @@
++++
+title = "So you wanna go on-prem do ya"
+date = "2016-05-15"
+slug = "2016/05/15/so-you-wanna-go-onprem-do-ya"
+Categories = []
++++
+
+<p>If you run a successful SaaS platform, at some point someone is going to come to you with the question: can I run it myself? If you&#8217;re considering offering a private version of your SaaS, this post might be for you.</p>
+
+<!-- more -->
+
+<p>At this point, I&#8217;ve worked for a few companies that are SaaS vendors. In most cases, we&#8217;ve also done some sort of private install.</p>
+
+<h2>Drivers for private installs</h2>
+
+<p>There are a lot of reasons people want private installs. Depending on the nature of your product, some of them are even legitimate.</p>
+
+<ul>
+<li>If your product is in the dependency chain of your customer&#8217;s release management</li>
+<li>If your product is security in nature</li>
+<li>If your product is a core dependency for normal operation of a product</li>
+<li>If your product is metered based on storage or transit OR if your product has high storage or transit requirements</li>
+<li>If your product has stability issues due to multi-tenancy</li>
+<li>Customer requirements around tenancy</li>
+<li>Customer requirements around visibility of data</li>
+<li>Varying degrees of industry requirements</li>
+<li>Control of upgrade cycle</li>
+<li>Payment restrictions for monthly services</li>
+</ul>
+
+<p>These are all valid reasons that your customers will want a dedicated installation of your product. I&#8217;ve even been on the asking side.</p>
+
+<p>That doesn&#8217;t mean, however, that you should <em>DO</em> them.</p>
+
+<h2>Types of private installs</h2>
+
+<p>Before we go into more information it&#8217;s worth categorizing the types of &#8220;on-prem&#8221; installs:</p>
+
+<ul>
+<li>managed hosted</li>
+<li>fully on-premise</li>
+</ul>
+
+<p>For the purposes of this discussion, we&#8217;ll define them like so:</p>
+
+<ul>
+<li>managed hosted: You host, manage and run the environment entirely on behalf of the customer. You are still a SaaS but reduced to single tenancy for a given customer</li>
+<li>fully on-premise: Your software is installed fully on the customer&#8217;s environment - hardware, location, cloud, whatever</li>
+</ul>
+
+<p>Both of these options &#8220;suck&#8221; for you to varying degrees.</p>
+
+<h2>So why do them?</h2>
+
+<p>If they suck so much, why do them?</p>
+
+<p>Money.</p>
+
+<p>The companies that want private installs are the kind of companies that can pay well for them.
+The problem is that the companies that can pay well for private installs are, in general, the hardest companies to do business with - &#8220;enterprises&#8221; (and worse - government)</p>
+
+<h3>Enterprise sidebar</h3>
+
+<p>Let&#8217;s clarify. I don&#8217;t hate enterprises. I know it&#8217;s easy to think that from my general commentary.
+The problem isn&#8217;t enterprises (what does that term even mean these days anyway?)</p>
+
+<p>The problem is how those organizations operate at an IT level in general, how they interact with &#8220;vendors&#8221; and what they expect.</p>
+
+<p>To most enterprises, software is a purchase with a tangible deliverable. A thing that has a license and a lifecycle.</p>
+
+<p>Even a semi-enlightened enterprise like <code>&lt;insert large Texas-based computer manufacturer here&gt;</code> still has trouble with SaaS products, the billing therein and how to categorize them. Sometimes it&#8217;s just &#8220;easier&#8221; to go on-prem than fight your AP department.</p>
+
+<h2>Don&#8217;t do it <em>IF</em> you can</h2>
+
+<p>Startups aren&#8217;t easy. It&#8217;s hard to say no to a customer who&#8217;s willing to &#8220;pay anything&#8221; for a private install of your SaaS platform.
+However, as I get to below, if you have ANY options at all, you shouldn&#8217;t do it. I can&#8217;t speak for your situation or your board though.
+You may not be given a choice. It may be the only way to get a cash influx to keep things going.</p>
+
+<p>Just be aware that by doing it, you could be signing on for a cost and time sink for the next 12 months.</p>
+
+<p>So what do you need to know before diving into this madness?</p>
+
+<h2>Operational Excellence/Support Excellence</h2>
+
+<p>I&#8217;ve used this phrase A LOT in the past. I&#8217;ve refered to it when talking about OpenStack, private PaaS and other things.
+What is important to understand is that when you move to any sort of on-prem model, your operational and support problems are multiplied.</p>
+
+<p>If you have not yet leveled up your existing operational experience, then you might not get the chance.</p>
+
+<p>Take a look at your current SaaS platform you run. Now break down the following:</p>
+
+<ul>
+<li>Release cadence</li>
+<li>Level of automation</li>
+<li>Failure modes</li>
+<li>Scaling model</li>
+<li>Footprint</li>
+<li>Support model</li>
+<li>Logging</li>
+<li>Monitoring</li>
+<li>Supportability</li>
+</ul>
+
+<p>Now multiply this times 10. times 50. times 100.</p>
+
+<p>Now find your security blanket and go weep softly in the corner. Realize that the multiplier is actually an unbounded number.</p>
+
+<p>And this is just a small fraction of the things you have to consider.</p>
+
+<p>Are you having trouble staffing/keeping ops people? Well you&#8217;re going to need a LOT more.</p>
+
+<h2>Changing focus</h2>
+
+<p>When you move to the on-prem world, depending on which type of model you go with you move from being a SaaS provider into either:</p>
+
+<ul>
+<li>an ops organization</li>
+<li>a helpdesk organization</li>
+</ul>
+
+<p>if not both.</p>
+
+<p>Either you&#8217;re spending all your time operating the environments or you&#8217;re spending all your time supporting those environments.</p>
+
+<h2>Operational supportability</h2>
+
+<p>This is a phrase that we used pretty heavily when I was involved with Enstratus.
+This concern is cross-cutting regardless of which model you go with:</p>
+
+<p>In a managed hosted model, you have to have almost zero touch administration of your stack.</p>
+
+<p>How many people does it take to manage your SaaS right now? Exclude human factors for a minute (i.e. we have two people so one actually gets to sleep and take vacation).
+If you need at least two people to manage the steady state of your stack full time, get ready to hire two more for each private install.</p>
+
+<p>You <em>MUST</em> be able to reach a greater operational density. You need numbers like 2 operators for every 10 (or more) private installs.</p>
+
+<p>It gets even worse for you in a fully on-prem model. You have to have absolute zero touch administration of your stack. Your stack may not be able to get to the internet. Depending on the customer, you won&#8217;t be able to get to it to support it. Every support issue is going to be you describing to a customer (either through documentation or on the phone) how to fix any given issue.</p>
+
+<p>Here&#8217;s an example:</p>
+
+<ul>
+<li>How many times have you had to manually touch a system to resolve an issue</li>
+<li>How many times have you had to manually massage data to fix an issue</li>
+</ul>
+
+<p>You can&#8217;t do that anymore. With a SaaS you can chalk that up to tech debt. Something you&#8217;ll pay down in the future but you tolerate for now because it doesn&#8217;t happen THAT often. With an on-prem model &#8220;THAT often&#8221; becomes much more frequent and it bleeds your staff dry.</p>
+
+<p>I can clearly remember cases of having to support a production system via Microsoft Lync over a customer&#8217;s workstation (like the actual one the user used on a daily basis) via an SSH client. These are the customers you&#8217;re getting.</p>
+
+<h2>Loss of Flexibility</h2>
+
+<p>Once you decide to go to supporting on-prem (again we&#8217;re lumping this term to mean a dedicated install of your SaaS platform for a single tenant), you now have to deal with one of the most difficult questions. Maybe you&#8217;ve decided to brute force your operational concerns with a meat cloud. Maybe you&#8217;re embracing a toxic hero culture. Fine. Everyone is overworked trying to keep that snowflake up and running.</p>
+
+<p>Now you&#8217;ve tied your hands for software development. Let me paint a pretty picture. This is <em>TOTALLY</em> hypothetical and never happened to any cloud management software that I was ever involved with.</p>
+
+<ul>
+<li>MySQL scaling and availability is a pain point</li>
+<li>Decision is made to move to Riak</li>
+<li>Migration to Riak gets partially done</li>
+<li>Bits and bobs are moved from MySQL to riak as time allows. All new features use Riak though</li>
+</ul>
+
+<p>Now this is a common <em>TOTALLY THEORETICAL</em> thing. Migrating data store technology is a definite process.</p>
+
+<p>So this is in your SaaS and you still have private install customers being signed up. These make money after all.</p>
+
+<p>What was a 4 node environment (HA frontend pair, HA MySQL) now has a to have a 3 (or if you&#8217;re doing it right - 5) node Riak cluster.</p>
+
+<p>Now let&#8217;s go back to the customers. Depending on your private model, you&#8217;re faced with two different scenarios:</p>
+
+<ul>
+<li>Deal with customers who can barely support MySQL (at least they can google it) but now have to manage a quorum-based distributed data store</li>
+<li>Add more machines to the environment you are hosting for your customer</li>
+</ul>
+
+<p>The first one, as you can predict, is pretty much a no-go. This hypothetical cloud management product will now have to deal with something the customer has never seen before and is essentially support for not only the actual product you write but also the underlying data store.</p>
+
+<p>In both the second one AND the first one you now have to justify to your customer why they need 9 systems to run this application when only two of them are running the ACTUAL application. Either way it&#8217;s a cost issue and that directly affects your bottom line.</p>
+
+<p>So if you want to do private deploys, EVERY decision has to be couched in the context of how it affects your private environments.</p>
+
+<ul>
+<li>Wanna migrate to Mesos? You now have to run n mesos clusters</li>
+<li>Wanna roll out ES? You now have to run n ES clusters</li>
+<li>Wanna move to &#8220;microservices&#8221;? Now you have n<sup>n</sup> problems.</li>
+</ul>
+
+<p>What&#8217;s really fun is when you&#8217;ve already MADE these decisions and realize it&#8217;s barely supportable in one environment much less 10 or 20 or 100 of them.</p>
+
+<p>A really good rule of thumb is that if you&#8217;re adding or moving to something that has quorum requirements, you may have to rethink that decision or worse consider bifurcating your product.</p>
+
+<p>Don&#8217;t bifurcate your product. Down that path lies madness. Instead you&#8217;re stuck considering the least common denominator and defering to the private deploy model because that&#8217;s where the money comes from right?</p>
+
+<h2>X in a Box</h2>
+
+<p>If anyone watches Silicon Valley on HBO, you might have seen the recent thread of episodes about installing &#8220;Pied Piper&#8221; in a box at datacenters.</p>
+
+<p>Let&#8217;s assume for a minute that your product is easily &#8220;boxable&#8221;. By that I mean:</p>
+
+<ul>
+<li>small footprint (single or small number of artifacts/services)</li>
+<li>minimum/pluggable external dependencies (think databases)</li>
+</ul>
+
+<p>This is actually how we got to something resembling a sane private deployment model with a certain cloud management platform. We built our &#8220;foo in a box&#8221; as a way to give developers environments closer to production. Because of the way this was built, it actually became the installer for our private deploys.</p>
+
+<p>But even this was barely supportable. Near the end we started down the path of appliances (benefit of working for a hardware company - they understand physical boxes).</p>
+
+<h3>Sidebar on Appliances</h3>
+
+<p>Appliances are actually a pretty solid way to manage your stack if you can pull it off. Virtual appliances CAN work but you&#8217;ve still not addressed the clustering issue.</p>
+
+<p>Physical appliances, however, work a little differently. There&#8217;s a different cognative load in the mind of the customer when it comes to an appliance. Most IT staff don&#8217;t care about what OS is running on the headends of the NAS they bought. It&#8217;s a novelty if it&#8217;s running Linux but they&#8217;re not trying to manage it like a Linux server. They&#8217;re managing it like an appliance.</p>
+
+<p>To that end, you have to invest considerable (but very effective) time in wrapping your &#8216;appliance&#8217; in something that looks like a Netgear home router. If you have physical hardware, you can work with an LCD panel on the front where they can set the network specifics and then the rest of the configuration is done via a management interface.</p>
+
+<p>As much as I have issues with Docker, containers are actually a great way to handle treating your application components as &#8220;firmware&#8221;. The primitives are there for essentially partitioning the bits of your hardware for your services.</p>
+
+<p>If you&#8217;re being as stateless as possible, a &#8220;firmware upgrade&#8221; for your &#8220;appliance&#8221; is a <code>docker pull foo:nextver; docker stop foo; docker start foo</code>.
+You even get rollback baked in. Taking backups is as &#8220;simple&#8221; as snapshotting your data volume. Use a dedicated container with a privileged shared socket mounted to proxy OS commands to your base host.</p>
+
+<p>But as I said, this still isn&#8217;t a free lunch. You have to develop your admin UI, the shim for host OS interaction (upgrades, backups, network config).</p>
+
+<h2>Monitoring and Logging</h2>
+
+<p>This is where cost can go pear-shaped REALLY fast.</p>
+
+<p>Unless you are willing to bake the cost of every third-party SaaS you use into each private/on-prem install, you will not be able to afford to keep using those products.</p>
+
+<p>I don&#8217;t care WHAT the product is: APM, Logging, Monitoring, Metrics. You can&#8217;t afford it anymore. Multiply your current bill for those products by the a conservative 10 private installs.</p>
+
+<p>New Relic alone would bankrupt you.</p>
+
+<p>This leaves you with a few options:</p>
+
+<ul>
+<li>bifurcate these parts of your infrastructure with homegrown tools in each environment</li>
+<li>become a logging saas, monitoring saas, apm saas, alerting saas</li>
+</ul>
+
+<p>Let&#8217;s be clear. There is a million lightyear difference between running your own ELK stack for your production infrastucture and either:</p>
+
+<ul>
+<li>running an ELK SaaS</li>
+<li>maintaining an unbounded number of ELK stacks</li>
+</ul>
+
+<p>Either way you just became a fucking SME on running ELK at scale. Maybe you should pivot into being a logging SaaS.</p>
+
+<p>Again it goes back to operational excellence.</p>
+
+<p>There are &#8220;hybrid&#8221; options here but it comes down to what business you want to be in.</p>
+
+<p>Now I can hear people saying &#8220;this isn&#8217;t a big deal. We run qa, staging, prod environments now. What&#8217;s a few more&#8221;. Those people are being insanely (and probably intentionally) naive. That&#8217;s great. Let&#8217;s assume that you&#8217;re willing to eat the cost.</p>
+
+<p>Now tell me, genius. How do you eat that cost when the environment cannot access the internet at all?</p>
+
+<p>&#8220;Well I&#8230;ummm&#8230;.&#8221;</p>
+
+<p>Yeah I thought so.</p>
+
+<p>So at this point you now have to decide if having hard requirements and the lost contracts are worth it. You still have to come up with a solution.</p>
+
+<p>&#8220;Well we just make the customer monitor it&#8230;&#8221;</p>
+
+<p>That won&#8217;t work either and let me tell you why. Your 20 node stack is going to be shoved onto the absolute minimum resources it can fit on. All 5 of your zookeeper nodes will MOST likely live on the same physical servers running as VMs (lolantiaffinitywut). Those VMs will be periodically &#8220;frozen&#8221; for snapshotting. The OS will not be monitored because adding 20 HP OpenView licenses is cost prohibitive. So here&#8217;s what you&#8217;re going to have to support in about a week:</p>
+
+<ul>
+<li>My disk filled up and your data node crashed. Have fun with regular recoveries.</li>
+<li>We keep having periodic timeouts (Go find out what happens to your carefully tuned distributed system has its entire OS paused while the hypervisor buffers all memory and network as the VM is live migrating)</li>
+</ul>
+
+<p>Yes, I have seen all of these.</p>
+
+<p>So you can decide to make the customer monitor things and deal with the fallout of periodic full system recoveries or you can ship a monitoring solution with your product. And we&#8217;re just talking about monitoring.</p>
+
+<p>Your customer is going to understand ONE paradigm for monitoring - syslog. And depending on the component you&#8217;re probably going to have them end up not having any logs you need when you support them.</p>
+
+<p>So really you need to ship a logging solution too.</p>
+
+<p>And since APM is prohibitively expensive at this volume (assuming you can even get to the internet), you&#8217;re probably going to want to write your own New Relic clone and ship it as well.</p>
+
+<p>But even if you can use third party systems and get to the internet, you now have to deal with managing security credentials for those services.</p>
+
+<ul>
+<li>Do they allow unlimited, limited scope api tokens?</li>
+<li>Can you automate provisioning of those tokens via an API?</li>
+<li>Can you automate provisioning of everything else via an API?</li>
+</ul>
+
+<p>For instance we use SignalFX, Loggly and OpsGenie. Looking at the above concerns, we have the following gaps:</p>
+
+<h3>Loggly</h3>
+
+<p>Loggly allows two submission tokens. That&#8217;s it. Two. You are now stuck with sharing your security credentials to loggly across n number of customer&#8217;s systems.
+Loggly has indicated time and time again they have zero interest in allowing you to create any additional keys. They seem to think people want to use these for routing (not true) and that you should use other mechanisms for routing. Whatever.</p>
+
+<h3>SignalFX</h3>
+
+<p>SignalFX has a single token at the moment. The upshot over Loggly is that they&#8217;re actively working on it. SignalFX is also much younger than Loggly so gaps are to be expected.
+SignalFX has a nice and constantly evolving API, however, that API is lacking automation for &#8220;integrations&#8221;. If you&#8217;re deploying your customer infra to AWS, you still have the manual step to enable the AWS monitoring and cross-account access.</p>
+
+<h3>OpsGenie</h3>
+
+<p>OpsGenie let&#8217;s you create all the API keys in the world you want. You can create all the integrations you want but you cannot yet automate the creation of the integrations via the API.</p>
+
+<p>In the end, you may be forced to choose tooling and services that offer nested multi-tenancy which are, sadly, few and far between.</p>
+
+<h2>Maintenance</h2>
+
+<p>For the sake of moving the discussion forward, let&#8217;s make one final assumption. You&#8217;ve worked out all the kinks with monitoring. You&#8217;ve got your install game on fleek. It&#8217;s all looking good.</p>
+
+<p>Now you have to upgrade.</p>
+
+<p>How long does it take to upgrade your current stack?</p>
+
+<p>Maybe you&#8217;ve moved to a continuous delivery nirvana. It&#8217;s all wired up to a handy chatbot to do the magic.</p>
+
+<p>Throw it all out. All of it. You get to start over.</p>
+
+<p>Even if your customer can get out to the internet (though you may have to go through a proxy - all your tools support connectivity via a proxy right?) and even if you can get into the customer environment on-demand (though you might have to fire up a vpn client or go through a jump box), you may have one final blocker:</p>
+
+<p>The customer says no.</p>
+
+<p>This statement is going to be somewhat &#8220;controversial&#8221; but if your customer could handle software that has a rolling release schedule and the operational excellence that is required for it, they probably wouldn&#8217;t be using your software (unless you are literally the only person in the world offering it).</p>
+
+<p>What I mean by this is that most traditional enterprises upgrade software on a cadence measured in quarters if not years. The level of effort to get to that point brings along a maturity and mindset from the effort. If you&#8217;re already writing software in house, have the expertise and maturity to do continuous delivery and are doing it then you&#8217;ll probably either write whatever it is yourself or you&#8217;re perfectly okay with using the public SaaS version of whatever said product is.</p>
+
+<p>Depending on the number of customers and your own level of automation around upgrades, you could literally be spending months upgrading all the customers on their own schedule. Again, that&#8217;s assuming you&#8217;re the one allowed to do the upgrades. Does that mean having to go on-site? You could conceivably being doing the upgrade over the previously mentioned RDP session&#8230;.</p>
+
+<p>One option you can consider is a rollup release on a schedule for your customers. You can do this quarterly or biannual but as I said before, you&#8217;re trading an ops problem for a support problem. You now have to provide support for a 6 month old version of your product. If you&#8217;re doing CD in your SaaS environment, that version could literally be 182 versions behind what your SaaS is running (assuming 6 month rollup release with SaaS releases once a day). Do you even remember what state your codebase was in 6 months ago? How many bugs were fixed? How many features added? You could be looking at someone using a version with an entirely different UI.</p>
+
+<p>What if you&#8217;ve added an entirely new component to your stack? How was that added at the SaaS level? Did you rush it out with a bit of meat cloud special sauce to get it out there? Now you have to apply that meat cloud special sauce across n environments just to be able to upgrade.</p>
+
+<h1>All hope is lost</h1>
+
+<p>Not really. It&#8217;s not all hopeless but you&#8217;re going to have to make a tradeoff and you&#8217;re going to have to live with permanent bifurcation regardless of the path you go down.</p>
+
+<p>I&#8217;m going to drop a few ideas/thoughts from my experience that may help. I&#8217;ve still yet to find nirvana for this. The reason is that the needs and goals of a SaaS are directly opposed to those of someone who would be an on-prem customer. Consider this a brain dump of things we&#8217;ve tried over the years. Maybe you can make it work.</p>
+
+<h2>True on-premise vs managed hosted</h2>
+
+<p>If you have the power, limit your deploys to the &#8220;managed hosted&#8221; types. You&#8217;ll have to bake some non-negotiable things into your contract but the upshot is you eliminate an entire cross-section of problems described above. When you go fully on-prem (like being installed in a Boeing datacenter that requires Top Secret clearance) you lose ALL flexibility.</p>
+
+<p>You also get the benefit of being able to fake it for a bit. You may not have all the automation problems solved but you have the flexibility to brute force it a bit while you work out how the hell you&#8217;re going to do this.</p>
+
+<p>Frankly speaking, if your product depends heavily on a cloud specific technology (read: any AWS service), then your only target is AWS. Do you want to spend (albeit probably valuable) time refactoring to uncouple your product from AWS-specific technology? Probably not at first.</p>
+
+<p>Take the case of RDS. It has issues but it&#8217;s a solid way to punt on the operational load of maintaining a highly available MySQL instance for a time. If you spend the effort to move off RDS to go fully on-prem, you now have the additional load of trying to approximate RDS on-prem.</p>
+
+<p>Basically you have to chose:</p>
+
+<ul>
+<li>spend time making your SaaS look like true COTS software and staff up a helpdesk</li>
+<li>manage and run the environment yourself and staff up operations</li>
+</ul>
+
+<p>There&#8217;s no free lunch here.</p>
+
+<p>One tactic that really started to work for us with the cloud manager was a pure by product of being bought by <code>D***</code>. They had the help desk game covered. It was old hat. We did fight with how the ticket systems worked but before I left the model worked something like this:</p>
+
+<ul>
+<li>Helpdesk was front line support</li>
+<li>Our customer team was second level</li>
+<li>Ops maintained the SaaS platform entirely in isolation</li>
+<li>Improvements in operational aspects from running the SaaS filtered down to the on-prem</li>
+</ul>
+
+<h2>Becoming a customer of yourself</h2>
+
+<p>As I said, bifurcation is a real issue. You can mitigate this a bit by a small mental trick of treating the SaaS version of your product as just another on-prem install.</p>
+
+<p>Mentally, however, you&#8217;ve at least unified the deployment model a bit. It also can free up the development team a bit in not having to worry about any discrepancies between the on-prem world and the SaaS. Your ops team running the SaaS become the best advocates for improving the on-prem experience AND if you&#8217;re lucky, running the product at scale.</p>
+
+<p>Complimentary to this, you should have a dedicated team of people with ops experience handling the on-prem install and lifecycle role apart from the SaaS. You&#8217;re all the same organization. Ideas will flow bidirectionally between the teams but it can eliminate the cognative load of your SaaS ops team trying to align how they run a SaaS with the limitations of private installations.</p>
+
+<p>The ops team may use OpsGenie, SignalFX and Loggly to meet their requirements while your on-prem team has decided to to package up a small footprint nagios + elk setup. You might use Chef in the SaaS but the customer team wants to use Ansible or Puppet.</p>
+
+<p>The reason you hire ops people with experience running web applications at scale and not experience running a Windows AD farm is not just one of tools. A &#8220;webscale&#8221; operations person is going to be approaching every private install through the lens of a highly available &#8220;webscale&#8221; saas. This isn&#8217;t always appropriate for your on-prem customers.</p>
+
+<h2>Put it in the contract</h2>
+
+<p>The upgrade issue is real. The capacity issue is real. You need to, for your own protection and the sanity of your employees, bake things INTO the contract. Don&#8217;t be scared. The things you&#8217;re asking for are not onerous compared to most enterprise contracts.</p>
+
+<p>This is general language. I&#8217;m not a lawyer. Run it by counsel for appropriate verbage and what not.</p>
+
+<h3>Required upgrade cycle to maintain support</h3>
+
+<p>&#8220;Active support is only allowed for previous two versions of software stack. Customer may be required to upgrade current to be eligible for support. Security releases are required upgrades for ongoing support&#8221;</p>
+
+<p>What you are doing here is setting the bar for what you can support. I realize that in a CD world, versions are kind of pointless. One challenge here is how you determine what is a &#8220;previous version&#8221;. You can move to something like a quarterly rollup of your stack and give it a customer facing version. The goal is to try and at least keep to something released in the current year.</p>
+
+<p>You also explicitly state that security releases are required. You&#8217;re going to have fixes required for security reasons and this is a way to short circuit any risk to you because the customer failed to patch as well as force upgrades at other points.</p>
+
+<p>One thing you&#8217;ll need to work out is how you handle new customers. Do you give them the latest quarterly release (which may be 3 months old at this point if you&#8217;re at the end of the quarter) or do you always go with &#8220;latest&#8221; release. I can&#8217;t answer that for you but I can say you want to keep ALL of your customers on the same version if possible.</p>
+
+<p>Maybe you simply state that customers are required to upgrade every quarter for continued support. Continued support is the key here. If the customer chooses not to upgrade, that&#8217;s fine but they lose all support from you. It&#8217;s their call.</p>
+
+<h3>Supported configurations and reference architecture</h3>
+
+<p>This is a big one. I mentioned before that your customer may shove your entire distributed stack on a single hypervisor thus undoing every bit reliability in your product.</p>
+
+<p>You MUST define explicitly what a supported configuration is. With the DCM product, initially we were installing our stack in whatever configuration the customer would do to get the contract signed. You wanted to run it on 2 machines? We would figure out a break down that worked. This meant that no two installs were the same. We had to have extensive documentation on what was running where because nothing was standardized.</p>
+
+<p>Our world got much better when we created and documented standard configurations. These came in three sizes:</p>
+
+<ul>
+<li>single node (acceptable for POC and testing)</li>
+<li>four node (minimum production viable configuration - active/passive model)</li>
+<li>nine node (fully distributed HA model with scaling capabilities)</li>
+</ul>
+
+<p>Only the last two options were eligible for any on-call support from us. Additionally we explicitly called out things like the hypervisor placement issue. If you ran the two backend nodes on the same esx host and you had an outage, that was your fault. We also stated that NONE of our nodes were allowed to be live migrated as that cut out an entire swath of problems and calls.</p>
+
+<p>You may also want to add to this a baseline set of requirements for the customer to monitor (disk space is a BIG one) to be eligible for support.</p>
+
+<p>Your customers will like this document anyway as it helps them decide how to provision for your product. It&#8217;s a win/win.</p>
+
+<h2>Make &#8220;operational supportability&#8221; a class of bug in your issue tracker</h2>
+
+<p>This is REALLY REALLY important. You should be doing this anyway but you need a place for people to report issues with the stack that directly affect the operability/maintenance of the stack. These deserve equal footing with any feature release or security fix as they directly contribute to the economies of scale in private deploys.</p>
+
+<h2>Use science</h2>
+
+<p>You&#8217;re going to want to invest some serious time and effort into sizing your initial offerings. If you don&#8217;t have a dedicated team for the on-prem stuff and it instead falls to your SaaS Ops folks, &#8220;you&#8217;re gonna have a bad time&#8221;. I alluded to this in my burnout blog post. Part of the challenge of sizing private deploys is knowing how much load a given size can actually handle. This is a slow process.</p>
+
+<p>It&#8217;s made worse by the fact that if you can&#8217;t artificially throttle load for a private deploy, it can quickly become undersized and you&#8217;re in a firefighting mode trying to scale it under duress. Example:</p>
+
+<ul>
+<li>a X node configuration can handle 100k frobnitz/sec</li>
+<li>a Y node configuration can handle 500k frobnitz/sec</li>
+</ul>
+
+<p>You present this to the customer and they opt for the X node configuration. Within a week, the customer is pushing 500k frobnitz/sec. Because the on-prem world is a &#8220;white glove&#8221; service, you can&#8217;t take the same approach you do with you SaaS. The reason people asked for a private install is to reduce the possible issues of outages from a multi-tenant system right?</p>
+
+<p>Think back to your last capacity related outage. How did you address that? How much meat cloud was required? Multiply it.</p>
+
+<p>You need science to determine these sizings and you need to allow yourself some wiggleroom for burst and give yourself enough time to scale that environment. This isn&#8217;t new but many times in a SaaS-only world we can punt a bit because we DON&#8217;T know how much load we&#8217;re going to have. Capacity planning was never something you should have ignored but I&#8217;m damn positive you pushed it off a bit.</p>
+
+<h2>Packaging and distribution</h2>
+
+<p>Packaging here is important. Are you still using tarballs with execute resources to extract them everywhere? You should probably start using FPM or something higher like Omnibus to package those as system packages. Hell, use Docker images if you need to. The benefit here is not so much one of packaging but in the things you get for free.</p>
+
+<p>System packages give you auditability but they also give you a distribution mechanism for free. Docker images do the same to some degree. The logic downloading, checksumming and installation is somewhat solved for you for those.</p>
+
+<h2>Consider a platform</h2>
+
+<p>This is my current thinking that I&#8217;ve been investigating. Take a look at the requirements of your customers. Do they want a dedicated install because they need to minimize the effect of multi-tenancy in your SaaS? Do they need data partition guarantees?</p>
+
+<p>Maybe you want to build a platform that allows you to deploy single tenant instances of some of your components while leveraging shared resources. Yes, this could mean something like CloudFoundry or Mesos or k8s. The benefit here is that you can slice and dice the resources you deploy along customer requirement boundaries.</p>
+
+<p>Maybe 80% of your private deploy customers want to have reduced tenancy. You can deploy dedicated &#8220;web nodes&#8221; for them to your platform. If a customer requires data isolation, you can deploy dedicated web nodes and dedicated datastores.</p>
+
+<p>Mind you this doesn&#8217;t mean you can&#8217;t do FULLY on-prem installs but like I said you probably don&#8217;t want to do those ANYWAY.</p>
+
+<h2>Charge appropriately</h2>
+
+<p>Pricing is always a balance game but don&#8217;t be afraid to charge what it&#8217;s REALLY going to cost you. You have to take economies of scale as a factor but don&#8217;t price a footprint for a managed install that is going to eat up 90% of your support time fighting fires.</p>
+
+<p>You can also use pricing as a way to filter out driveby customers and really drive home that the SaaS is the way you want customers to go.</p>
+
+<h1>Wrap up</h1>
+
+<p>As I said, if you can avoid doing on-prem you should. If you have to do it, the managed hosted option is the one that buys you the most flexibility.
+Listen to your operations team. If you&#8217;re going to rely on them to handle the private installs, you HAVE to spend time on the unautomated bits they have concerns over. You have MAYBE about 3 private deploys in addition to your SaaS duties before they will be so overwhelmed that they won&#8217;t be able to put any focus on automation anymore.</p>
+
+<p>I would love to hear feedback from folks on strategies that have worked for them.</p>
+
+<h2>Special Thanks</h2>
+
+<p>I want to send a special shoutout to the following people who offered feedback while I was writing this:</p>
+
+<ul>
+<li><a href="https://twitter.com/joedamato">Joe Damato</a></li>
+<li><a href="https://twitter.com/cacorriere">Chris Corriere</a></li>
+<li><a href="https://twitter.com/cwebber">Chris Webber</a></li>
+<li><a href="https://twitter.com/lindvall">Eric Lindvall</a></li>
+<li><a href="https://twitter.com/dbsmasher">Silvia Botros</a></li>
+<li><a href="https://twitter.com/filler">Nick Silkey</a></li>
+<li><a href="https://twitter.com/grepory">Greg Poirier</a></li>
+<li><a href="https://twitter.com/leifwalsh">Leif Walsh</a></li>
+<li><a href="https://twitter.com/grubernaut">Jake Champlin</a></li>
+<li><a href="https://twitter.com/sigje">Jennifer Davis</a></li>
+</ul>
+
+<p>and everyone else who offered. It was invaluable.</p>

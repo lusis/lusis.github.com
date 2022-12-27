@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<title>lusis.org: April 10, 2005 - April 16, 2005 Archives</title>
+
+<link rel="stylesheet" href="http://www.lusis.org/mt/lusis//a3col.css" type="text/css" />
+
+</head>
+
+<body>	
+
+<div id="banner">
+lusis.org<br />
+<span class="description">We play the blaming game. Rants of a libertarian geek.</span>
+</div>
+
+<div class="container">
+
+<div id="content">
+<div id="menu">
+
+<a href="http://www.lusis.org/mt/lusis/archives/week_2005_02_27.html">« February 27, 2005 - March 05, 2005</a> |
+
+<a href="http://www.lusis.org/mt/lusis/">Main</a>
+
+| <a href="http://www.lusis.org/mt/lusis/archives/week_2005_04_17.html">April 17, 2005 - April 23, 2005 »</a>
+
+</div>
+<br>
+<div class="blog">
+
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/">
+<rdf:Description
+    rdf:about="http://www.lusis.org/mt/lusis/archives/week_2005_04_10.html#000138"
+    trackback:ping="http://www.lusis.org/mt/mt-tb.cgi/70"
+    dc:title="Stupid Redhat Tricks"
+    dc:identifier="http://www.lusis.org/mt/lusis/archives/week_2005_04_10.html#000138"
+    dc:subject="tips and tricks"
+    dc:description="Okay so it&apos;s not stupid but really freakin cool...."
+    dc:creator="pugsly"
+    dc:date="2005-04-13T20:42:49-05:00" />
+</rdf:RDF>
+-->
+
+
+<div class="date">April 13, 2005</div>
+
+
+<div class="blogbody">
+<a name="000138"></a>
+<span class="title">Stupid Redhat Tricks</span>
+
+<p>Okay so it's not stupid but really freakin cool.</p>
+
+
+<p>We were getting ready to repurpose a server at the office. The server was located at the datacenter and we really didn't want to go onsite for a freakin install if we could help it.</p>
+
+<p>Specs:<br />
+IBM x345 server<br />
+BIOS Console Over Serial<br />
+Cyclades Alterpath 32<br />
+RHEL2.1AS<br />
+IBM DB2 UDB 8.1fp4</p>
+
+<p>So we've now consolidated some of our database servers into multiple instances on a beefier box. We getting ready to replace our reporting server package (Espress Reports) with Actuate iServer.</p>
+
+<p>Actuate iServer supports RHEL3 minimum. This migration has been pushed back for a few weeks because of licensing issues and we finally have the pieces in place.</p>
+
+<p>Now we realize that we need to upgrade the server. Trying to avoid a trip to the datacenter and any more delay, we call RedHat support and ask if we can just subscribe the old server to a new channel and run up2date. It was a long shot and just as I feared a non-start of an idea. We put our heads together and realize that worst case, someone has to drive down and insert a bootcd even to do an FTP install. Then the redhat guy comes up with the idea of:</p>
+
+<p>You *COULD* copy the vmlinux and initrd from the boot cd over to /boot on the server. Then make a grub entry for booting those kernels and do an FTP install. But that would require a GUI. I know there's a VNC install option but I'll dig up the info and email it to you.</p>
+
+<p>Not wanting to wait we think again the worst that happens is that we have to drive down and do the install onsite. Not a big problem but why not give this a shot.</p>
+
+<p>So we set the GRUB entry as follows:</p>
+
+<p>title=Boot CD Install Kernel<br />
+root=(hd0,0)<br />
+kernel=/vmlinuz.cdboot<br />
+initrd=initrd.cdboot text</p>
+
+<p>We added the text option just so it wouldn't try and go into a gui. I think it didn't matter because as I look back, the "text" option actually doesn't go there?</p>
+
+<p>We put the cd source on an internal FTP server, logged into the console port on the cyclades and rebooted the server.</p>
+
+<p>We were presented with the GRUB menu over the serial port and selected the CD Install kernel to boot.</p>
+
+<p>The system booted up into a text-only install of RHEL3. We selected FTP install and went through our normal steps selecting the proper packages and 20 minutes later (no shit, we timed it) we we're rebooted into our new system already on the network.</p>
+
+<p>This is amazing to say the least. I've been doing this for 10 years now and never even THOUGHT to try it. It just isn't a tip that you normally think about. That's why I'm posting it here.</p>
+
+<p>As an aside, we're preparing to do this for all of our servers. We'll be copying the appropriate vmlinuz and initrd files from the distributions we use to each server and making boot menu options for them. Since all of the servers are running Linux and are connected to a Cyclades for OOB access, we get full visibility from bootup to shutdown.  </p>
+
+<p>I'm sure many people would have suggested something along the lines of a PXE server (which I've done in the past) or leaving a boot floppy in all the servers and disabling floppy boot in the BIOS.</p>
+
+<p>As to the PXE thing, we don't have a DHCP server running at any of our datacenters. We also disable all unused network ports on the switches but it's one less security hole I have to worry about notwithstanding another service I have to maintain. We already have an internal FTP server that can house the basic packages to get a server up and running and our Gentoo servers are network install ANYWAY.</p>
+
+<p>As for the floppy option, it's about saving time. It's much quicker to boot from disk than ready everything from the floppy and the size of the vmlinuz and initrd are floppy prohibitive. Maybe a custom boot cd in all the servers would work as well. but that's just another thing we have to remember.</p>
+
+<p>I'm going to throw some keywords in here just to help people find this tip. I really think it's a cool tip for any SA to have that manages linux servers:</p>
+
+<p>grub, ftp install, redhat, RHEL, initrd, vmlinuz, boot cd</p>
+
+
+<div class="posted">Posted by pugsly at <a href="http://www.lusis.org/mt/lusis/archives/2005_04.html#000138">08:42 PM</a></div>
+</div>
+
+
+
+</div>
+</div>
+</div>
+<div id="links">
+<div class="powered">
+  Powered by<br /><a href="http://www.movabletype.org">Movable 
+  Type 2.64</a><br />
+  <br /> 
+  Template by<br />
+  <!--this template was modified from the original movable type templates by 
+  Kristine of Love-productions and blogstyles.
+  I'd appreciate it if you would keep a link back to blogstyles with this template!-->
+  <a href="http://blogstyles.com" target="_blank">BLOG<styles></a></div>
+</div>
+
+</body>
+</html>

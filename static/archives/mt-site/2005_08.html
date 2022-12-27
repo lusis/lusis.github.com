@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<title>lusis.org: August 2005 Archives</title>
+
+<link rel="stylesheet" href="http://www.lusis.org/mt/lusis//a3col.css" type="text/css" />
+
+</head>
+
+<body>	
+
+<div id="banner">
+lusis.org<br />
+<span class="description">We play the blaming game. Rants of a libertarian geek.</span>
+</div>
+
+<div class="container">
+
+<div id="content">
+<div id="menu">
+
+<a href="http://www.lusis.org/mt/lusis/archives/2005_06.html">« June 2005</a> |
+
+<a href="http://www.lusis.org/mt/lusis/">Main</a>
+
+| <a href="http://www.lusis.org/mt/lusis/archives/2005_09.html">September 2005 »</a>
+
+</div>
+<br>
+<div class="blog">
+
+<!--
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:trackback="http://madskills.com/public/xml/rss/module/trackback/"
+         xmlns:dc="http://purl.org/dc/elements/1.1/">
+<rdf:Description
+    rdf:about="http://www.lusis.org/mt/lusis/archives/2005_08.html#000142"
+    trackback:ping="http://www.lusis.org/mt/mt-tb.cgi/74"
+    dc:title="Looking for some postfix advice"
+    dc:identifier="http://www.lusis.org/mt/lusis/archives/2005_08.html#000142"
+    dc:subject=""
+    dc:description="Okay so I have a project I need to implement...."
+    dc:creator="pugsly"
+    dc:date="2005-08-04T20:17:57-05:00" />
+</rdf:RDF>
+-->
+
+
+<div class="date">August 04, 2005</div>
+
+
+<div class="blogbody">
+<a name="000142"></a>
+<span class="title">Looking for some postfix advice</span>
+
+<p>Okay so I have a project I need to implement.</p>
+
+
+<p>The solution is going to come down to buying a turnkey solution or doing it myself with a bunch of glue here and there. How much is my time worth again?</p>
+
+<p>We need to implement an email archive of all messages that pass in and out of network.  We're currently running a Postfix/Courier/OpenLDAP based mail environment. In the interim, I've implemented always_bcc in my main.cf but that has its limitations as well.</p>
+
+<p>Before I go on and wait for flames from someone from Germany about how this would be illegal there and blah blah blah, this has to be done. If you've got some honest complaints about Sarbannes-Oxley, take somewhere else. Hell I might even discuss them offline but right now I have a need.</p>
+
+<p>I basically need something equivilent to this:</p>
+
+<p><a href="http://www.athenaarchiver.com/product/email.html">Athena Archiver</a></p>
+
+<p>I don't know that I need to fancy gui right now but the option for indexing the emails and sorting them is nice. I can still hack that up myself if need be.</p>
+
+<p>I'm just missing the interim component. How to get postfix to either archive the mail and still send it on to the final destination as an inline relay solution or to always_bcc and sort properly from the primary server.</p>
+
+<p>I think I would much prefer an inline solution so that I can move virus scanning off to that platform as well:</p>
+
+<p>Internet Email -> Mail Virus and Archive Gateway -> Internal Mail Server</p>
+
+<p>or</p>
+
+<p>Internet Email -> Mail Server -> always_bcc to <a href="http://www.dbmail.org/">dbMail</a> account on another server</p>
+
+<p>There is also the option of using a modified content_filter to do the sorting and archving to a database myself.</p>
+
+<p>Currently we're archiving to another account on the same server but that feels really insecure and it's honestly a firefighting tactic instead of a final solution.</p>
+
+<p>I'm not concerned about the hardware right now but since I've turned always_bcc on, this account has gotten 5000 emails totaling 111MB. This is in the last 24 hours. I'd much rather get that into a database so it can be search and indexed much easier. We're also using Maildirs so I've got other issues to contend with as well.</p>
+
+<p>For now, I'm going to investigate rerunning everything in the archive Maildir through procmail each night to sort based on date but the request usually comes in the form of "we need email for the past 5 months for employee X" so multiple levels of filtering are going to be a pain in my ass.</p>
+
+<p>Email me at lusis.org AT gmail.com with any ideas.</p>
+
+
+<div class="posted">Posted by pugsly at <a href="http://www.lusis.org/mt/lusis/archives/2005_08.html#000142">08:17 PM</a></div>
+</div>
+
+
+
+</div>
+</div>
+</div>
+<div id="links">
+<div class="powered">
+  Powered by<br /><a href="http://www.movabletype.org">Movable 
+  Type 2.64</a><br />
+  <br /> 
+  Template by<br />
+  <!--this template was modified from the original movable type templates by 
+  Kristine of Love-productions and blogstyles.
+  I'd appreciate it if you would keep a link back to blogstyles with this template!-->
+  <a href="http://blogstyles.com" target="_blank">BLOG<styles></a></div>
+</div>
+
+</body>
+</html>
